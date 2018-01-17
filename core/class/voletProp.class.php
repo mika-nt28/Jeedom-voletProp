@@ -1,25 +1,26 @@
 <?php
 require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 class voletProp extends eqLogic {
-    public function execPropVolet($hauteur) {
+    	public function execPropVolet($Hauteur) {
 		$HauteurVolet=$this->getCmd(null,'hauteur')->execCmd();
-		if($HauteurVolet > $hauteur){
+		if($HauteurVolet > $Hauteur){
 				$cmd=cmd::byId($this->getConfiguration('cmdDown'));
 				if(is_object($cmd))
 					$cmd->event();
-				$Delta=$HauteurVolet-$hauteur;
+				$Delta=$HauteurVolet-$Hauteur;
 		}else{
 			$cmd=cmd::byId($this->getConfiguration('cmdUp'));
 				if(is_object($cmd))
 					$cmd->event();
-				$Delta=$hauteur-$HauteurVolet;
+				$Delta=$Hauteur-$HauteurVolet;
 		}
 		sleep($this->TpsAction($Delta));
 		$cmd=cmd::byId($this->getConfiguration('cmdStop'));
 		if(is_object($cmd))
 			$cmd->event();
+		$this->checkAndUpdateCmd('hauteur',$Hauteur);
 	}
-    public function TpsAction($Hauteur) {
+    	public function TpsAction($Hauteur) {
 		return $this->getConfiguration('Ttotal')*$Hauteur/100;
 	}
 	public function AddCommande($Name,$_logicalId,$Type="info", $SubType='binary',$visible,$Value=null,$Template='') {
