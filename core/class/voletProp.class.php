@@ -4,14 +4,14 @@ class voletProp extends eqLogic {
     	public function execPropVolet($Hauteur) {
 		$HauteurVolet=$this->getCmd(null,'hauteur')->execCmd();
 		if($HauteurVolet > $Hauteur){
-			$cmd=cmd::byId($this->getConfiguration('cmdDown'));
+			$cmd=cmd::byId(str_replace('#','',$this->getConfiguration('cmdDown')));
 			if(!is_object($cmd))
 				return false;
 			$cmd->event();
 			$Delta=$HauteurVolet-$Hauteur;
 			log::add('voletProp','debug',$this->getHumanName().' Nous allons descendre le volet de '.$Delta.'%');
 		}else{
-			$cmd=cmd::byId($this->getConfiguration('cmdUp'));
+			$cmd=cmd::byId(str_replace('#','',$this->getConfiguration('cmdUp')));
 			if(!is_object($cmd))
 				return false;
 			$cmd->event();
@@ -19,7 +19,7 @@ class voletProp extends eqLogic {
 			log::add('voletProp','debug',$this->getHumanName().' Nous allons monter le volet de '.$Delta.'%');
 		}
 		sleep($this->TpsAction($Delta));
-		$cmd=cmd::byId($this->getConfiguration('cmdStop'));
+		$cmd=cmd::byId(str_replace('#','',$this->getConfiguration('cmdStop')));
 		if(!is_object($cmd))
 			return false;
 			$cmd->event();
