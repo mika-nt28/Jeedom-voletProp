@@ -4,24 +4,30 @@ class voletProp extends eqLogic {
     	public function execPropVolet($Hauteur) {
 		$HauteurVolet=$this->getCmd(null,'hauteur')->execCmd();
 		if($HauteurVolet > $Hauteur){
-				$cmd=cmd::byId($this->getConfiguration('cmdDown'));
-				if(is_object($cmd))
-					$cmd->event();
-				$Delta=$HauteurVolet-$Hauteur;
+			$cmd=cmd::byId($this->getConfiguration('cmdDown'));
+			if(is_object($cmd))
+				$cmd->event();
+			$Delta=$HauteurVolet-$Hauteur;
+			log::add('voletProp','debug',$this->getHumanName().' Nous allons descendre le volet de '.$Delta.'%');
 		}else{
 			$cmd=cmd::byId($this->getConfiguration('cmdUp'));
-				if(is_object($cmd))
-					$cmd->event();
-				$Delta=$Hauteur-$HauteurVolet;
+			if(is_object($cmd))
+				$cmd->event();
+			$Delta=$Hauteur-$HauteurVolet;
+			log::add('voletProp','debug',$this->getHumanName().' Nous allons monter le volet de '.$Delta.'%');
 		}
 		sleep($this->TpsAction($Delta));
 		$cmd=cmd::byId($this->getConfiguration('cmdStop'));
 		if(is_object($cmd))
 			$cmd->event();
+		
+		log::add('voletProp','debug',$this->getHumanName().' Le volet est a '.$Hauteur.'%');
 		$this->checkAndUpdateCmd('hauteur',$Hauteur);
 	}
     	public function TpsAction($Hauteur) {
-		return $this->getConfiguration('Ttotal')*$Hauteur/100;
+		$tps=$this->getConfiguration('Ttotal')*$Hauteur/100;
+		log::add('voletProp','debug',$this->getHumanName().' Temps d\'action '.$tps.'s');
+		return $tps;
 	}
 	public function AddCommande($Name,$_logicalId,$Type="info", $SubType='binary',$visible,$Value=null,$Template='') {
 		$Commande = $this->getCmd(null,$_logicalId);
