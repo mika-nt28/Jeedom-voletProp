@@ -29,7 +29,7 @@ class voletProp extends eqLogic {
 		log::add('voletProp','debug',$this->getHumanName().' Temps d\'action '.$tps.'s');
 		return $tps;
 	}
-	public function AddCommande($Name,$_logicalId,$Type="info", $SubType='binary',$visible,$Value=null,$Template='') {
+	public function AddCommande($Name,$_logicalId,$Type="info", $SubType='binary',$visible,$Value=null,$Template='',$icon='',$generic_type='') {
 		$Commande = $this->getCmd(null,$_logicalId);
 		if (!is_object($Commande))
 		{
@@ -46,15 +46,17 @@ class voletProp extends eqLogic {
 		$Commande->setSubType($SubType);
    		$Commande->setTemplate('dashboard',$Template );
 		$Commande->setTemplate('mobile', $Template);
+		$Commande->setDisplay('icon', $icon);
+		$Commande->setDisplay('generic_type', $generic_type);
 		$Commande->save();
 		return $Commande;
 	}
 	public function postSave() {
-		$hauteur=$this->AddCommande("Hauteur","hauteur","info", 'numeric',true);
-		$this->AddCommande("Position","position","action", 'slider',true,$hauteur->getId());
-		$this->AddCommande("Up","up","action", 'other',true);
-		$this->AddCommande("Down","down","action", 'other',true);
-		$this->AddCommande("Stop","stop","action", 'other',true);
+		$hauteur=$this->AddCommande("Hauteur","hauteur","info", 'numeric',true,'','','FLAP_STATE');
+		$this->AddCommande("Position","position","action", 'slider',true,$hauteur->getId(),'','','FLAP_SLIDER');
+		$this->AddCommande("Up","up","action", 'other',true,'','<i class="fa fa-arrow-up"></i>','FLAP_UP');
+		$this->AddCommande("Down","down","action", 'other',true,'','<i class="fa fa-arrow-down"></i>','FLAP_DOWN');
+		$this->AddCommande("Stop","stop","action", 'other',true,'','<i class="fa fa-stop"></i>','FLAP_STOP');
 	}	
 }
 class voletPropCmd extends cmd {
