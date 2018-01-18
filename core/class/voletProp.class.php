@@ -71,14 +71,14 @@ class voletProp extends eqLogic {
 			$cmd=cmd::byId(str_replace('#','',$this->getConfiguration('cmdDown')));
 			if(!is_object($cmd))
 				return false;
-			$cmd->event(null);
+			$cmd->execute(null);
 			$Delta=$HauteurVolet-$Hauteur;
 			log::add('voletProp','debug',$this->getHumanName().' Nous allons descendre le volet de '.$Delta.'%');
 		}else{
 			$cmd=cmd::byId(str_replace('#','',$this->getConfiguration('cmdUp')));
 			if(!is_object($cmd))
 				return false;
-			$cmd->event(null);
+			$cmd->execute(null);
 			$Delta=$Hauteur-$HauteurVolet;
 			log::add('voletProp','debug',$this->getHumanName().' Nous allons monter le volet de '.$Delta.'%');
 		}
@@ -86,7 +86,7 @@ class voletProp extends eqLogic {
 		$cmd=cmd::byId(str_replace('#','',$this->getConfiguration('cmdStop')));
 		if(!is_object($cmd))
 			return false;
-		$cmd->event(null);
+		$cmd->execute(null);
 		log::add('voletProp','debug',$this->getHumanName().' Le volet est a '.$Hauteur.'%');
 		$this->checkAndUpdateCmd('hauteur',$Hauteur);
 	}
@@ -150,17 +150,17 @@ class voletPropCmd extends cmd {
 			case "up":
 				$cmd=cmd::byId(str_replace('#','',$this->getEqLogic()->getConfiguration('cmdUp')));
 				if(is_object($cmd))
-					$cmd->event(null);
+					$cmd->execute(null);
 			break;
 			case "down":
 				$cmd=cmd::byId(str_replace('#','',$this->getEqLogic()->getConfiguration('cmdDown')));
 				if(is_object($cmd))
-					$cmd->event(null);
+					$cmd->execute(null);
 			break;
 			case "stop":
 				$cmd=cmd::byId(str_replace('#','',$this->getEqLogic()->getConfiguration('cmdStop')));
 				if(is_object($cmd))
-					$cmd->event(null);
+					$cmd->execute(null);
 			break;
 			case "position":
 				$this->getEqLogic()->execPropVolet($_options['slider']);
