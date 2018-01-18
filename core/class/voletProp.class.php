@@ -110,6 +110,7 @@ class voletProp extends eqLogic {
 				$listener->addEvent($this->getConfiguration('cmdStopState'));
 			if ($this->getConfiguration('cmdEnd') != '')
 				$listener->addEvent($this->getConfiguration('cmdEnd'));
+			$listener->save();
 		}
 	}
 	public function AddCommande($Name,$_logicalId,$Type="info", $SubType='binary',$visible,$Value=null,$Template='',$icon='',$generic_type='') {
