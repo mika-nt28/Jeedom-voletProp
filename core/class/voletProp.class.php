@@ -37,9 +37,23 @@ class voletProp extends eqLogic {
 	public static function pull($_option) {
 		$Volet = voletProp::byId($_option['Volets_id']);
 		if (is_object($Volet) && $Volet->getIsEnable()) {
-			$Event = cmd::byId($_option['event_id']);
-			if(is_object($Event)){
-				
+			switch($_option['event_id']){
+				case $Volet->getConfiguration('cmdMoveState'):
+					cache::set('voletProp::ChangeState::'.$Volet->getId(),$_option['value'], 0);
+					cache::set('voletProp::ChangeStateStart::'.$Volet->getId(),time(), 0);
+				break;
+				case $Volet->getConfiguration('cmdStopState'):
+					$ChangeState = cache::byKey('voletProp::ChangeState::'.$Volet->getId())->getValue(false);
+					$ChangeStateStart = cache::byKey('voletProp::ChangeStateStart::'.$Volet->getId())->getValue(time());
+					$Tps=time()-$ChangeStateStart;
+					$Hauteur=$Tps*100/$Volet->getConfiguration('Ttotal');
+					log::add('voletProp','debug',$Volet->getHumanName().' Le volet est a '.$Hauteur.'%');
+					$Volet->checkAndUpdateCmd('hauteur',$Hauteur);
+				break;
+				case $Volet->getConfiguration('cmdEnd'):
+					if($_option['value'])
+						$Volet->checkAndUpdateCmd('hauteur',0);
+				break;
 			}
 		}
 	}
