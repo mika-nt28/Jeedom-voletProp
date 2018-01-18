@@ -198,6 +198,64 @@ $eqLogics = eqLogic::byType('voletProp');
 					</div>
 					<div class="col-sm-6">
 						<form class="form-horizontal">
+							<legend>Objet d'état du volet</legend>
+							<fieldset>
+								<div class="form-group">
+									<label class="col-sm-2 control-label">{{Etat du mouvement}}
+										<sup>
+											<i class="fa fa-question-circle tooltips" title="{{Sélectionner la commande déterminant l'état du mouvement du volet}}"></i>
+										</sup>
+									</label>
+									<div class="col-sm-5">
+										<div class="input-group">
+											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="cmdMoveState" placeholder="{{Séléctionner une commande}}"/>
+											<span class="input-group-btn">
+												<a class="btn btn-success btn-sm listCmdAction" data-type="info">
+													<i class="fa fa-list-alt"></i>
+												</a>
+											</span>
+										</div>
+									</div>
+								</div>	
+								<div class="form-group">
+									<label class="col-sm-2 control-label">{{Etat du stop}}
+										<sup>
+											<i class="fa fa-question-circle tooltips" title="{{Sélectionner la commande déterminant  l'état de l'arret du volet}}"></i>
+										</sup>
+									</label>
+									<div class="col-sm-5">
+										<div class="input-group">
+											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="cmdStoStatep" placeholder="{{Séléctionner une commande}}"/>
+											<span class="input-group-btn">
+												<a class="btn btn-success btn-sm listCmdAction" data-type="info">
+													<i class="fa fa-list-alt"></i>
+												</a>
+											</span>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label">{{Fin de course}}
+										<sup>
+											<i class="fa fa-question-circle tooltips" title="{{Sélectionner la commande déterminant la fin de course}}"></i>
+										</sup>
+									</label>
+									<div class="col-sm-5">
+										<div class="input-group">
+											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="cmdEnd" placeholder="{{Séléctionner une commande}}"/>
+											<span class="input-group-btn">
+												<a class="btn btn-success btn-sm listCmdAction" data-type="info">
+													<i class="fa fa-list-alt"></i>
+												</a>
+											</span>
+										</div>
+									</div>
+								</div>	
+							</fieldset>
+						</form>
+					</div>
+					<div class="col-sm-6">
+						<form class="form-horizontal">
 							<legend>Delais</legend>
 							<fieldset>
 								<div class="form-group">
