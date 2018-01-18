@@ -225,7 +225,7 @@ $eqLogics = eqLogic::byType('voletProp');
 									</label>
 									<div class="col-sm-5">
 										<div class="input-group">
-											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="cmdStoStatep" placeholder="{{Séléctionner une commande}}"/>
+											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="cmdStopState" placeholder="{{Séléctionner une commande}}"/>
 											<span class="input-group-btn">
 												<a class="btn btn-success btn-sm listCmdAction" data-type="info">
 													<i class="fa fa-list-alt"></i>
