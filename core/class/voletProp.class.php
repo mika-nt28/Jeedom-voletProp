@@ -47,6 +47,14 @@ class voletProp extends eqLogic {
 					$ChangeStateStart = cache::byKey('voletProp::ChangeStateStart::'.$Volet->getId())->getValue(time());
 					$Tps=time()-$ChangeStateStart;
 					$Hauteur=$Tps*100/$Volet->getConfiguration('Ttotal');
+					if($ChangeState)
+						$Hauteur+=$Volet->getCmd(null,'hauteur')->execCmd();
+					else
+						$Hauteur-=$Volet->getCmd(null,'hauteur')->execCmd();
+					if($Hauteur<0)
+						$Hauteur=0;
+					if($Hauteur>100)
+						$Hauteur=100;
 					log::add('voletProp','debug',$Volet->getHumanName().' Le volet est a '.$Hauteur.'%');
 					$Volet->checkAndUpdateCmd('hauteur',$Hauteur);
 				break;
