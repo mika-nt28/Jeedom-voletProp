@@ -36,7 +36,7 @@ class voletProp extends eqLogic {
 	}
 	public static function pull($_option) {
 		log::add('voletProp','debug','Evenement sur les etat'.json_encode($_option));
-		$Volet = voletProp::byId($_option['Volets_id']);
+		$Volet = eqLogic::byId($_option['Volets_id']);
 		if (is_object($Volet) && $Volet->getIsEnable()) {
 			switch($_option['event_id']){
 				case $Volet->getConfiguration('cmdMoveState'):
