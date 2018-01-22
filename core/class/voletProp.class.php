@@ -39,12 +39,12 @@ class voletProp extends eqLogic {
 		$Volet = eqLogic::byId($_option['Volets_id']);
 		if (is_object($Volet) && $Volet->getIsEnable()) {
 			switch($_option['event_id']){
-				case $Volet->getConfiguration('cmdMoveState'):
+				case str_replace('#','',$Volet->getConfiguration('cmdMoveState')):
 					log::add('voletProp','debug',$Volet->getHumanName().' Detection d\'un mouvement');
 					cache::set('voletProp::ChangeState::'.$Volet->getId(),$_option['value'], 0);
 					cache::set('voletProp::ChangeStateStart::'.$Volet->getId(),time(), 0);
 				break;
-				case $Volet->getConfiguration('cmdStopState'):
+				case str_replace('#','',$Volet->getConfiguration('cmdStopState')):
 					$ChangeState = cache::byKey('voletProp::ChangeState::'.$Volet->getId())->getValue(false);
 					$ChangeStateStart = cache::byKey('voletProp::ChangeStateStart::'.$Volet->getId())->getValue(time());
 					$Tps=time()-$ChangeStateStart;
@@ -60,7 +60,7 @@ class voletProp extends eqLogic {
 					log::add('voletProp','debug',$Volet->getHumanName().' Le volet est a '.$Hauteur.'%');
 					$Volet->checkAndUpdateCmd('hauteur',$Hauteur);
 				break;
-				case $Volet->getConfiguration('cmdEnd'):
+				case str_replace('#','',$Volet->getConfiguration('cmdEnd')):
 					if($_option['value'])
 						$Volet->checkAndUpdateCmd('hauteur',0);
 				break;
