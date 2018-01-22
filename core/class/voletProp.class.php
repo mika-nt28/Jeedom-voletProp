@@ -35,10 +35,12 @@ class voletProp extends eqLogic {
 		}
 	}
 	public static function pull($_option) {
+		log::add('voletProp','debug','Evenement sur les etat'.json_encode($_option));
 		$Volet = voletProp::byId($_option['Volets_id']);
 		if (is_object($Volet) && $Volet->getIsEnable()) {
 			switch($_option['event_id']){
 				case $Volet->getConfiguration('cmdMoveState'):
+					log::add('voletProp','debug',$Volet->getHumanName().' Detection d\'un mouvement');
 					cache::set('voletProp::ChangeState::'.$Volet->getId(),$_option['value'], 0);
 					cache::set('voletProp::ChangeStateStart::'.$Volet->getId(),time(), 0);
 				break;
