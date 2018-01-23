@@ -52,7 +52,7 @@ class voletProp extends eqLogic {
 					if($ChangeState)
 						$Hauteur+=$Volet->getCmd(null,'hauteur')->execCmd();
 					else
-						$Hauteur-=$Volet->getCmd(null,'hauteur')->execCmd();
+						$Hauteur=$Hauteur-$Volet->getCmd(null,'hauteur')->execCmd();
 					if($Hauteur<0)
 						$Hauteur=0;
 					if($Hauteur>100)
