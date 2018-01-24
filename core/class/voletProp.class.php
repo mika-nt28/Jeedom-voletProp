@@ -49,10 +49,12 @@ class voletProp extends eqLogic {
 					$ChangeStateStart = cache::byKey('voletProp::ChangeStateStart::'.$Volet->getId())->getValue(time());
 					$Tps=time()-$ChangeStateStart;
 					$Hauteur=$Tps*100/$Volet->getConfiguration('Ttotal');
+					$HauteurActuel=$Volet->getCmd(null,'hauteur')->execCmd();
 					if($ChangeState)
-						$Hauteur+=$Volet->getCmd(null,'hauteur')->execCmd();
+						$Hauteur=round($Hauteur+$HauteurActuel);
 					else
-						$Hauteur=$Hauteur-$Volet->getCmd(null,'hauteur')->execCmd();
+						$Hauteur=round($Hauteur-$HauteurActuel);
+					log::add('voletProp','debug',$Volet->getHumanName().' Le volet est a '.$Hauteur.'%');
 					if($Hauteur<0)
 						$Hauteur=0;
 					if($Hauteur>100)
@@ -90,7 +92,7 @@ class voletProp extends eqLogic {
 			return false;
 		$cmd->execute(null);
 		log::add('voletProp','debug',$this->getHumanName().' Le volet est a '.$Hauteur.'%');
-		$this->checkAndUpdateCmd('hauteur',$Hauteur);
+	//	$this->checkAndUpdateCmd('hauteur',$Hauteur);
 	}
     	public function TpsAction($Hauteur) {
 		$tps=$this->getConfiguration('Ttotal')*$Hauteur/100;
