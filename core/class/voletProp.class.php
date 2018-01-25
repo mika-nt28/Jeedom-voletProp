@@ -51,9 +51,9 @@ class voletProp extends eqLogic {
 					$Hauteur=$Tps*100/$Volet->getConfiguration('Ttotal');
 					$HauteurActuel=$Volet->getCmd(null,'hauteur')->execCmd();
 					if($ChangeState)
-						$Hauteur=round($Hauteur+$HauteurActuel);
+						$Hauteur=round($HauteurActuel+$Hauteur);
 					else
-						$Hauteur=round($Hauteur-$HauteurActuel);
+						$Hauteur=round($HauteurActuel-$Hauteur);
 					log::add('voletProp','debug',$Volet->getHumanName().' Le volet est a '.$Hauteur.'%');
 					if($Hauteur<0)
 						$Hauteur=0;
