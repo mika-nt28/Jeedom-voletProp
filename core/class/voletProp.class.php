@@ -1,6 +1,18 @@
 <?php
 require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 class voletProp extends eqLogic {
+	public static function cron() {
+		foreach(eqLogic::byType('voletProp') as $Volet){ 
+			if(cache::byKey('voletProp::Move::'.$Volet->getId())->getValue(false)){
+				$ChangeStateStart = cache::byKey('voletProp::ChangeStateStart::'.$Volet->getId())->getValue(time());
+				if(time()-$ChangeStateStart >=$Volet->getConfiguration('Ttotal')){
+					$cmd=cmd::byId(str_replace('#','',$Volet->getEqLogic()->getConfiguration('cmdStop')));
+					if(is_object($cmd))
+						$cmd->execute(null);
+				}
+			}
+		}
+	}
 	public static function deamon_info() {
 		$return = array();
 		$return['log'] = 'voletProp';
@@ -41,26 +53,17 @@ class voletProp extends eqLogic {
 			switch($_option['event_id']){
 				case str_replace('#','',$Volet->getConfiguration('cmdMoveState')):
 					log::add('voletProp','debug',$Volet->getHumanName().' Detection d\'un mouvement');
+					if(cache::byKey('voletProp::Move::'.$this->getId())->getValue(false))
+						$Volet->UpdateHauteur();
+					else
+						cache::set('voletProp::Move::'.$Volet->getId(),true, 0);
+
 					cache::set('voletProp::ChangeState::'.$Volet->getId(),$_option['value'], 0);
 					cache::set('voletProp::ChangeStateStart::'.$Volet->getId(),time(), 0);
 				break;
 				case str_replace('#','',$Volet->getConfiguration('cmdStopState')):
-					$ChangeState = cache::byKey('voletProp::ChangeState::'.$Volet->getId())->getValue(false);
-					$ChangeStateStart = cache::byKey('voletProp::ChangeStateStart::'.$Volet->getId())->getValue(time());
-					$Tps=time()-$ChangeStateStart;
-					$Hauteur=$Tps*100/$Volet->getConfiguration('Ttotal');
-					$HauteurActuel=$Volet->getCmd(null,'hauteur')->execCmd();
-					if($ChangeState)
-						$Hauteur=round($HauteurActuel+$Hauteur);
-					else
-						$Hauteur=round($HauteurActuel-$Hauteur);
-					log::add('voletProp','debug',$Volet->getHumanName().' Le volet est a '.$Hauteur.'%');
-					if($Hauteur<0)
-						$Hauteur=0;
-					if($Hauteur>100)
-						$Hauteur=100;
-					log::add('voletProp','debug',$Volet->getHumanName().' Le volet est a '.$Hauteur.'%');
-					$Volet->checkAndUpdateCmd('hauteur',$Hauteur);
+					cache::set('voletProp::Move::'.$Volet->getId(),false, 0);
+					$Volet->UpdateHauteur();
 				break;
 				case str_replace('#','',$Volet->getConfiguration('cmdEnd')):
 					if($_option['value'])
@@ -68,6 +71,24 @@ class voletProp extends eqLogic {
 				break;
 			}
 		}
+	}
+    	public function UpdateHauteur() {
+		$ChangeState = cache::byKey('voletProp::ChangeState::'.$this->getId())->getValue(false);
+		$ChangeStateStart = cache::byKey('voletProp::ChangeStateStart::'.$this->getId())->getValue(time());
+		$Tps=time()-$ChangeStateStart;
+		$Hauteur=$Tps*100/$this->getConfiguration('Ttotal');
+		$HauteurActuel=$this->getCmd(null,'hauteur')->execCmd();
+		if($ChangeState)
+			$Hauteur=round($HauteurActuel+$Hauteur);
+		else
+			$Hauteur=round($HauteurActuel-$Hauteur);
+		log::add('voletProp','debug',$this->getHumanName().' Le volet est a '.$Hauteur.'%');
+		if($Hauteur<0)
+			$Hauteur=0;
+		if($Hauteur>100)
+			$Hauteur=100;
+		log::add('voletProp','debug',$this->getHumanName().' Le volet est a '.$Hauteur.'%');
+		$this->checkAndUpdateCmd('hauteur',$Hauteur);
 	}
     	public function execPropVolet($Hauteur) {
 		$HauteurVolet=$this->getCmd(null,'hauteur')->execCmd();
