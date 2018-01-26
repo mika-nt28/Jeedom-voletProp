@@ -1,7 +1,7 @@
 <?php
 require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 class voletProp extends eqLogic {
-	/*public static function cron() {
+	public static function cron() {
 		foreach(eqLogic::byType('voletProp') as $Volet){ 
 			if(cache::byKey('voletProp::Move::'.$Volet->getId())->getValue(false)){
 				$ChangeStateStart = cache::byKey('voletProp::ChangeStateStart::'.$Volet->getId())->getValue(time());
@@ -12,7 +12,7 @@ class voletProp extends eqLogic {
 				}
 			}
 		}
-	}*/
+	}
 	public static function deamon_info() {
 		$return = array();
 		$return['log'] = 'voletProp';
@@ -55,7 +55,7 @@ class voletProp extends eqLogic {
 			switch($_option['event_id']){
 				case str_replace('#','',$Volet->getConfiguration('cmdMoveState')):
 					log::add('voletProp','debug',$Volet->getHumanName().' Detection d\'un mouvement');
-					if(cache::byKey('voletProp::Move::'.$this->getId())->getValue(false))
+					if(cache::byKey('voletProp::Move::'.$Volet->getId())->getValue(false))
 						$Volet->UpdateHauteur();
 					else
 						cache::set('voletProp::Move::'.$Volet->getId(),true, 0);
