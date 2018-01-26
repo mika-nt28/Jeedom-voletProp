@@ -36,8 +36,10 @@ class voletProp extends eqLogic {
 			return;
 		if ($deamon_info['state'] == 'ok') 
 			return;
-		foreach(eqLogic::byType('voletProp') as $Volet)
+		foreach(eqLogic::byType('voletProp') as $Volet){
+			cache::set('voletProp::Move::'.$Volet->getId(),false, 0);
 			$Volet->StartListener();
+		}
 	}
 	public static function deamon_stop() {	
 		foreach(eqLogic::byType('voletProp') as $Volet){
