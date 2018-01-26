@@ -1,7 +1,7 @@
 <?php
 require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 class voletProp extends eqLogic {
-	public static function cron() {
+	/*public static function cron() {
 		foreach(eqLogic::byType('voletProp') as $Volet){ 
 			if(cache::byKey('voletProp::Move::'.$Volet->getId())->getValue(false)){
 				$ChangeStateStart = cache::byKey('voletProp::ChangeStateStart::'.$Volet->getId())->getValue(time());
@@ -12,7 +12,7 @@ class voletProp extends eqLogic {
 				}
 			}
 		}
-	}
+	}*/
 	public static function deamon_info() {
 		$return = array();
 		$return['log'] = 'voletProp';
