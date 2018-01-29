@@ -115,7 +115,8 @@ class voletProp extends eqLogic {
 			return false;
 		$cmd->execute(null);
 		log::add('voletProp','debug',$this->getHumanName().' Le volet est a '.$Hauteur.'%');
-	//	$this->checkAndUpdateCmd('hauteur',$Hauteur);
+		if ($this->getConfiguration('cmdMoveState') != '' && $this->getConfiguration('cmdStopState') != '' )			
+			$this->checkAndUpdateCmd('hauteur',$Hauteur);
 	}
     	public function TpsAction($Hauteur) {
 		$tps=$this->getConfiguration('Ttotal')*$Hauteur/100;
@@ -124,20 +125,22 @@ class voletProp extends eqLogic {
 	}
 	public function StartListener() {
 		if($this->getIsEnable()){
-			$listener = listener::byClassAndFunction('voletProp', 'pull', array('Volets_id' => $this->getId()));
-			if (!is_object($listener))
-			    $listener = new listener();
-			$listener->setClass('voletProp');
-			$listener->setFunction('pull');
-			$listener->setOption(array('Volets_id' => $this->getId()));
-			$listener->emptyEvent();				
-			if ($this->getConfiguration('cmdMoveState') != '')
-				$listener->addEvent($this->getConfiguration('cmdMoveState'));
-			if ($this->getConfiguration('cmdStopState') != '')
-				$listener->addEvent($this->getConfiguration('cmdStopState'));
-			if ($this->getConfiguration('cmdEnd') != '')
-				$listener->addEvent($this->getConfiguration('cmdEnd'));
-			$listener->save();
+			if ($this->getConfiguration('cmdMoveState') != '' && $this->getConfiguration('cmdStopState') != '' || $this->getConfiguration('cmdEnd') != ''){
+				$listener = listener::byClassAndFunction('voletProp', 'pull', array('Volets_id' => $this->getId()));
+				if (!is_object($listener))
+				    $listener = new listener();
+				$listener->setClass('voletProp');
+				$listener->setFunction('pull');
+				$listener->setOption(array('Volets_id' => $this->getId()));
+				$listener->emptyEvent();				
+				if ($this->getConfiguration('cmdMoveState') != '')
+					$listener->addEvent($this->getConfiguration('cmdMoveState'));
+				if ($this->getConfiguration('cmdStopState') != '')
+					$listener->addEvent($this->getConfiguration('cmdStopState'));
+				if ($this->getConfiguration('cmdEnd') != '')
+					$listener->addEvent($this->getConfiguration('cmdEnd'));
+				$listener->save();
+			}
 		}
 	}
 	public function AddCommande($Name,$_logicalId,$Type="info", $SubType='binary',$visible,$Value=null,$Template='',$icon='',$generic_type='') {
