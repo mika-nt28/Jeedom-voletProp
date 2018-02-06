@@ -6,7 +6,7 @@ class voletProp extends eqLogic {
 			if(cache::byKey('voletProp::Move::'.$Volet->getId())->getValue(false)){
 				$ChangeStateStart = cache::byKey('voletProp::ChangeStateStart::'.$Volet->getId())->getValue(time());
 				if(time()-$ChangeStateStart >=$Volet->getConfiguration('Ttotal')){
-					$cmd=cmd::byId(str_replace('#','',$Volet->getEqLogic()->getConfiguration('cmdStop')));
+					$cmd=cmd::byId(str_replace('#','',$Volet->getConfiguration('cmdStop')));
 					if(is_object($cmd))
 						$cmd->execute(null);
 				}
