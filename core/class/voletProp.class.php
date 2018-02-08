@@ -43,9 +43,7 @@ class voletProp extends eqLogic {
 	}
 	public static function deamon_stop() {	
 		foreach(eqLogic::byType('voletProp') as $Volet){
-			$listener = listener::byClassAndFunction('voletProp', 'pull', array('Volets_id' => $Volet->getId()));
-			if (is_object($listener))
-				$listener->remove();
+			$Volet->StopListener();
 		}
 	}
 	public static function pull($_option) {
@@ -84,7 +82,6 @@ class voletProp extends eqLogic {
 			$Hauteur=round($HauteurActuel+$Hauteur);
 		else
 			$Hauteur=round($HauteurActuel-$Hauteur);
-		log::add('voletProp','debug',$this->getHumanName().' Le volet est a '.$Hauteur.'%');
 		if($Hauteur<0)
 			$Hauteur=0;
 		if($Hauteur>100)
@@ -123,6 +120,11 @@ class voletProp extends eqLogic {
 		log::add('voletProp','debug',$this->getHumanName().' Temps d\'action '.$tps.'s');
 		return $tps*1000000;
 	}
+	public function StopListener() {
+		$listener = listener::byClassAndFunction('voletProp', 'pull', array('Volets_id' => $this->getId()));
+		if (is_object($listener))
+			$listener->remove();
+	}
 	public function StartListener() {
 		if($this->getIsEnable()){
 			if ($this->getConfiguration('cmdMoveState') != '' && $this->getConfiguration('cmdStopState') != '' || $this->getConfiguration('cmdEnd') != ''){
@@ -153,19 +155,20 @@ class voletProp extends eqLogic {
 			$Commande->setIsVisible($visible);
 			$Commande->setLogicalId($_logicalId);
 			$Commande->setEqLogic_id($this->getId());
+			if($Value!=null)
+				$Commande->setValue($Value);
+			$Commande->setType($Type);
+			$Commande->setSubType($SubType);
+			$Commande->setTemplate('dashboard',$Template );
+			$Commande->setTemplate('mobile', $Template);
+			$Commande->setDisplay('icon', $icon);
+			$Commande->setDisplay('generic_type', $generic_type);
+			$Commande->save();
 		}
-		if($Value!=null)
-			$Commande->setValue($Value);
-		$Commande->setType($Type);
-		$Commande->setSubType($SubType);
-   		$Commande->setTemplate('dashboard',$Template );
-		$Commande->setTemplate('mobile', $Template);
-		$Commande->setDisplay('icon', $icon);
-		$Commande->setDisplay('generic_type', $generic_type);
-		$Commande->save();
 		return $Commande;
 	}
 	public function postSave() {
+		$this->StopListener();
 		$hauteur=$this->AddCommande("Hauteur","hauteur","info", 'numeric',true,null,'','','FLAP_STATE');
 		$this->AddCommande("Position","position","action", 'slider',true,null,$hauteur->getId(),'','','FLAP_SLIDER');
 		$this->AddCommande("Up","up","action", 'other',true,null,'','<i class="fa fa-arrow-up"></i>','FLAP_UP');
