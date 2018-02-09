@@ -91,6 +91,8 @@ class voletProp extends eqLogic {
 	}
     	public function execPropVolet($Hauteur) {
 		$HauteurVolet=$this->getCmd(null,'hauteur')->execCmd();
+		if($HauteurVolet == $Hauteur)
+			return;
 		if($HauteurVolet > $Hauteur){
 			$cmd=cmd::byId(str_replace('#','',$this->getConfiguration('cmdDown')));
 			if(!is_object($cmd))
