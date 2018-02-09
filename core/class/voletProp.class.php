@@ -91,6 +91,8 @@ class voletProp extends eqLogic {
 	}
     	public function execPropVolet($Hauteur) {
 		$HauteurVolet=$this->getCmd(null,'hauteur')->execCmd();
+		if($HauteurVolet == $Hauteur)
+			return;
 		if($HauteurVolet > $Hauteur){
 			$cmd=cmd::byId(str_replace('#','',$this->getConfiguration('cmdDown')));
 			if(!is_object($cmd))
@@ -127,7 +129,7 @@ class voletProp extends eqLogic {
 	}
 	public function StartListener() {
 		if($this->getIsEnable()){
-			if ($this->getConfiguration('cmdMoveState') != '' && $this->getConfiguration('cmdStopState') != '' || $this->getConfiguration('cmdEnd') != ''){
+			if ($this->getConfiguration('cmdMoveState') != '' && $this->getConfiguration('cmdStopState') != '' && $this->getConfiguration('cmdEnd') != ''){
 				$listener = listener::byClassAndFunction('voletProp', 'pull', array('Volets_id' => $this->getId()));
 				if (!is_object($listener))
 				    $listener = new listener();
