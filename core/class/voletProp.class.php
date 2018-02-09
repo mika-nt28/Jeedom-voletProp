@@ -129,7 +129,7 @@ class voletProp extends eqLogic {
 	}
 	public function StartListener() {
 		if($this->getIsEnable()){
-			if ($this->getConfiguration('cmdMoveState') != '' && $this->getConfiguration('cmdStopState') != '' && $this->getConfiguration('cmdEnd') != ''){
+			if(($this->getConfiguration('cmdMoveState') != '' && $this->getConfiguration('cmdStopState') != '') || $this->getConfiguration('cmdEnd') != ''){
 				$listener = listener::byClassAndFunction('voletProp', 'pull', array('Volets_id' => $this->getId()));
 				if (!is_object($listener))
 				    $listener = new listener();
