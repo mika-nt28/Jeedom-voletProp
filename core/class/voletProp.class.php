@@ -53,7 +53,8 @@ class voletProp extends eqLogic {
 			switch($_option['event_id']){
 				case str_replace('#','',$Volet->getConfiguration('cmdMoveState')):
 					log::add('voletProp','debug',$Volet->getHumanName().' Detection d\'un mouvement');
-					if(cache::byKey('voletProp::Move::'.$Volet->getId())->getValue(false))
+					$Move=cache::byKey('voletProp::Move::'.$Volet->getId());
+					if(is_object($Move) && $Move->getValue(false))
 						$Volet->UpdateHauteur();
 					else
 						cache::set('voletProp::Move::'.$Volet->getId(),true, 0);
@@ -61,7 +62,8 @@ class voletProp extends eqLogic {
 					cache::set('voletProp::ChangeStateStart::'.$Volet->getId(),time(), 0);
 				break;
 				case str_replace('#','',$Volet->getConfiguration('cmdStopState')):
-					if(cache::byKey('voletProp::Move::'.$Volet->getId())->getValue(false))
+					$Move=cache::byKey('voletProp::Move::'.$Volet->getId());
+					if(is_object($Move) && $Move->getValue(false))
 						$Volet->UpdateHauteur();
 					cache::set('voletProp::Move::'.$Volet->getId(),false, 0);
 				break;
