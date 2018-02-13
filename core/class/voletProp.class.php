@@ -57,13 +57,13 @@ class voletProp extends eqLogic {
 						$Volet->UpdateHauteur();
 					else
 						cache::set('voletProp::Move::'.$Volet->getId(),true, 0);
-
 					cache::set('voletProp::ChangeState::'.$Volet->getId(),$_option['value'], 0);
 					cache::set('voletProp::ChangeStateStart::'.$Volet->getId(),time(), 0);
 				break;
 				case str_replace('#','',$Volet->getConfiguration('cmdStopState')):
+					if(cache::byKey('voletProp::Move::'.$Volet->getId())->getValue(false))
+						$Volet->UpdateHauteur();
 					cache::set('voletProp::Move::'.$Volet->getId(),false, 0);
-					$Volet->UpdateHauteur();
 				break;
 				case str_replace('#','',$Volet->getConfiguration('cmdEnd')):
 					if($_option['value'])
