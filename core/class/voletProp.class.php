@@ -95,29 +95,33 @@ class voletProp extends eqLogic {
 		$this->checkAndUpdateCmd('hauteur',$Hauteur);
 	}
     	public function execPropVolet($Hauteur) {
+		$Stop=cmd::byId(str_replace('#','',$this->getConfiguration('cmdStop')));
+		if(!is_object($Stop))
+			return false;
+		$Down=cmd::byId(str_replace('#','',$this->getConfiguration('cmdDown')));
+		if(!is_object($Down))
+			return false;
+		$Up=cmd::byId(str_replace('#','',$this->getConfiguration('cmdUp')));
+		if(!is_object($Up))
+			return false;
+		$Stop->execute(null);
+		//cache::set('voletProp::Move::'.$this->getId(),false, 0);
 		$HauteurVolet=$this->getCmd(null,'hauteur')->execCmd();
 		if($HauteurVolet == $Hauteur)
 			return;
 		if($HauteurVolet > $Hauteur){
-			$cmd=cmd::byId(str_replace('#','',$this->getConfiguration('cmdDown')));
-			if(!is_object($cmd))
-				return false;
-			$cmd->execute(null);
 			$Delta=$HauteurVolet-$Hauteur;
+			$temps=$this->TpsAction($Delta)
+			$Down->execute(null);
 			log::add('voletProp','debug',$this->getHumanName().' Nous allons descendre le volet de '.$Delta.'%');
 		}else{
-			$cmd=cmd::byId(str_replace('#','',$this->getConfiguration('cmdUp')));
-			if(!is_object($cmd))
-				return false;
-			$cmd->execute(null);
 			$Delta=$Hauteur-$HauteurVolet;
+			$temps=$this->TpsAction($Delta)
+			$Up->execute(null);
 			log::add('voletProp','debug',$this->getHumanName().' Nous allons monter le volet de '.$Delta.'%');
 		}
-		usleep($this->TpsAction($Delta));
-		$cmd=cmd::byId(str_replace('#','',$this->getConfiguration('cmdStop')));
-		if(!is_object($cmd))
-			return false;
-		$cmd->execute(null);
+		usleep($temps);
+		$Stop->execute(null);
 		log::add('voletProp','debug',$this->getHumanName().' Le volet est a '.$Hauteur.'%');
 		if ($this->getConfiguration('cmdMoveState') != '' && $this->getConfiguration('cmdStopState') != '' )			
 			$this->checkAndUpdateCmd('hauteur',$Hauteur);
