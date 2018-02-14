@@ -123,7 +123,7 @@ class voletProp extends eqLogic {
 		usleep($temps);
 		$Stop->execute(null);
 		log::add('voletProp','debug',$this->getHumanName().' Le volet est a '.$Hauteur.'%');
-		if ($this->getConfiguration('cmdMoveState') != '' && $this->getConfiguration('cmdStopState') != '' )			
+		if ($this->getConfiguration('cmdMoveState') == '' && $this->getConfiguration('cmdStopState') == '' )			
 			$this->checkAndUpdateCmd('hauteur',$Hauteur);
 	}
     	public function TpsAction($Hauteur) {
