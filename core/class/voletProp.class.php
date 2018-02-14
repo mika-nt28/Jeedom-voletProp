@@ -111,12 +111,12 @@ class voletProp extends eqLogic {
 			return;
 		if($HauteurVolet > $Hauteur){
 			$Delta=$HauteurVolet-$Hauteur;
-			$temps=$this->TpsAction($Delta)
+			$temps=$this->TpsAction($Delta);
 			$Down->execute(null);
 			log::add('voletProp','debug',$this->getHumanName().' Nous allons descendre le volet de '.$Delta.'%');
 		}else{
 			$Delta=$Hauteur-$HauteurVolet;
-			$temps=$this->TpsAction($Delta)
+			$temps=$this->TpsAction($Delta);
 			$Up->execute(null);
 			log::add('voletProp','debug',$this->getHumanName().' Nous allons monter le volet de '.$Delta.'%');
 		}
