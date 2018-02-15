@@ -19,7 +19,7 @@ class voletProp extends eqLogic {
 		$return['launchable'] = 'ok';
 		$return['state'] = 'nok';
 		foreach(eqLogic::byType('voletProp') as $Volet){
-			if($Volet->getIsEnable()){
+			if($Volet->getIsEnable() && $Volet->getConfiguration('cmdMoveState')!= '' && $Volet->getConfiguration('cmdStopState') != '' && $Volet->getConfiguration('cmdEnd') != '')){
 				$listener = listener::byClassAndFunction('voletProp', 'pull', array('Volets_id' => $Volet->getId()));
 				if (!is_object($listener))
 					return $return;
