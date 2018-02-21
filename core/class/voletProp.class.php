@@ -169,22 +169,22 @@ class voletProp extends eqLogic {
 			$Commande->setIsVisible($visible);
 			$Commande->setLogicalId($_logicalId);
 			$Commande->setEqLogic_id($this->getId());
-			if($Value!=null)
-				$Commande->setValue($Value);
 			$Commande->setType($Type);
 			$Commande->setSubType($SubType);
+		}
+			if($Value!=null)
+				$Commande->setValue($Value);
 			$Commande->setTemplate('dashboard',$Template );
 			$Commande->setTemplate('mobile', $Template);
 			$Commande->setDisplay('icon', $icon);
 			$Commande->setDisplay('generic_type', $generic_type);
 			$Commande->save();
-		}
 		return $Commande;
 	}
 	public function postSave() {
 		$this->StopListener();
 		$hauteur=$this->AddCommande("Hauteur","hauteur","info", 'numeric',true,null,'','','FLAP_STATE');
-		$this->AddCommande("Position","position","action", 'slider',true,null,$hauteur->getId(),'','','FLAP_SLIDER');
+		$this->AddCommande("Position","position","action", 'slider',true,$hauteur->getId(),'Volet','','FLAP_SLIDER');
 		$this->AddCommande("Up","up","action", 'other',true,null,'','<i class="fa fa-arrow-up"></i>','FLAP_UP');
 		$this->AddCommande("Down","down","action", 'other',true,null,'','<i class="fa fa-arrow-down"></i>','FLAP_DOWN');
 		$this->AddCommande("Stop","stop","action", 'other',true,null,'','<i class="fa fa-stop"></i>','FLAP_STOP');
