@@ -120,16 +120,19 @@ class voletProp extends eqLogic {
 			$Up->execute(null);
 			log::add('voletProp','debug',$this->getHumanName().' Nous allons monter le volet de '.$Delta.'%');
 		}
-		usleep($temps);
+		sleep($temps);
 		$Stop->execute(null);
 		log::add('voletProp','debug',$this->getHumanName().' Le volet est a '.$Hauteur.'%');
 		if ($this->getConfiguration('cmdMoveState') == '' && $this->getConfiguration('cmdStopState') == '' )			
 			$this->checkAndUpdateCmd('hauteur',$Hauteur);
 	}
     	public function TpsAction($Hauteur) {
-		$tps=$this->getConfiguration('Ttotal')*$Hauteur/100;
+		$TpsGlobal=$this->getConfiguration('Ttotal');
+		if($Hauteur<1)
+			$TpsGlobal-=$this->getConfiguration('Tdecol');
+		$tps=$TpsGlobal*$Hauteur/100;
 		log::add('voletProp','debug',$this->getHumanName().' Temps d\'action '.$tps.'s');
-		return $tps*1000000;
+		return $tps;
 	}
 	public function StopListener() {
 		$listener = listener::byClassAndFunction('voletProp', 'pull', array('Volets_id' => $this->getId()));
