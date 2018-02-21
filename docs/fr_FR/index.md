@@ -1,12 +1,14 @@
 Description
 ===
 Ce plugin a pour but de permetre de gerer ses volets de maniere proportionnel
+
 Paramétrage d'un volet proportionnel
 ===
 
 ![introduction01](../images/Configuration.jpg)
 
 La page de configuration est assez simple.
+
 Géneral
 ---
 
