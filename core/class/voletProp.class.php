@@ -159,7 +159,7 @@ class voletProp extends eqLogic {
 			}
 		}
 	}
-	public function AddCommande($Name,$_logicalId,$Type="info", $SubType='binary',$visible,$Value=null,$Template='',$icon='',$generic_type='') {
+	public function AddCommande($Name,$_logicalId,$Type="info", $SubType='binary',$visible,$Value=null,$Template=null,$icon=null,$generic_type=null) {
 		$Commande = $this->getCmd(null,$_logicalId);
 		if (!is_object($Commande))
 		{
@@ -172,22 +172,26 @@ class voletProp extends eqLogic {
 			$Commande->setType($Type);
 			$Commande->setSubType($SubType);
 		}
-			if($Value!=null)
-				$Commande->setValue($Value);
+		if($Value != null)
+			$Commande->setValue($Value);
+		if($Template != null){
 			$Commande->setTemplate('dashboard',$Template );
 			$Commande->setTemplate('mobile', $Template);
+		}
+		if($icon != null)
 			$Commande->setDisplay('icon', $icon);
+		if($generic_type != null)
 			$Commande->setDisplay('generic_type', $generic_type);
-			$Commande->save();
+		$Commande->save();
 		return $Commande;
 	}
 	public function postSave() {
 		$this->StopListener();
-		$hauteur=$this->AddCommande("Hauteur","hauteur","info", 'numeric',true,null,'','','FLAP_STATE');
-		$this->AddCommande("Position","position","action", 'slider',true,$hauteur->getId(),'Volet','','FLAP_SLIDER');
-		$this->AddCommande("Up","up","action", 'other',true,null,'','<i class="fa fa-arrow-up"></i>','FLAP_UP');
-		$this->AddCommande("Down","down","action", 'other',true,null,'','<i class="fa fa-arrow-down"></i>','FLAP_DOWN');
-		$this->AddCommande("Stop","stop","action", 'other',true,null,'','<i class="fa fa-stop"></i>','FLAP_STOP');
+		$hauteur=$this->AddCommande("Hauteur","hauteur","info",'numeric',0,null,null,null,'FLAP_STATE');
+		$this->AddCommande("Position","position","action",'slider',1,$hauteur->getId(),'Volet',null,'FLAP_SLIDER');
+		$this->AddCommande("Up","up","action", 'other',1,null,null,'<i class="fa fa-arrow-up"></i>','FLAP_UP');
+		$this->AddCommande("Down","down","action", 'other',1,null,null,'<i class="fa fa-arrow-down"></i>','FLAP_DOWN');
+		$this->AddCommande("Stop","stop","action", 'other',1,null,null,'<i class="fa fa-stop"></i>','FLAP_STOP');
 		$this->StartListener();
 	}	
 }
