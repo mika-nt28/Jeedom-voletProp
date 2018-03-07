@@ -9,8 +9,8 @@
 
 
         <script>
-       $.include(['plugins/Jeedom-voletProp/core/template/SlidVertical/bootstrapslider.js'], function() {  
-       $.include(['plugins/Jeedom-voletProp/core/template/SlidVertical/slidervc.css'], function() {
+       $.include(['plugins/voletProp/core/template/SlidVertical/bootstrapslider.js'], function() {  
+       $.include(['plugins/voletProp/core/template/SlidVertical/slidervc.css'], function() {
           
                 $(".cmd[data-cmd_uid=#uid#] .slider-volet").bootstrapSlider({
 					id: 'voletvertical',
@@ -31,11 +31,11 @@
 		  });
           
           if ('#state#' == '0' || '#state#' == 0 || '#state#' == '') {
-		   $(".cmd[data-cmd_uid=#uid#] .slider-vertical .slider-selection").css('background', "url(plugins/Jeedom-voletProp/core/template/SlidVertical/lamep.png)");
+		   $(".cmd[data-cmd_uid=#uid#] .slider-vertical .slider-selection").css('background', "url(plugins/voletProp/core/template/SlidVertical/lamep.png)");
           }
           else {
             if ('#state#' != '0' || '#state#' != 0) {
-			$(".cmd[data-cmd_uid=#uid#] .slider-vertical .slider-selection").css('background', "url(plugins/Jeedom-voletProp/core/template/SlidVertical/lamej.png)");
+			$(".cmd[data-cmd_uid=#uid#] .slider-vertical .slider-selection").css('background', "url(plugins/voletProp/core/template/SlidVertical/lamej.png)");
             }
           }
           if ('#state#' == '' || '#state#' == 0){
