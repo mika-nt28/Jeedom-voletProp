@@ -151,6 +151,17 @@ $eqLogics = eqLogic::byType('voletProp');
 							<legend>Objet de control du volet</legend>
 							<fieldset>
 								<div class="form-group">
+									<label class="col-sm-2 control-label">{{Inverser le sense}}
+										<sup>
+											<i class="fa fa-question-circle tooltips" title="{{Permet d'inverser le sense, 100% de fermeture au lieu de 100% d'ouverture}}"></i>
+										</sup>
+									</label>
+									<div class="col-sm-5">
+										<label>{{Inverser}}</label>
+										<input type="checkbox" class="eqLogicAttr" data-label-text="{{Inverser}}" data-l1key="Inverser" />
+									</div>
+								</div>	
+								<div class="form-group">
 									<label class="col-sm-2 control-label">{{Objet de montée}}
 										<sup>
 											<i class="fa fa-question-circle tooltips" title="{{Sélectionner la commande déterminant la montée du volet}}"></i>
