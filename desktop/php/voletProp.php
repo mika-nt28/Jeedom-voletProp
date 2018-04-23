@@ -35,24 +35,18 @@ $eqLogics = eqLogic::byType('voletProp');
 			    	</center>
 			    	<span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#767676"><center>Configuration</center></span>
 			</div>
-		</div><legend>{{Mes Volets}}</legend>
+		</div>
+		<legend>{{Mes Volets}}</legend>
+		<input class="form-control" placeholder="{{Rechercher}}" style="margin-bottom:4px;" id="in_searchEqlogic" />
 		<div class="eqLogicThumbnailContainer">
 			<?php
 				foreach ($eqLogics as $eqLogic) {
-					$opacity = '';
-					if ($eqLogic->getIsEnable() != 1) {
-						$opacity = '
-						-webkit-filter: grayscale(100%);
-						-moz-filter: grayscale(100);
-						-o-filter: grayscale(100%);
-						-ms-filter: grayscale(100%);
-						filter: grayscale(100%); opacity: 0.35;';
-					}
+					$opacity = ($eqLogic->getIsEnable()) ? '' : jeedom::getConfiguration('eqLogic:style:noactive');
 					echo '<div class="eqLogicDisplayCard cursor" data-eqLogic_id="' . $eqLogic->getId() . '" style="background-color : #ffffff; height : 200px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;' . $opacity . '" >';
 					echo "<center>";
 					echo '<img src="plugins/voletProp/plugin_info/voletProp_icon.png" height="105" width="95" />';
 					echo "</center>";
-					echo '<span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;"><center>' . $eqLogic->getHumanName(true, true) . '</center></span>';
+					echo '<span class="name" style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;"><center>' . $eqLogic->getHumanName(true, true) . '</center></span>';
 					echo '</div>';
 				}
 			?>
