@@ -35,5 +35,6 @@ Objet d'état du volet
 Délais
 ---
 
-* Temps total : Temps total que met le volet pour une fermeture ou un ouverture
+* Temps total descente : Temps total que met le volet pour une fermeture
+* Temps total montée : Temps total que met le volet pour une ouverture
 * Temps de décollement : Temps avant lequel le volet se decolle du sol
