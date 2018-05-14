@@ -113,14 +113,18 @@ class voletProp extends eqLogic {
 			$HauteurVolet=100-$HauteurVolet;
 		if($HauteurVolet == $Hauteur)
 			return;
+		
+		$Decol=false;
+		if($Hauteur == 0 || $HauteurVolet == 0)
+			$Decol=true;
 		if($HauteurVolet > $Hauteur){
 			$Delta=$HauteurVolet-$Hauteur;
-			$temps=$this->TpsAction($Delta);
+			$temps=$this->TpsAction($Delta,$Decol);
 			$Down->execute(null);
 			log::add('voletProp','debug',$this->getHumanName().' Nous allons descendre le volet de '.$Delta.'%');
 		}else{
 			$Delta=$Hauteur-$HauteurVolet;
-			$temps=$this->TpsAction($Delta);
+			$temps=$this->TpsAction($Delta,$Decol);
 			$Up->execute(null);
 			log::add('voletProp','debug',$this->getHumanName().' Nous allons monter le volet de '.$Delta.'%');
 		}
@@ -130,9 +134,9 @@ class voletProp extends eqLogic {
 		if ($this->getConfiguration('cmdMoveState') == '' && $this->getConfiguration('cmdStopState') == '' )			
 			$this->checkAndUpdateCmd('hauteur',$Hauteur);
 	}
-    	public function TpsAction($Hauteur) {
+    	public function TpsAction($Hauteur, $Decol) {
 		$TpsGlobal=$this->getConfiguration('Ttotal');
-		if($Hauteur<1)
+		if(!$Decol)
 			$TpsGlobal-=$this->getConfiguration('Tdecol');
 		$tps=$TpsGlobal*$Hauteur/100;
 		log::add('voletProp','debug',$this->getHumanName().' Temps d\'action '.$tps.'s');
