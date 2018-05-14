@@ -272,13 +272,23 @@ $eqLogics = eqLogic::byType('voletProp');
 							<legend>Delais</legend>
 							<fieldset>
 								<div class="form-group">
-									<label class="col-sm-2 control-label">{{Temps total}}
+									<label class="col-sm-2 control-label">{{Temps total descente}}
 										<sup>
-											<i class="fa fa-question-circle tooltips" title="{{Saisissez le temps total pour executer une montée ou une decente}}"></i>
+											<i class="fa fa-question-circle tooltips" title="{{Saisissez le temps total pour executer une descente}}"></i>
 										</sup>
 									</label>
 									<div class="col-sm-5">
-										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="Ttotal" placeholder="{{Saisir le temps total d'execution (s)}}"/>
+										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="TtotalDescente" placeholder="{{Saisir le temps total d'execution (s)}}"/>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label">{{Temps total montée}}
+										<sup>
+											<i class="fa fa-question-circle tooltips" title="{{Saisissez le temps total pour executer une montée}}"></i>
+										</sup>
+									</label>
+									<div class="col-sm-5">
+										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="TtotalMontee" placeholder="{{Saisir le temps total d'execution (s)}}"/>
 									</div>
 								</div>
 								<div class="form-group">
