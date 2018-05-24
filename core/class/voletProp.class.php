@@ -49,7 +49,8 @@ class voletProp extends eqLogic {
 	public static function pull($_option) {
 		log::add('voletProp','debug','Evenement sur les etat'.json_encode($_option));
 		$Volet = eqLogic::byId($_option['Volets_id']);
-		if (is_object($Volet) && $Volet->getIsEnable()) {
+		$detectedCmd = cmd::byId($_option['event_id']);
+		if (is_object($detectedCmd) && is_object($Volet) && $Volet->getIsEnable()) {
 			switch($_option['event_id']){
 				case str_replace('#','',$Volet->getConfiguration('cmdMoveState')):
 					log::add('voletProp','debug',$Volet->getHumanName().' Detection d\'un mouvement');
@@ -62,10 +63,12 @@ class voletProp extends eqLogic {
 					}
 					cache::set('voletProp::Move::'.$Volet->getId(),true, 0);
 					cache::set('voletProp::ChangeState::'.$Volet->getId(),$_option['value'], 0);
-					cache::set('voletProp::ChangeStateStart::'.$Volet->getId(),time(), 0);
+					cache::set('voletProp::ChangeStateStart::'.$Volet->getId(),strtotime($detectedCmd->getCollectDate(time())), 0);
+					
 				break;
 				case str_replace('#','',$Volet->getConfiguration('cmdStopState')):
 					$Move=cache::byKey('voletProp::Move::'.$Volet->getId());
+					cache::set('voletProp::ChangeStateStop::'.$Volet->getId(),strtotime($detectedCmd->getCollectDate(time())), 0);
 					if(is_object($Move) && $Move->getValue(false))
 						$Volet->UpdateHauteur();
 					cache::set('voletProp::Move::'.$Volet->getId(),false, 0);
@@ -80,7 +83,8 @@ class voletProp extends eqLogic {
     	public function UpdateHauteur() {
 		$ChangeState = cache::byKey('voletProp::ChangeState::'.$this->getId())->getValue(false);
 		$ChangeStateStart = cache::byKey('voletProp::ChangeStateStart::'.$this->getId())->getValue(time());
-		$Tps=time()-$ChangeStateStart;
+		$ChangeStateStop = cache::byKey('voletProp::ChangeStateStop::'.$this->getId())->getValue(time());		
+		$Tps=$ChangeStateStop-$ChangeStateStart;
 		$Hauteur=$Tps*100/$this->getConfiguration('Ttotal');
 		$HauteurActuel=$this->getCmd(null,'hauteur')->execCmd();
 		if($ChangeState)
