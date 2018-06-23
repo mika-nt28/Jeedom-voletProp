@@ -142,7 +142,7 @@ class voletProp extends eqLogic {
 		$TpsGlobal=$this->getConfiguration('Ttotal');
 		if(!$Decol)
 			$TpsGlobal-=$this->getConfiguration('Tdecol');
-		$tps=$TpsGlobal*$Hauteur/100;
+		$tps=round($TpsGlobal*$Hauteur/100);
 		log::add('voletProp','debug',$this->getHumanName().' Temps d\'action '.$tps.'s');
 		return $tps;
 	}
