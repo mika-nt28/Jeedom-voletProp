@@ -99,6 +99,11 @@ class voletProp extends eqLogic {
 			$Hauteur=100-$Hauteur;
 		log::add('voletProp','debug',$this->getHumanName().' Le volet est a '.$Hauteur.'%');
 		$this->checkAndUpdateCmd('hauteur',$Hauteur);
+		$Synchronisation = cache::byKey('voletProp::Synchronisation::'.$this->getId());
+		if(is_object($Synchronisation) && !$Synchronisation->getValue(false)){
+			$this->execPropVolet($Synchronisation->getValue(false));
+			$Synchronisation->remove();
+		}
 	}
     	public function execPropVolet($Hauteur) {
 		$Stop=cmd::byId(str_replace('#','',$this->getConfiguration('cmdStop')));
@@ -226,7 +231,14 @@ class voletPropCmd extends cmd {
 					$cmd->execute(null);
 			break;
 			case "position":
-				$this->getEqLogic()->execPropVolet($_options['slider']);
+				if($this->getEqLogic()->getConfiguration('Synchronisation')){
+					cache::set('voletProp::Synchronisation::'.$this->getEqLogic()->getId(),$_options['slider'], 0);
+					$cmd=cmd::byId(str_replace('#','',$this->getEqLogic()->getConfiguration('cmdDown')));
+					if(is_object($cmd))
+						$cmd->execute(null);
+				}else{
+					$this->getEqLogic()->execPropVolet($_options['slider']);
+				}
 			break;
 		}
 	}
