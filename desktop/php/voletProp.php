@@ -215,6 +215,7 @@ $eqLogics = eqLogic::byType('voletProp');
 													<i class="fa fa-list-alt"></i>
 												</a>
 											</span>
+											
 										</div>
 									</div>
 								</div>	
@@ -226,36 +227,74 @@ $eqLogics = eqLogic::byType('voletProp');
 							<legend>Objet d'état du volet</legend>
 							<fieldset>
 								<div class="form-group">
-									<label class="col-sm-2 control-label">{{Etat du mouvement}}
+									<label class="col-sm-2 control-label">{{Condition d'etat montée}}
 										<sup>
-											<i class="fa fa-question-circle tooltips" title="{{Sélectionner la commande déterminant l'état du mouvement du volet}}"></i>
+											<i class="fa fa-question-circle tooltips" title="{{Saisir la condition qui valide une montée}}"></i>
 										</sup>
 									</label>
 									<div class="col-sm-5">
 										<div class="input-group">
-											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="cmdMoveState" placeholder="{{Séléctionner une commande}}"/>
+											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="UpStateCmd" placeholder="{{Séléctionner une commande}}"/>
 											<span class="input-group-btn">
 												<a class="btn btn-success btn-sm listCmdAction" data-type="info">
 													<i class="fa fa-list-alt"></i>
 												</a>
 											</span>
+											<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="UpStateOperande">
+												<option value="==">{{égal}}</option>                  
+												<option value=">">{{supérieur}}</option>                  
+												<option value="<">{{inférieur}}</option>                 
+												<option value="!=">{{différent}}</option> 
+											</select>	
+											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="UpStateValue" placeholder="{{Séléctionner une commande}}"/>
 										</div>
 									</div>
 								</div>	
 								<div class="form-group">
-									<label class="col-sm-2 control-label">{{Etat du stop}}
+									<label class="col-sm-2 control-label">{{Condition d'etat descente}}
 										<sup>
-											<i class="fa fa-question-circle tooltips" title="{{Sélectionner la commande déterminant  l'état de l'arret du volet}}"></i>
+											<i class="fa fa-question-circle tooltips" title="{{Saisir la condition qui valide une descente}}"></i>
 										</sup>
 									</label>
 									<div class="col-sm-5">
 										<div class="input-group">
-											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="cmdStopState" placeholder="{{Séléctionner une commande}}"/>
+											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="DownStateCmd" placeholder="{{Séléctionner une commande}}"/>
 											<span class="input-group-btn">
 												<a class="btn btn-success btn-sm listCmdAction" data-type="info">
 													<i class="fa fa-list-alt"></i>
 												</a>
 											</span>
+											<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="DownStateOperande">
+												<option value="==">{{égal}}</option>                  
+												<option value=">">{{supérieur}}</option>                  
+												<option value="<">{{inférieur}}</option>                 
+												<option value="!=">{{différent}}</option> 
+											</select>	
+											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="DownStateValue" placeholder="{{Séléctionner une commande}}"/>
+										</div>
+									</div>
+								</div>	
+								<div class="form-group">
+									<label class="col-sm-2 control-label">{{Condition d'etat arret}}
+										<sup>
+											<i class="fa fa-question-circle tooltips" title="{{Saisir la condition qui valide un arret du volet}}"></i>
+										</sup>
+									</label>
+									<div class="col-sm-5">
+										<div class="input-group">
+											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="StopStateCmd" placeholder="{{Séléctionner une commande}}"/>
+											<span class="input-group-btn">
+												<a class="btn btn-success btn-sm listCmdAction" data-type="info">
+													<i class="fa fa-list-alt"></i>
+												</a>
+											</span>
+											<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="StopStateOperande">
+												<option value="==">{{égal}}</option>                  
+												<option value=">">{{supérieur}}</option>                  
+												<option value="<">{{inférieur}}</option>                 
+												<option value="!=">{{différent}}</option> 
+											</select>	
+											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="StopStateValue" placeholder="{{Séléctionner une commande}}"/>
 										</div>
 									</div>
 								</div>
