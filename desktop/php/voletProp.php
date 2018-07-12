@@ -242,7 +242,7 @@ $eqLogics = eqLogic::byType('voletProp');
 											</span>
 										</div>
 									</div>
-									<div class="col-sm-4">
+									<div class="col-sm-2">
 										<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="UpStateOperande">
 											<option value="==">{{égal}}</option>                  
 											<option value=">">{{supérieur}}</option>                  
@@ -250,7 +250,7 @@ $eqLogics = eqLogic::byType('voletProp');
 											<option value="!=">{{différent}}</option> 
 										</select>	
 									</div>
-									<div class="col-sm-4">
+									<div class="col-sm-3">
 										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="UpStateValue" placeholder="{{Séléctionner une commande}}"/>
 									</div>
 								</div>	
@@ -270,7 +270,7 @@ $eqLogics = eqLogic::byType('voletProp');
 											</span>
 										</div>
 									</div>
-									<div class="col-sm-4">
+									<div class="col-sm-2">
 										<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="DownStateOperande">
 											<option value="==">{{égal}}</option>                  
 											<option value=">">{{supérieur}}</option>                  
@@ -278,7 +278,7 @@ $eqLogics = eqLogic::byType('voletProp');
 											<option value="!=">{{différent}}</option> 
 										</select>
 									</div>
-									<div class="col-sm-4">
+									<div class="col-sm-3">
 										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="DownStateValue" placeholder="{{Séléctionner une commande}}"/>
 									</div>
 								</div>	
@@ -298,7 +298,7 @@ $eqLogics = eqLogic::byType('voletProp');
 											</span>
 										</div>
 									</div>
-									<div class="col-sm-4">
+									<div class="col-sm-2">
 										<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="StopStateOperande">
 											<option value="==">{{égal}}</option>                  
 											<option value=">">{{supérieur}}</option>                  
@@ -306,7 +306,7 @@ $eqLogics = eqLogic::byType('voletProp');
 											<option value="!=">{{différent}}</option> 
 										</select>
 									</div>
-									<div class="col-sm-5">
+									<div class="col-sm-3">
 										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="StopStateValue" placeholder="{{Séléctionner une commande}}"/>
 									</div>
 								</div>
