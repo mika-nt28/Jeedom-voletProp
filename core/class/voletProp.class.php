@@ -268,7 +268,7 @@ class voletPropCmd extends cmd {
 					$cmd->execute(null);
 			break;
 			case "position":
-				$this->getEqLogic()->execPropVolet($_options['slider'])
+				$this->getEqLogic()->execPropVolet($_options['slider']);
 			break;
 		}
 	}
