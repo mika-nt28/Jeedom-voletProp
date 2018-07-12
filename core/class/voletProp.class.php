@@ -51,8 +51,28 @@ class voletProp extends eqLogic {
 		$Volet = eqLogic::byId($_option['Volets_id']);
 		$detectedCmd = cmd::byId($_option['event_id']);
 		if (is_object($detectedCmd) && is_object($Volet) && $Volet->getIsEnable()) {
+			
+			
 			switch($_option['event_id']){
-				case str_replace('#','',$Volet->getConfiguration('cmdMoveState')):
+				case str_replace('#','',$Volet->getConfiguration('StopStateCmd')):
+				case str_replace('#','',$Volet->getConfiguration('UpStateCmd')):
+				case str_replace('#','',$Volet->getConfiguration('DownStateCmd')):
+					$isUp=$Volet->getConfiguration('UpStateCmd').$Volet->getConfiguration('UpStateOperande').$Volet->getConfiguration('UpStateValue');
+					$isDown=$Volet->getConfiguration('DownStateCmd').$Volet->getConfiguration('DownStateOperande').$Volet->getConfiguration('DownStateValue');
+					$isStop=$Volet->getConfiguration('StopStateCmd').$Volet->getConfiguration('StopStateOperande').$Volet->getConfiguration('StopStateValue');
+					if($Volet->EvaluateCondition($isUp))
+						cache::set('voletProp::ChangeState::'.$Volet->getId(),true, 0);
+					elseif($Volet->EvaluateCondition($isDown))
+						cache::set('voletProp::ChangeState::'.$Volet->getId(),false, 0);
+					elseif($Volet->EvaluateCondition($isStop)){
+						$Move=cache::byKey('voletProp::Move::'.$Volet->getId());
+						cache::set('voletProp::ChangeStateStop::'.$Volet->getId(),strtotime($detectedCmd->getCollectDate(time())), 0);
+						if(is_object($Move) && $Move->getValue(false))
+							$Volet->UpdateHauteur();
+						cache::set('voletProp::Move::'.$Volet->getId(),false, 0);
+						break;
+					}else
+						break;
 					log::add('voletProp','debug',$Volet->getHumanName().' Detection d\'un mouvement');
 					$Move=cache::byKey('voletProp::Move::'.$Volet->getId());
 					if(is_object($Move) && $Move->getValue(false)){
@@ -62,16 +82,7 @@ class voletProp extends eqLogic {
 						break;
 					}
 					cache::set('voletProp::Move::'.$Volet->getId(),true, 0);
-					cache::set('voletProp::ChangeState::'.$Volet->getId(),$_option['value'], 0);
 					cache::set('voletProp::ChangeStateStart::'.$Volet->getId(),strtotime($detectedCmd->getCollectDate(time())), 0);
-					
-				break;
-				case str_replace('#','',$Volet->getConfiguration('cmdStopState')):
-					$Move=cache::byKey('voletProp::Move::'.$Volet->getId());
-					cache::set('voletProp::ChangeStateStop::'.$Volet->getId(),strtotime($detectedCmd->getCollectDate(time())), 0);
-					if(is_object($Move) && $Move->getValue(false))
-						$Volet->UpdateHauteur();
-					cache::set('voletProp::Move::'.$Volet->getId(),false, 0);
 				break;
 				case str_replace('#','',$Volet->getConfiguration('cmdEnd')):
 					if($_option['value'])
@@ -79,6 +90,26 @@ class voletProp extends eqLogic {
 				break;
 			}
 		}
+	}
+	public function boolToText($value){
+		if (is_bool($value)) {
+			if ($value) 
+				return __('Vrai', __FILE__);
+			else 
+				return __('Faux', __FILE__);
+		} else 
+			return $value;
+	}
+	public function EvaluateCondition($Condition){
+		$_scenario = null;
+		$expression = scenarioExpression::setTags($Condition, $_scenario, true);
+		$message = __('Evaluation de la condition : ['.jeedom::toHumanReadable($Condition).'][', __FILE__) . trim($expression) . '] = ';
+		$result = evaluate($expression);
+		$message .=$this->boolToText($result);
+		log::add('voletProp','info',$this->getHumanName().$message);
+		if(!$result)
+			return false;		
+		return true;
 	}
     	public function UpdateHauteur() {
 		$ChangeState = cache::byKey('voletProp::ChangeState::'.$this->getId())->getValue(false);
@@ -165,11 +196,16 @@ class voletProp extends eqLogic {
 				$listener->setClass('voletProp');
 				$listener->setFunction('pull');
 				$listener->setOption(array('Volets_id' => $this->getId()));
-				$listener->emptyEvent();				
-				if ($this->getConfiguration('cmdMoveState') != '')
-					$listener->addEvent($this->getConfiguration('cmdMoveState'));
-				if ($this->getConfiguration('cmdStopState') != '')
-					$listener->addEvent($this->getConfiguration('cmdStopState'));
+				$listener->emptyEvent();	
+				$UpStateCmd=$this->getConfiguration('UpStateCmd');
+				$DownStateCmd=$this->getConfiguration('DownStateCmd');
+				$StopStateCmd=$this->getConfiguration('StopStateCmd');
+				if ($UpStateCmd != '')
+					$listener->addEvent($UpStateCmd);
+				if ($DownStateCmd != '' && $DownStateCmd != $UpStateCmd)
+					$listener->addEvent($DownStateCmd);
+				if ($StopStateCmd != '' && $StopStateCmd != $UpStateCmd && $StopStateCmd != $DownStateCmd)
+					$listener->addEvent($StopStateCmd);
 				if ($this->getConfiguration('cmdEnd') != '')
 					$listener->addEvent($this->getConfiguration('cmdEnd'));
 				$listener->save();
