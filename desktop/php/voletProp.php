@@ -232,7 +232,7 @@ $eqLogics = eqLogic::byType('voletProp');
 											<i class="fa fa-question-circle tooltips" title="{{Saisir la condition qui valide une montée}}"></i>
 										</sup>
 									</label>
-									<div class="col-sm-5">
+									<div class="col-sm-4">
 										<div class="input-group">
 											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="UpStateCmd" placeholder="{{Séléctionner une commande}}"/>
 											<span class="input-group-btn">
@@ -240,14 +240,18 @@ $eqLogics = eqLogic::byType('voletProp');
 													<i class="fa fa-list-alt"></i>
 												</a>
 											</span>
-											<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="UpStateOperande">
-												<option value="==">{{égal}}</option>                  
-												<option value=">">{{supérieur}}</option>                  
-												<option value="<">{{inférieur}}</option>                 
-												<option value="!=">{{différent}}</option> 
-											</select>	
-											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="UpStateValue" placeholder="{{Séléctionner une commande}}"/>
 										</div>
+									</div>
+									<div class="col-sm-4">
+										<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="UpStateOperande">
+											<option value="==">{{égal}}</option>                  
+											<option value=">">{{supérieur}}</option>                  
+											<option value="<">{{inférieur}}</option>                 
+											<option value="!=">{{différent}}</option> 
+										</select>	
+									</div>
+									<div class="col-sm-4">
+										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="UpStateValue" placeholder="{{Séléctionner une commande}}"/>
 									</div>
 								</div>	
 								<div class="form-group">
@@ -256,7 +260,7 @@ $eqLogics = eqLogic::byType('voletProp');
 											<i class="fa fa-question-circle tooltips" title="{{Saisir la condition qui valide une descente}}"></i>
 										</sup>
 									</label>
-									<div class="col-sm-5">
+									<div class="col-sm-4">
 										<div class="input-group">
 											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="DownStateCmd" placeholder="{{Séléctionner une commande}}"/>
 											<span class="input-group-btn">
@@ -264,14 +268,18 @@ $eqLogics = eqLogic::byType('voletProp');
 													<i class="fa fa-list-alt"></i>
 												</a>
 											</span>
-											<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="DownStateOperande">
-												<option value="==">{{égal}}</option>                  
-												<option value=">">{{supérieur}}</option>                  
-												<option value="<">{{inférieur}}</option>                 
-												<option value="!=">{{différent}}</option> 
-											</select>	
-											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="DownStateValue" placeholder="{{Séléctionner une commande}}"/>
 										</div>
+									</div>
+									<div class="col-sm-4">
+										<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="DownStateOperande">
+											<option value="==">{{égal}}</option>                  
+											<option value=">">{{supérieur}}</option>                  
+											<option value="<">{{inférieur}}</option>                 
+											<option value="!=">{{différent}}</option> 
+										</select>
+									</div>
+									<div class="col-sm-4">
+										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="DownStateValue" placeholder="{{Séléctionner une commande}}"/>
 									</div>
 								</div>	
 								<div class="form-group">
@@ -280,7 +288,7 @@ $eqLogics = eqLogic::byType('voletProp');
 											<i class="fa fa-question-circle tooltips" title="{{Saisir la condition qui valide un arret du volet}}"></i>
 										</sup>
 									</label>
-									<div class="col-sm-5">
+									<div class="col-sm-4">
 										<div class="input-group">
 											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="StopStateCmd" placeholder="{{Séléctionner une commande}}"/>
 											<span class="input-group-btn">
@@ -288,14 +296,18 @@ $eqLogics = eqLogic::byType('voletProp');
 													<i class="fa fa-list-alt"></i>
 												</a>
 											</span>
-											<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="StopStateOperande">
-												<option value="==">{{égal}}</option>                  
-												<option value=">">{{supérieur}}</option>                  
-												<option value="<">{{inférieur}}</option>                 
-												<option value="!=">{{différent}}</option> 
-											</select>	
-											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="StopStateValue" placeholder="{{Séléctionner une commande}}"/>
 										</div>
+									</div>
+									<div class="col-sm-4">
+										<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="StopStateOperande">
+											<option value="==">{{égal}}</option>                  
+											<option value=">">{{supérieur}}</option>                  
+											<option value="<">{{inférieur}}</option>                 
+											<option value="!=">{{différent}}</option> 
+										</select>
+									</div>
+									<div class="col-sm-5">
+										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="StopStateValue" placeholder="{{Séléctionner une commande}}"/>
 									</div>
 								</div>
 								<div class="form-group">
@@ -304,7 +316,7 @@ $eqLogics = eqLogic::byType('voletProp');
 											<i class="fa fa-question-circle tooltips" title="{{Sélectionner la commande déterminant la fin de course}}"></i>
 										</sup>
 									</label>
-									<div class="col-sm-5">
+									<div class="col-sm-4">
 										<div class="input-group">
 											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="cmdEnd" placeholder="{{Séléctionner une commande}}"/>
 											<span class="input-group-btn">
