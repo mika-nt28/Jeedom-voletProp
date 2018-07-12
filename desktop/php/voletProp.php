@@ -146,7 +146,7 @@ $eqLogics = eqLogic::byType('voletProp');
 									</label>
 									<div class="col-sm-5">
 										<label>{{Activer}}</label>
-										<input type="checkbox" class="eqLogicAttr" data-label-text="{{Activer}}" data-l1key="configuration" data-l1key="Synchronisation"/>
+										<input type="checkbox" class="eqLogicAttr" data-label-text="{{Activer}}" data-l1key="configuration" data-l2key="Synchronisation"/>
 									</div>
 								</div>
 							</fieldset>
