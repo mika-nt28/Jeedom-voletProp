@@ -251,7 +251,7 @@ $eqLogics = eqLogic::byType('voletProp');
 										</select>	
 									</div>
 									<div class="col-sm-3">
-										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="UpStateValue" placeholder="{{Séléctionner une commande}}"/>
+										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="UpStateValue" placeholder="{{Valeur pour validé la condition}}"/>
 									</div>
 								</div>	
 								<div class="form-group">
@@ -279,7 +279,7 @@ $eqLogics = eqLogic::byType('voletProp');
 										</select>
 									</div>
 									<div class="col-sm-3">
-										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="DownStateValue" placeholder="{{Séléctionner une commande}}"/>
+										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="DownStateValue" placeholder="{{{Valeur pour validé la condition}}"/>
 									</div>
 								</div>	
 								<div class="form-group">
@@ -307,7 +307,7 @@ $eqLogics = eqLogic::byType('voletProp');
 										</select>
 									</div>
 									<div class="col-sm-3">
-										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="StopStateValue" placeholder="{{Séléctionner une commande}}"/>
+										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="StopStateValue" placeholder="{{{Valeur pour validé la condition}}"/>
 									</div>
 								</div>
 								<div class="form-group">
