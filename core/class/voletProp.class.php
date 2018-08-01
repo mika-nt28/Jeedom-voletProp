@@ -51,8 +51,6 @@ class voletProp extends eqLogic {
 		$Volet = eqLogic::byId($_option['Volets_id']);
 		$detectedCmd = cmd::byId($_option['event_id']);
 		if (is_object($detectedCmd) && is_object($Volet) && $Volet->getIsEnable()) {
-			
-			
 			switch($_option['event_id']){
 				case str_replace('#','',$Volet->getConfiguration('StopStateCmd')):
 				case str_replace('#','',$Volet->getConfiguration('UpStateCmd')):
@@ -141,12 +139,28 @@ class voletProp extends eqLogic {
 		$Up=cmd::byId(str_replace('#','',$this->getConfiguration('cmdUp')));
 		if(!is_object($Up))
 			return false;
-		if($this->getConfiguration('Synchronisation')){
-			$Up->execute(null);
-			sleep($this->getConfiguration('Ttotal'));
-			$Stop->execute(null);		
-			if($this->getConfiguration('UpStateCmd') == '' && $this->getConfiguration('DownStateCmd') == ''&& $this->getConfiguration('StopStateCmd') == '')
-				$this->checkAndUpdateCmd('hauteur',100);
+		switch($this->getConfiguration('Synchronisation')){
+			case 'all':
+				$Up->execute(null);
+				sleep($this->getConfiguration('Ttotal'));
+				$Stop->execute(null);		
+				if($this->getConfiguration('UpStateCmd') == '' && $this->getConfiguration('DownStateCmd') == ''&& $this->getConfiguration('StopStateCmd') == '')
+					$this->checkAndUpdateCmd('hauteur',100);
+			break;
+			case '100':
+				$Up->execute(null);
+				sleep($this->getConfiguration('Ttotal'));
+				$Stop->execute(null);		
+				if($this->getConfiguration('UpStateCmd') == '' && $this->getConfiguration('DownStateCmd') == ''&& $this->getConfiguration('StopStateCmd') == '')
+					$this->checkAndUpdateCmd('hauteur',100);
+			return;
+			case '0':
+				$Down->execute(null);
+				sleep($this->getConfiguration('Ttotal'));
+				$Stop->execute(null);		
+				if($this->getConfiguration('UpStateCmd') == '' && $this->getConfiguration('DownStateCmd') == ''&& $this->getConfiguration('StopStateCmd') == '')
+					$this->checkAndUpdateCmd('hauteur',0);
+			return;
 		}
 		//cache::set('voletProp::Move::'.$this->getId(),false, 0);
 		$HauteurVolet=$this->getCmd(null,'hauteur')->execCmd();
@@ -154,7 +168,6 @@ class voletProp extends eqLogic {
 			$HauteurVolet=100-$HauteurVolet;
 		if($HauteurVolet == $Hauteur)
 			return;
-		
 		$Decol=false;
 		if($Hauteur == 0 || $HauteurVolet == 0)
 			$Decol=true;
