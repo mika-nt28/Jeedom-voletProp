@@ -17,6 +17,7 @@ Géneral
 * Catégorie : Déclare l'équipement dans une catégorie
 * Visible : Permet de rendre l'équipement visible dans le Dashboard
 * Activer : Permet d'activer l'équipement
+* Synchro : Si activé, le plugin commencera chaque execution par une ouverture total suivis de la descent necessaire.
 
 Objet de control du volet
 ---
@@ -28,9 +29,13 @@ Objet de control du volet
 Objet d'état du volet
 ---
 
-* Etat du mouvement  : Commande jeedom representant l'etat du mouvement(info -> Binaire : 0 = déscente, 1 = montée)
-* Etat du stop  :  Commande jeedom representant l'etat du stop(info -> Binaire : 1 = stop)
-* Fin de course  :  Commande jeedom representant la fin de course(info -> Binaire :1 = Volet commpletement fermé)
+Les états de mouvement sont defini comme une condition, c'est a dire qu'il faut definir une objet (de votre equipement connecter au volet) ainsi qu'un opérende et une valeur.
+
+* Condition d'etat montée : Cette etat indique au plugin une montée
+* Condition d'etat descente  : Cette etat indique au plugin une descente
+* Condition d'etat arret  : Cette etat indique au plugin un arret de mouvement
+
+* Fin de course  :  Commande jeedom representant la fin de course(info -> Binaire :1 = Volet commpletement fermée)
 
 Délais
 ---
