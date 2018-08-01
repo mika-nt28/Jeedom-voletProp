@@ -17,6 +17,7 @@ Géneral
 * Catégorie : Déclare l'équipement dans une catégorie
 * Visible : Permet de rendre l'équipement visible dans le Dashboard
 * Activer : Permet d'activer l'équipement
+* Synchro : Si activé, le plugin commencera chaque execution par une ouverture total suivis de la descent necessaire.
 
 Objet de control du volet
 ---
