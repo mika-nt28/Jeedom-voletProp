@@ -145,7 +145,7 @@ class voletProp extends eqLogic {
 			$Up->execute(null);
 			sleep($this->getConfiguration('Ttotal'));
 			$Stop->execute(null);		
-			if($this->getConfiguration('UpStateCmd') != '' && $this->getConfiguration('DownStateCmd') != ''&& $this->getConfiguration('StopStateCmd') != '')
+			if($this->getConfiguration('UpStateCmd') == '' && $this->getConfiguration('DownStateCmd') == ''&& $this->getConfiguration('StopStateCmd') == '')
 				$this->checkAndUpdateCmd('hauteur',100);
 		}
 		//cache::set('voletProp::Move::'.$this->getId(),false, 0);
@@ -172,7 +172,7 @@ class voletProp extends eqLogic {
 		sleep($temps);
 		$Stop->execute(null);
 		log::add('voletProp','debug',$this->getHumanName().' Le volet est a '.$Hauteur.'%');
-		if($this->getConfiguration('UpStateCmd') != '' && $this->getConfiguration('DownStateCmd') != ''&& $this->getConfiguration('StopStateCmd') != '')		
+		if($this->getConfiguration('UpStateCmd') == '' && $this->getConfiguration('DownStateCmd') == ''&& $this->getConfiguration('StopStateCmd') == '')		
 			$this->checkAndUpdateCmd('hauteur',$Hauteur);
 	}
     	public function TpsAction($Hauteur, $Decol) {
