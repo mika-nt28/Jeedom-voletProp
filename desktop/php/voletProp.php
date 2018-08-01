@@ -139,14 +139,17 @@ $eqLogics = eqLogic::byType('voletProp');
 								</div>
 								<div class="form-group">
 									<label class="col-sm-2 control-label" >
-										{{Synchronisation a chaque mouvement}}
+										{{Synchronisation}}
 										<sup>
 											<i class="fa fa-question-circle tooltips" title="{{Si actif le volet se fermera completement avant de remonté a la bonne hauteur}}" style="font-size : 1em;color:grey;"></i>
 										</sup>
 									</label>
 									<div class="col-sm-5">
-										<label>{{Activer}}</label>
-										<input type="checkbox" class="eqLogicAttr" data-label-text="{{Activer}}" data-l1key="configuration" data-l2key="Synchronisation"/>
+										<select class="eqLogicAttr form-control " data-l1key="configuration" data-l2key="Synchronisation" multiple>
+											<option value="all">{{A chaque mouvement}}</option>
+											<option value="100">{{Lors d'une montée total (100%)}}</option>
+											<option value="0">{{Lors d'une descente total (0%)}}</option>
+										</select>
 									</div>
 								</div>
 							</fieldset>
