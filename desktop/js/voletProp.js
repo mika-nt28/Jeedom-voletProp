@@ -24,7 +24,7 @@ $("body").on('click', ".listCmdAction", function() {
 });
 function printEqLogic(_eqLogic) {
 	$.each(_eqLogic.configuration.Synchronisation, function( index, value ) {
-		$('.eqLogicAttr[data-l1key=configuration][data-l1key=Synchronisation] option[value="'+value+'"]').attr("selected", 'selected');
+		$('.eqLogicAttr[data-l1key=configuration][data-l1key=Synchronisation] option[value='+value+']').attr("selected", 'selected');
 		alert(value);
 	});
 }
