@@ -22,6 +22,10 @@ $("body").on('click', ".listCmdAction", function() {
 		});
 	});
 });
+function printEqLogic(_eqLogic) {
+	alert(JSON.stringify(_eqLogic.configuration));
+        $('body').setValues(_eqLogic, '.eqLogicAttr');
+}
 function addCmdToTable(_cmd) {
 	var tr =$('<tr class="cmd" data-cmd_id="' + init(_cmd.id) + '">');
 	tr.append($('<td>')
