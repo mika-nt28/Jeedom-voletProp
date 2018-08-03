@@ -23,8 +23,10 @@ $("body").on('click', ".listCmdAction", function() {
 	});
 });
 function printEqLogic(_eqLogic) {
-	for(var index in _eqLogic.configuration.Synchronisation) 
+	for(var index in _eqLogic.configuration.Synchronisation) {
 		$('.eqLogicAttr[data-l1key=configuration][data-l1key=Synchronisation] option[value="'+_eqLogic.configuration.Synchronisation[index]+'"]').attr("selected", 'selected');
+		alert(index);
+	}
 }
 function addCmdToTable(_cmd) {
 	var tr =$('<tr class="cmd" data-cmd_id="' + init(_cmd.id) + '">');
