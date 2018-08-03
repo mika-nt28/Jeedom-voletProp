@@ -145,18 +145,11 @@ $eqLogics = eqLogic::byType('voletProp');
 										</sup>
 									</label>
 									<div class="col-md-5">
-										<!--select class="eqLogicAttr form-control input-sm" data-l1key="configuration" data-l2key="Synchronisation">
+										<select class="eqLogicAttr form-control input-sm" data-l1key="configuration" data-l2key="Synchronisation" multiple>
 											<option value="all">{{A chaque mouvement}}</option>
 											<option value="100">{{Lors d'une montée total (100%)}}</option>
 											<option value="0">{{Lors d'une descente total (0%)}}</option>
-										</select-->
-										<label>{{A chaque mouvement}}</label>
-										<input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="Synchronisation" data-l3key="all"/>
-										<label>{{{Lors d'une montée total (100%)}}</label>
-										<input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="Synchronisation" data-l3key="100"/>
-										<label>{{Lors d'une descente total (0%)}}</label>
-										<input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="Synchronisation" data-l3key="0"/>
-									
+										</select>
 									</div>
 								</div>
 							</fieldset>
