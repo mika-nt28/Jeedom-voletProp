@@ -141,6 +141,7 @@ class voletProp extends eqLogic {
 			return false;
 		switch($this->getConfiguration('Synchronisation')){
 			case 'all':
+				log::add('voletProp','info',$this->getHumanName().' Synchronisation');
 				$Up->execute(null);
 				sleep($this->getConfiguration('Ttotal'));
 				$Stop->execute(null);		
@@ -148,6 +149,7 @@ class voletProp extends eqLogic {
 					$this->checkAndUpdateCmd('hauteur',100);
 			break;
 			case '100':
+				log::add('voletProp','info',$this->getHumanName().' Synchronisation : Montée complete');
 				$Up->execute(null);
 				sleep($this->getConfiguration('Ttotal'));
 				$Stop->execute(null);		
@@ -155,6 +157,7 @@ class voletProp extends eqLogic {
 					$this->checkAndUpdateCmd('hauteur',100);
 			return;
 			case '0':
+				log::add('voletProp','info',$this->getHumanName().' Synchronisation : Descente complete');
 				$Down->execute(null);
 				sleep($this->getConfiguration('Ttotal'));
 				$Stop->execute(null);		
