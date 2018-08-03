@@ -23,7 +23,8 @@ $("body").on('click', ".listCmdAction", function() {
 	});
 });
 function printEqLogic(_eqLogic) {
-        $('.eqLogicAttr[data-l1key=configuration][data-l1key=Synchronisation]').setValues(_eqLogic.configuration.Synchronisation, '.eqLogicAttr');
+	for(var index in _eqLogic.configuration.Synchronisation) 
+		$('.eqLogicAttr[data-l1key=configuration][data-l1key=Synchronisation] option[value="'+_eqLogic.configuration.Synchronisation[index]+'"]').attr("selected", 'selected');
 }
 function addCmdToTable(_cmd) {
 	var tr =$('<tr class="cmd" data-cmd_id="' + init(_cmd.id) + '">');
