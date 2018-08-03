@@ -106,7 +106,7 @@ $eqLogics = eqLogic::byType('voletProp');
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-md-2 control-label">
+									<label class="col-md-3 control-label">
 										{{Catégorie}}
 										<sup>
 											<i class="fa fa-question-circle tooltips" title="{{Choisir une catégorie. Cette information n'est pas obigatoire mais peut être utile pour filtrer les widgets}}" style="font-size : 1em;color:grey;"></i>
