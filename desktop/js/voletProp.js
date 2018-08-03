@@ -21,7 +21,13 @@ $("body").on('click', ".listCmdAction", function() {
 			el.closest('.form-group').find('.actionOptions').html(html);
 		});
 	});
-});
+});/*
+function printEqLogic(_eqLogic) {
+	$.each(_eqLogic.configuration.Synchronisation, function( index, value ) {
+		$('.eqLogicAttr[data-l1key=configuration][data-l1key=Synchronisation] option[value='+value+']').attr("selected", 'selected');
+		alert(value);
+	});
+}*/
 function addCmdToTable(_cmd) {
 	var tr =$('<tr class="cmd" data-cmd_id="' + init(_cmd.id) + '">');
 	tr.append($('<td>')

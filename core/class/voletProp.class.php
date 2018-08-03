@@ -129,6 +129,46 @@ class voletProp extends eqLogic {
 		log::add('voletProp','debug',$this->getHumanName().' Le volet est a '.$Hauteur.'%');
 		$this->checkAndUpdateCmd('hauteur',$Hauteur);
 	}
+    	public function CheckSynchro($Hauteur) {
+		$Stop=cmd::byId(str_replace('#','',$this->getConfiguration('cmdStop')));
+		if(!is_object($Stop))
+			return false;
+		$Down=cmd::byId(str_replace('#','',$this->getConfiguration('cmdDown')));
+		if(!is_object($Down))
+			return false;
+		$Up=cmd::byId(str_replace('#','',$this->getConfiguration('cmdUp')));
+		if(!is_object($Up))
+			return false;
+		foreach( $this->getConfiguration('Synchronisation') as $Synchronisation){
+			if($Synchronisation == '100' && $Hauteur == 100){
+				log::add('voletProp','info',$this->getHumanName().' Synchronisation : Montée complete');
+				$Up->execute(null);
+				sleep($this->getConfiguration('Ttotal'));
+				$Stop->execute(null);		
+				if($this->getConfiguration('UpStateCmd') == '' && $this->getConfiguration('DownStateCmd') == ''&& $this->getConfiguration('StopStateCmd') == '')
+					$this->checkAndUpdateCmd('hauteur',100);
+				return false;
+			}
+			if($Synchronisation == '0' && $Hauteur == 0){
+				log::add('voletProp','info',$this->getHumanName().' Synchronisation : Descente complete');
+				$Down->execute(null);
+				sleep($this->getConfiguration('Ttotal'));
+				$Stop->execute(null);		
+				if($this->getConfiguration('UpStateCmd') == '' && $this->getConfiguration('DownStateCmd') == ''&& $this->getConfiguration('StopStateCmd') == '')
+					$this->checkAndUpdateCmd('hauteur',0);
+				return false;
+			}
+			if($Synchronisation == 'all'){
+				log::add('voletProp','info',$this->getHumanName().' Synchronisation : Montée complete');
+				$Up->execute(null);
+				sleep($this->getConfiguration('Ttotal'));
+				$Stop->execute(null);		
+				if($this->getConfiguration('UpStateCmd') == '' && $this->getConfiguration('DownStateCmd') == ''&& $this->getConfiguration('StopStateCmd') == '')
+					$this->checkAndUpdateCmd('hauteur',100);
+				return true;
+			}
+		}
+	}
     	public function execPropVolet($Hauteur) {
 		$Stop=cmd::byId(str_replace('#','',$this->getConfiguration('cmdStop')));
 		if(!is_object($Stop))
@@ -139,32 +179,8 @@ class voletProp extends eqLogic {
 		$Up=cmd::byId(str_replace('#','',$this->getConfiguration('cmdUp')));
 		if(!is_object($Up))
 			return false;
-		switch($this->getConfiguration('Synchronisation')){
-			case 'all':
-				log::add('voletProp','info',$this->getHumanName().' Synchronisation');
-				$Up->execute(null);
-				sleep($this->getConfiguration('Ttotal'));
-				$Stop->execute(null);		
-				if($this->getConfiguration('UpStateCmd') == '' && $this->getConfiguration('DownStateCmd') == ''&& $this->getConfiguration('StopStateCmd') == '')
-					$this->checkAndUpdateCmd('hauteur',100);
-			break;
-			case '100':
-				log::add('voletProp','info',$this->getHumanName().' Synchronisation : Montée complete');
-				$Up->execute(null);
-				sleep($this->getConfiguration('Ttotal'));
-				$Stop->execute(null);		
-				if($this->getConfiguration('UpStateCmd') == '' && $this->getConfiguration('DownStateCmd') == ''&& $this->getConfiguration('StopStateCmd') == '')
-					$this->checkAndUpdateCmd('hauteur',100);
-			return;
-			case '0':
-				log::add('voletProp','info',$this->getHumanName().' Synchronisation : Descente complete');
-				$Down->execute(null);
-				sleep($this->getConfiguration('Ttotal'));
-				$Stop->execute(null);		
-				if($this->getConfiguration('UpStateCmd') == '' && $this->getConfiguration('DownStateCmd') == ''&& $this->getConfiguration('StopStateCmd') == '')
-					$this->checkAndUpdateCmd('hauteur',0);
-			return;
-		}
+		if(!$this->CheckSynchro($Hauteur))
+			return false;
 		//cache::set('voletProp::Move::'.$this->getId(),false, 0);
 		$HauteurVolet=$this->getCmd(null,'hauteur')->execCmd();
 		if($this->getConfiguration('Inverser'))
