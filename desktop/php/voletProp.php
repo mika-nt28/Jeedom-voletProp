@@ -258,7 +258,7 @@ $eqLogics = eqLogic::byType('voletProp');
 									</div>
 								</div>	
 								<div class="form-group">
-									<label class="col-md-2 control-label">{{Condition d'etat descente}}
+									<label class="col-md-3 control-label">{{Condition d'etat descente}}
 										<sup>
 											<i class="fa fa-question-circle tooltips" title="{{Saisir la condition qui valide une descente}}"></i>
 										</sup>
