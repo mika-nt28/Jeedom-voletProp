@@ -23,7 +23,7 @@ $("body").on('click', ".listCmdAction", function() {
 	});
 });
 function printEqLogic(_eqLogic) {
-	alert(JSON.stringify(_eqLogic.configuration));
+	alert(JSON.stringify(_eqLogic.configuration.Synchronisation));
         $('body').setValues(_eqLogic, '.eqLogicAttr');
 }
 function addCmdToTable(_cmd) {
