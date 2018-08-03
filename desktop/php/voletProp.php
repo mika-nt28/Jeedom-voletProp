@@ -245,7 +245,7 @@ $eqLogics = eqLogic::byType('voletProp');
 											</span>
 										</div>
 									</div>
-									<div class="col-md-3">
+									<div class="col-md-2">
 										<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="UpStateOperande">
 											<option value="==">{{égal}}</option>                  
 											<option value=">">{{supérieur}}</option>                  
@@ -253,12 +253,12 @@ $eqLogics = eqLogic::byType('voletProp');
 											<option value="!=">{{différent}}</option> 
 										</select>	
 									</div>
-									<div class="col-md-3">
+									<div class="col-md-2">
 										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="UpStateValue" placeholder="{{Valeur pour validé la condition}}"/>
 									</div>
 								</div>	
 								<div class="form-group">
-									<label class="col-md-3 control-label">{{Condition d'etat descente}}
+									<label class="col-md-2 control-label">{{Condition d'etat descente}}
 										<sup>
 											<i class="fa fa-question-circle tooltips" title="{{Saisir la condition qui valide une descente}}"></i>
 										</sup>
@@ -273,7 +273,7 @@ $eqLogics = eqLogic::byType('voletProp');
 											</span>
 										</div>
 									</div>
-									<div class="col-md-3">
+									<div class="col-md-2">
 										<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="DownStateOperande">
 											<option value="==">{{égal}}</option>                  
 											<option value=">">{{supérieur}}</option>                  
@@ -281,7 +281,7 @@ $eqLogics = eqLogic::byType('voletProp');
 											<option value="!=">{{différent}}</option> 
 										</select>
 									</div>
-									<div class="col-md-3">
+									<div class="col-md-2">
 										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="DownStateValue" placeholder="{{{Valeur pour validé la condition}}"/>
 									</div>
 								</div>	
@@ -301,7 +301,7 @@ $eqLogics = eqLogic::byType('voletProp');
 											</span>
 										</div>
 									</div>
-									<div class="col-md-3">
+									<div class="col-md-2">
 										<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="StopStateOperande">
 											<option value="==">{{égal}}</option>                  
 											<option value=">">{{supérieur}}</option>                  
@@ -309,7 +309,7 @@ $eqLogics = eqLogic::byType('voletProp');
 											<option value="!=">{{différent}}</option> 
 										</select>
 									</div>
-									<div class="col-md-3">
+									<div class="col-md-2">
 										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="StopStateValue" placeholder="{{{Valeur pour validé la condition}}"/>
 									</div>
 								</div>
