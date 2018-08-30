@@ -9,6 +9,8 @@ class voletProp extends eqLogic {
 					$cmd=cmd::byId(str_replace('#','',$Volet->getConfiguration('cmdStop')));
 					if(is_object($cmd))
 						$cmd->execute(null);
+					cache::set('voletProp::ChangeStateStop::'.$this->getEqLogic()->getId(),time(), 0);
+					$this->getEqLogic()->UpdateHauteur();
 				}
 			}
 		}
@@ -181,7 +183,7 @@ class voletProp extends eqLogic {
 			return false;
 		if(!$this->CheckSynchro($Hauteur))
 			return false;
-		//cache::set('voletProp::Move::'.$this->getId(),false, 0);
+		cache::set('voletProp::Move::'.$this->getId(),false, 0);
 		$HauteurVolet=$this->getCmd(null,'hauteur')->execCmd();
 		if($this->getConfiguration('Inverser'))
 			$HauteurVolet=100-$HauteurVolet;
@@ -288,16 +290,27 @@ class voletPropCmd extends cmd {
 				$cmd=cmd::byId(str_replace('#','',$this->getEqLogic()->getConfiguration('cmdUp')));
 				if(is_object($cmd))
 					$cmd->execute(null);
+				cache::set('voletProp::Move::'.$this->getEqLogic()->getId(),true, 0);
+				cache::set('voletProp::ChangeState::'.$this->getEqLogic()->getId(),true, 0);
+				cache::set('voletProp::ChangeStateStart::'.$this->getEqLogic()->getId(),time(), 0);
 			break;
 			case "down":
 				$cmd=cmd::byId(str_replace('#','',$this->getEqLogic()->getConfiguration('cmdDown')));
 				if(is_object($cmd))
 					$cmd->execute(null);
+				cache::set('voletProp::Move::'.$this->getEqLogic()->getId(),true, 0);
+				cache::set('voletProp::ChangeState::'.$this->getEqLogic()->getId(),false, 0);
+				cache::set('voletProp::ChangeStateStart::'.$this->getEqLogic()->getId(),time(), 0);
 			break;
 			case "stop":
 				$cmd=cmd::byId(str_replace('#','',$this->getEqLogic()->getConfiguration('cmdStop')));
 				if(is_object($cmd))
 					$cmd->execute(null);
+				cache::set('voletProp::Move::'.$this->getEqLogic()->getId(),false, 0);
+				if(cache::byKey('voletProp::ChangeState::'.$this->getEqLogic()->getId())->getValue(false)){
+					cache::set('voletProp::ChangeStateStop::'.$this->getEqLogic()->getId(),time(), 0);
+					$this->getEqLogic()->UpdateHauteur();
+				}
 			break;
 			case "position":
 				$this->getEqLogic()->execPropVolet($_options['slider']);
