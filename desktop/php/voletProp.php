@@ -237,24 +237,20 @@ $eqLogics = eqLogic::byType('voletProp');
 									</label>
 									<div class="col-md-5">
 										<div class="input-group">
-											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="UpStateCmd" placeholder="{{Séléctionner une commande}}"/>
 											<span class="input-group-btn">
-												<a class="btn btn-success btn-sm listCmdAction" data-type="info">
+												<a class="btn btn-success listCmdAction" data-type="info">
 													<i class="fa fa-list-alt"></i>
 												</a>
 											</span>
+											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="UpStateCmd" placeholder="{{Séléctionner une commande}}"/>
+											<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="UpStateOperande">
+												<option value="==">{{égal}}</option>                  
+												<option value=">">{{supérieur}}</option>                  
+												<option value="<">{{inférieur}}</option>                 
+												<option value="!=">{{différent}}</option> 
+											</select>
+											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="UpStateValue" placeholder="{{Valeur pour validé la condition}}"/>
 										</div>
-									</div>
-									<div class="col-md-2">
-										<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="UpStateOperande">
-											<option value="==">{{égal}}</option>                  
-											<option value=">">{{supérieur}}</option>                  
-											<option value="<">{{inférieur}}</option>                 
-											<option value="!=">{{différent}}</option> 
-										</select>	
-									</div>
-									<div class="col-md-2">
-										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="UpStateValue" placeholder="{{Valeur pour validé la condition}}"/>
 									</div>
 								</div>	
 								<div class="form-group">
@@ -265,24 +261,20 @@ $eqLogics = eqLogic::byType('voletProp');
 									</label>
 									<div class="col-md-5">
 										<div class="input-group">
-											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="DownStateCmd" placeholder="{{Séléctionner une commande}}"/>
 											<span class="input-group-btn">
-												<a class="btn btn-success btn-sm listCmdAction" data-type="info">
+												<a class="btn btn-success listCmdAction" data-type="info">
 													<i class="fa fa-list-alt"></i>
 												</a>
 											</span>
+											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="DownStateCmd" placeholder="{{Séléctionner une commande}}"/>
+											<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="DownStateOperande">
+												<option value="==">{{égal}}</option>                  
+												<option value=">">{{supérieur}}</option>                  
+												<option value="<">{{inférieur}}</option>                 
+												<option value="!=">{{différent}}</option> 
+											</select>
+											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="DownStateValue" placeholder="{{Valeur pour validé la condition}}"/>
 										</div>
-									</div>
-									<div class="col-md-2">
-										<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="DownStateOperande">
-											<option value="==">{{égal}}</option>                  
-											<option value=">">{{supérieur}}</option>                  
-											<option value="<">{{inférieur}}</option>                 
-											<option value="!=">{{différent}}</option> 
-										</select>
-									</div>
-									<div class="col-md-2">
-										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="DownStateValue" placeholder="{{{Valeur pour validé la condition}}"/>
 									</div>
 								</div>	
 								<div class="form-group">
@@ -293,24 +285,20 @@ $eqLogics = eqLogic::byType('voletProp');
 									</label>
 									<div class="col-md-5">
 										<div class="input-group">
-											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="StopStateCmd" placeholder="{{Séléctionner une commande}}"/>
 											<span class="input-group-btn">
-												<a class="btn btn-success btn-sm listCmdAction" data-type="info">
+												<a class="btn btn-success listCmdAction" data-type="info">
 													<i class="fa fa-list-alt"></i>
 												</a>
 											</span>
+											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="StopStateCmd" placeholder="{{Séléctionner une commande}}"/>
+											<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="StopStateOperande">
+												<option value="==">{{égal}}</option>                  
+												<option value=">">{{supérieur}}</option>                  
+												<option value="<">{{inférieur}}</option>                 
+												<option value="!=">{{différent}}</option> 
+											</select>
+											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="StopStateValue" placeholder="{{Valeur pour validé la condition}}"/>
 										</div>
-									</div>
-									<div class="col-md-2">
-										<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="StopStateOperande">
-											<option value="==">{{égal}}</option>                  
-											<option value=">">{{supérieur}}</option>                  
-											<option value="<">{{inférieur}}</option>                 
-											<option value="!=">{{différent}}</option> 
-										</select>
-									</div>
-									<div class="col-md-2">
-										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="StopStateValue" placeholder="{{{Valeur pour validé la condition}}"/>
 									</div>
 								</div>
 								<div class="form-group">
