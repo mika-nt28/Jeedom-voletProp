@@ -9,8 +9,8 @@ class voletProp extends eqLogic {
 					$cmd=cmd::byId(str_replace('#','',$Volet->getConfiguration('cmdStop')));
 					if(is_object($cmd))
 						$cmd->execute(null);
-					cache::set('voletProp::ChangeStateStop::'.$this->getEqLogic()->getId(),time(), 0);
-					$this->getEqLogic()->UpdateHauteur();
+					cache::set('voletProp::ChangeStateStop::'.$this->getId(),time(), 0);
+					$this->UpdateHauteur();
 				}
 			}
 		}
@@ -143,7 +143,7 @@ class voletProp extends eqLogic {
 			return false;
 		foreach( $this->getConfiguration('Synchronisation') as $Synchronisation){
 			if($Synchronisation == '100' && $Hauteur == 100){
-				log::add('voletProp','info',$this->getHumanName().' Synchronisation : Montée complete');
+				log::add('voletProp','info',$this->getHumanName().'[Synchronisation] Montée complete');
 				$Up->execute(null);
 				sleep($this->getConfiguration('Ttotal'));
 				$Stop->execute(null);		
@@ -152,7 +152,7 @@ class voletProp extends eqLogic {
 				return false;
 			}
 			if($Synchronisation == '0' && $Hauteur == 0){
-				log::add('voletProp','info',$this->getHumanName().' Synchronisation : Descente complete');
+				log::add('voletProp','info',$this->getHumanName().'[Synchronisation] Descente complete');
 				$Down->execute(null);
 				sleep($this->getConfiguration('Ttotal'));
 				$Stop->execute(null);		
@@ -161,7 +161,7 @@ class voletProp extends eqLogic {
 				return false;
 			}
 			if($Synchronisation == 'all'){
-				log::add('voletProp','info',$this->getHumanName().' Synchronisation : Montée complete');
+				log::add('voletProp','info',$this->getHumanName().'[Synchronisation] Montée complete');
 				$Up->execute(null);
 				sleep($this->getConfiguration('Ttotal'));
 				$Stop->execute(null);		
@@ -172,6 +172,8 @@ class voletProp extends eqLogic {
 		}
 	}
     	public function execPropVolet($Hauteur) {
+		if(!$this->CheckSynchro($Hauteur))
+			return false;
 		$Stop=cmd::byId(str_replace('#','',$this->getConfiguration('cmdStop')));
 		if(!is_object($Stop))
 			return false;
@@ -180,8 +182,6 @@ class voletProp extends eqLogic {
 			return false;
 		$Up=cmd::byId(str_replace('#','',$this->getConfiguration('cmdUp')));
 		if(!is_object($Up))
-			return false;
-		if(!$this->CheckSynchro($Hauteur))
 			return false;
 		cache::set('voletProp::Move::'.$this->getId(),false, 0);
 		$HauteurVolet=$this->getCmd(null,'hauteur')->execCmd();
