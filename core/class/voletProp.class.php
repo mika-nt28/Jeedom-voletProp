@@ -9,7 +9,7 @@ class voletProp extends eqLogic {
 					$cmd=cmd::byId(str_replace('#','',$Volet->getConfiguration('cmdStop')));
 					if(is_object($cmd))
 						$cmd->execute(null);
-					cache::set('voletProp::ChangeStateStop::'.$this->getId(),time(), 0);
+					cache::set('voletProp::ChangeStateStop::'.$Volet->getId(),time(), 0);
 					$Volet->UpdateHauteur();
 				}
 			}
