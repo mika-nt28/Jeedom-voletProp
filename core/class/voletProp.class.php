@@ -132,9 +132,11 @@ class voletProp extends eqLogic {
 		$this->checkAndUpdateCmd('hauteur',$Hauteur);
 	}
     	public function CheckSynchro($Hauteur) {
-		$Stop=cmd::byId(str_replace('#','',$this->getConfiguration('cmdStop')));
-		if(!is_object($Stop))
-			return false;
+		if($this->getConfiguration('cmdStop') != ''){
+			$Stop=cmd::byId(str_replace('#','',$this->getConfiguration('cmdStop')));
+			if(!is_object($Stop))
+				return false;
+		}
 		$Down=cmd::byId(str_replace('#','',$this->getConfiguration('cmdDown')));
 		if(!is_object($Down))
 			return false;
@@ -145,6 +147,8 @@ class voletProp extends eqLogic {
 			if($Synchronisation == '100' && $Hauteur == 100){
 				log::add('voletProp','info',$this->getHumanName().'[Synchronisation] Montée complete');
 				$Up->execute(null);
+				if(!isset($Stop))
+					$Stop=$Down;
 				sleep($this->getConfiguration('Ttotal'));
 				$Stop->execute(null);		
 				if($this->getConfiguration('UpStateCmd') == '' && $this->getConfiguration('DownStateCmd') == ''&& $this->getConfiguration('StopStateCmd') == '')
@@ -154,6 +158,8 @@ class voletProp extends eqLogic {
 			if($Synchronisation == '0' && $Hauteur == 0){
 				log::add('voletProp','info',$this->getHumanName().'[Synchronisation] Descente complete');
 				$Down->execute(null);
+				if(!isset($Stop))
+					$Stop=$Up;
 				sleep($this->getConfiguration('Ttotal'));
 				$Stop->execute(null);		
 				if($this->getConfiguration('UpStateCmd') == '' && $this->getConfiguration('DownStateCmd') == ''&& $this->getConfiguration('StopStateCmd') == '')
@@ -163,6 +169,8 @@ class voletProp extends eqLogic {
 			if($Synchronisation == 'all'){
 				log::add('voletProp','info',$this->getHumanName().'[Synchronisation] Montée complete');
 				$Up->execute(null);
+				if(!isset($Stop))
+					$Stop=$Down;
 				sleep($this->getConfiguration('Ttotal'));
 				$Stop->execute(null);		
 				if($this->getConfiguration('UpStateCmd') == '' && $this->getConfiguration('DownStateCmd') == ''&& $this->getConfiguration('StopStateCmd') == '')
@@ -174,9 +182,11 @@ class voletProp extends eqLogic {
     	public function execPropVolet($Hauteur) {
 		if(!$this->CheckSynchro($Hauteur))
 			return false;
-		$Stop=cmd::byId(str_replace('#','',$this->getConfiguration('cmdStop')));
-		if(!is_object($Stop))
-			return false;
+		if($this->getConfiguration('cmdStop') != ''){
+			$Stop=cmd::byId(str_replace('#','',$this->getConfiguration('cmdStop')));
+			if(!is_object($Stop))
+				return false;
+		}
 		$Down=cmd::byId(str_replace('#','',$this->getConfiguration('cmdDown')));
 		if(!is_object($Down))
 			return false;
@@ -196,11 +206,15 @@ class voletProp extends eqLogic {
 			$Delta=$HauteurVolet-$Hauteur;
 			$temps=$this->TpsAction($Delta,$Decol);
 			$Down->execute(null);
+			if(!isset($Stop))
+				$Stop=$Up;
 			log::add('voletProp','debug',$this->getHumanName().' Nous allons descendre le volet de '.$Delta.'%');
 		}else{
 			$Delta=$Hauteur-$HauteurVolet;
 			$temps=$this->TpsAction($Delta,$Decol);
 			$Up->execute(null);
+			if(!isset($Stop))
+				$Stop=$Up;
 			log::add('voletProp','debug',$this->getHumanName().' Nous allons monter le volet de '.$Delta.'%');
 		}
 		sleep($temps);
@@ -303,14 +317,23 @@ class voletPropCmd extends cmd {
 				cache::set('voletProp::ChangeStateStart::'.$this->getEqLogic()->getId(),time(), 0);
 			break;
 			case "stop":
-				$cmd=cmd::byId(str_replace('#','',$this->getEqLogic()->getConfiguration('cmdStop')));
-				if(is_object($cmd))
-					$cmd->execute(null);
-				cache::set('voletProp::Move::'.$this->getEqLogic()->getId(),false, 0);
-				if(cache::byKey('voletProp::ChangeState::'.$this->getEqLogic()->getId())->getValue(false)){
+				if($this->getEqLogic()->getConfiguration('cmdStop') != ''){
+					$cmd=cmd::byId(str_replace('#','',$this->getEqLogic()->getConfiguration('cmdStop')));
+					if(is_object($cmd))
+						$cmd->execute(null);
+				}else{
+					if(cache::byKey('voletProp::ChangeState::'.$this->getEqLogic()->getId())->getValue(false))
+						$cmd=cmd::byId(str_replace('#','',$this->getEqLogic()->getConfiguration('cmdUp')));
+					else
+						$cmd=cmd::byId(str_replace('#','',$this->getEqLogic()->getConfiguration('cmdDown')));
+					if(is_object($cmd))
+						$cmd->execute(null);
+				}				
+				if(cache::byKey('voletProp::Move::'.$this->getEqLogic()->getId())->getValue(false)){
 					cache::set('voletProp::ChangeStateStop::'.$this->getEqLogic()->getId(),time(), 0);
 					$this->getEqLogic()->UpdateHauteur();
 				}
+				cache::set('voletProp::Move::'.$this->getEqLogic()->getId(),false, 0);
 			break;
 			case "position":
 				$this->getEqLogic()->execPropVolet($_options['slider']);
