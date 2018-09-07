@@ -49,6 +49,7 @@ class voletProp extends eqLogic {
 		}
 	}
 	public static function Up($_option) {
+		log::add('voletProp','debug','Detection sur le listener Up : '.json_encode($_option));
 		$Volet = eqLogic::byId($_option['Volets_id']);
 		$detectedCmd = cmd::byId($_option['event_id']);
 		if (is_object($detectedCmd) && is_object($Volet) && $Volet->getIsEnable()) {
@@ -61,6 +62,7 @@ class voletProp extends eqLogic {
 		}
 	}
 	public static function Down($_option) {
+		log::add('voletProp','debug','Detection sur le listener Down : '.json_encode($_option));
 		$Volet = eqLogic::byId($_option['Volets_id']);
 		$detectedCmd = cmd::byId($_option['event_id']);
 		if (is_object($detectedCmd) && is_object($Volet) && $Volet->getIsEnable()) {
@@ -73,6 +75,7 @@ class voletProp extends eqLogic {
 		}
 	}
 	public static function Stop($_option) {
+		log::add('voletProp','debug','Detection sur le listener Stop : '.json_encode($_option));
 		$Volet = eqLogic::byId($_option['Volets_id']);
 		$detectedCmd = cmd::byId($_option['event_id']);
 		if (is_object($detectedCmd) && is_object($Volet) && $Volet->getIsEnable()) {
@@ -89,6 +92,7 @@ class voletProp extends eqLogic {
 		}
 	}
 	public static function End($_option) {
+		log::add('voletProp','debug','Detection sur le listener End : '.json_encode($_option));
 		$Volet = eqLogic::byId($_option['Volets_id']);
 		$detectedCmd = cmd::byId($_option['event_id']);
 		if (is_object($detectedCmd) && is_object($Volet) && $Volet->getIsEnable()) {
@@ -199,7 +203,7 @@ class voletProp extends eqLogic {
 		$Up=cmd::byId(str_replace('#','',$this->getConfiguration('cmdUp')));
 		if(!is_object($Up))
 			return false;
-		cache::set('voletProp::Move::'.$this->getId(),false, 0);
+		cache::set('voletProp::Move::'.$this->getId(),true, 0);
 		$HauteurVolet=$this->getCmd(null,'hauteur')->execCmd();
 		if($this->getConfiguration('Inverser'))
 			$HauteurVolet=100-$HauteurVolet;
@@ -241,6 +245,18 @@ class voletProp extends eqLogic {
 		$listener = listener::byClassAndFunction('voletProp', 'pull', array('Volets_id' => $this->getId()));
 		if (is_object($listener))
 			$listener->remove();
+		$listener = listener::byClassAndFunction('voletProp', 'Up', array('Volets_id' => $this->getId()));
+		if (is_object($listener))
+			$listener->remove();
+		$listener = listener::byClassAndFunction('voletProp', 'Down', array('Volets_id' => $this->getId()));
+		if (is_object($listener))
+			$listener->remove();
+		$listener = listener::byClassAndFunction('voletProp', 'Stop', array('Volets_id' => $this->getId()));
+		if (is_object($listener))
+			$listener->remove();
+		$listener = listener::byClassAndFunction('voletProp', 'End', array('Volets_id' => $this->getId()));
+		if (is_object($listener))
+			$listener->remove();
 	}
 	public function StartListener() {
 		if($this->getIsEnable()){
@@ -253,11 +269,8 @@ class voletProp extends eqLogic {
 				$listener->setFunction('Up');
 				$listener->setOption(array('Volets_id' => $this->getId()));
 				$listener->emptyEvent();	
-					$listener->addEvent($UpStateCmd);
+				$listener->addEvent($UpStateCmd);
 				$listener->save();			
-			}else{
-				if (is_object($listener))
-					$listener->remove();
 			}
 			$listener = listener::byClassAndFunction('voletProp', 'Down', array('Volets_id' => $this->getId()));
 			$DownStateCmd=$this->getConfiguration('DownStateCmd');
@@ -270,9 +283,6 @@ class voletProp extends eqLogic {
 				$listener->emptyEvent();	
 					$listener->addEvent($DownStateCmd);
 				$listener->save();			
-			}else{
-				if (is_object($listener))
-					$listener->remove();
 			}
 			$listener = listener::byClassAndFunction('voletProp', 'Stop', array('Volets_id' => $this->getId()));
 			$StopStateCmd=$this->getConfiguration('StopStateCmd');
@@ -285,9 +295,6 @@ class voletProp extends eqLogic {
 				$listener->emptyEvent();	
 				$listener->addEvent($StopStateCmd);
 				$listener->save();				
-			}else{
-				if (is_object($listener))
-					$listener->remove();
 			}
 			$listener = listener::byClassAndFunction('voletProp', 'End', array('Volets_id' => $this->getId()));
 			if ($this->getConfiguration('cmdEnd') != ''){
@@ -299,9 +306,6 @@ class voletProp extends eqLogic {
 				$listener->emptyEvent();	
 					$listener->addEvent($this->getConfiguration('cmdEnd'));
 				$listener->save();
-			}else{
-				if (is_object($listener))
-					$listener->remove();
 			}
 		}
 	}
@@ -340,6 +344,21 @@ class voletProp extends eqLogic {
 		$this->AddCommande("Stop","stop","action", 'other',1,null,null,'<i class="fa fa-stop"></i>','FLAP_STOP');
 		$this->StartListener();
 	}	
+	
+	public function preRemove() {
+		$listener = listener::byClassAndFunction('voletProp', 'Up', array('Volets_id' => $this->getId()));
+		if (is_object($listener))
+			$listener->remove();
+		$listener = listener::byClassAndFunction('voletProp', 'Down', array('Volets_id' => $this->getId()));
+		if (is_object($listener))
+			$listener->remove();
+		$listener = listener::byClassAndFunction('voletProp', 'Stop', array('Volets_id' => $this->getId()));
+		if (is_object($listener))
+			$listener->remove();
+		$listener = listener::byClassAndFunction('voletProp', 'End', array('Volets_id' => $this->getId()));
+		if (is_object($listener))
+			$listener->remove();
+	}
 }
 class voletPropCmd extends cmd {
     public function execute($_options = null) {
