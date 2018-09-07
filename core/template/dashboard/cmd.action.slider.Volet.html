@@ -1,49 +1,66 @@
 <div class="cmd cmd-widget" style="width:130px; height:100px; padding-top: 8%;" data-type="action" data-subtype="slider" data-cmd_id="#id#" data-cmd_uid="#uid#" >  
-	<style>
+      <style>
 		#voletvertical.slider.slider-vertical{height:85px; width:64px;}
 		#voletvertical.slider.slider-vertical .slider-track {width:63px; height:100%;}
-	</style>
-	<center>
-		<div class="slider-volet" data-slider-handle="square" value="#state#"></div>
-	</center>
-	<center>
-		<div class="slider-volet-value slid-v-left" id="SlidVal#id#">#state# %</div>	
-	</center>
-	<script>
-	jeedom.cmd.update['#id#'] = function(_options){
-		$.include(['plugins/voletProp/core/template/SlidVertical/bootstrapslider.js'], function() {  
-			$.include(['plugins/voletProp/core/template/SlidVertical/slidervc.css'], function() {
-				$(".cmd[data-cmd_uid=#uid#] .slider-volet").bootstrapSlider({
+  	 </style>
+     <div class="slider-volet-value slid-v-left" id="SlidVal#id#">#state# %</div>
+     <div class="slider-volet" data-slider-handle="square" value="#state#"></div>
+     <div class="slider-volet-value slid-v-bottom" id="SlidValB#id#" style="display:none">#state# %</div>
+
+
+        <script>
+
+       $.include(['plugins/voletProp/core/template/SlidVertical/bootstrapslider.js'], function() {  
+       $.include(['plugins/voletProp/core/template/SlidVertical/slidervc.css'], function() {
+          
+                $(".cmd[data-cmd_uid=#uid#] .slider-volet").bootstrapSlider({
 					id: 'voletvertical',
-					orientation: 'vertical',
-					reversed : 'true',
-					min: ('#minValue#' == '') ? 0 : parseInt('#minValue#'),
-					max: ('#maxValue#' == '') ? 100 : parseInt('#maxValue#'),
-					value: ('#state#' == '') ? 0 : parseInt('#state#'),
-				}).on('slideStop', function (ev) {
-					jeedom.cmd.execute({id: '#id#', value: {slider: ev.value}});
-				}).on('slide', function (ev) {
-					$(".cmd[data-cmd_uid=#uid#] .slider-volet-value").text(ev.value +' %');
-				});
-			});
-		});
-		if (_options.display_value == '0' || _options.display_value == 0 || _options.display_value == '') {
-			$(".cmd[data-cmd_uid=#uid#] .slider-vertical .slider-selection").css('background', "url(plugins/voletProp/core/template/SlidVertical/lamep.png)");
-		}else {
-			if (_options.display_value != '0' || _options.display_value != 0) {
-				$(".cmd[data-cmd_uid=#uid#] .slider-vertical .slider-selection").css('background', "url(plugins/voletProp/core/template/SlidVertical/lamej.png)");
-			}
-		}
-		if (_options.display_value == '' || _options.display_value == 0){
-			$("#SlidVal#id#").empty();
-			$("#SlidVal#id#").text("0 %");
-		}
-		if ('#PourcentLeft#'.trim() == '0') {
-			$("#SlidVal#id#").css("display","none");
-			$(".cmd[data-cmd_id=#id#]").css("padding-top", "1%");
-			$(".cmd[data-cmd_id=#id#]").css("width", "75px");
-		}
-	}
-        jeedom.cmd.update['#id#']({display_value:'#state#'});
-	</script>
-</div>
+            	    orientation: 'vertical',
+                    reversed : 'true',
+                    min: ('#minValue#' == '') ? 0 : parseInt('#minValue#'),
+                    max: ('#maxValue#' == '') ? 100 : parseInt('#maxValue#'),
+          	        value: ('#state#' == '') ? 0 : parseInt('#state#'),
+					}).on('slideStop', function (ev) {
+           				 jeedom.cmd.execute({id: '#id#', value: {slider: ev.value}});
+					})
+         
+					.on('slide', function (ev) {
+						 $(".cmd[data-cmd_uid=#uid#] .slider-volet-value").text(ev.value +' %');
+					});
+     
+          });
+		  });
+          
+          if ('#state#' == '0' || '#state#' == 0 || '#state#' == '') {
+		   $(".cmd[data-cmd_uid=#uid#] .slider-vertical .slider-selection").css('background', "url(plugins/voletProp/core/template/SlidVertical/lamep.png)");
+          }
+          else {
+            if ('#state#' != '0' || '#state#' != 0) {
+			$(".cmd[data-cmd_uid=#uid#] .slider-vertical .slider-selection").css('background', "url(plugins/voletProp/core/template/SlidVertical/lamej.png)");
+            }
+          }
+          if ('#state#' == '' || '#state#' == 0){
+            $("#SlidVal#id#").empty();
+            $("#SlidVal#id#").text("0 %");
+            
+          }
+		  if ('#state#' == 99 || '#state#' == '99'){
+            if ('#Fibaro#'.trim() == '1') {
+           	 $("#SlidVal#id#").empty();
+           	 $("#SlidVal#id#").text("100 %");
+             $("#SlidValB#id#").empty();
+           	 $("#SlidValB#id#").text("100 %");
+            }
+          }
+          
+          if ('#PourcentLeft#'.trim() == '0') {
+             $("#SlidVal#id#").css("display","none");
+             $("#SlidValB#id#").css("display","block");
+             $(".cmd[data-cmd_id=#id#]").css("padding-top", "1%");
+             $(".cmd[data-cmd_id=#id#]").css("width", "75px");
+           }
+ 
+            //console.log("SlidVal#id#");
+          
+        </script>
+   </div>
