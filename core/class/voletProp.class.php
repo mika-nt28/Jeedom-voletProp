@@ -54,6 +54,11 @@ class voletProp extends eqLogic {
 		$detectedCmd = cmd::byId($_option['event_id']);
 		if (is_object($detectedCmd) && is_object($Volet) && $Volet->getIsEnable()) {
 			log::add('voletProp','info',$Volet->getHumanName().$detectedCmd->getHumanName());
+			if($this->getConfiguration('cmdStop') != '' && cache::byKey('voletProp::Move::'.$Volet->getId())->getValue(false) && cache::byKey('voletProp::ChangeState::'.$Volet->getId())->getValue(false)){
+				cache::set('voletProp::ChangeStateStop::'.$Volet->getId(),strtotime($detectedCmd->getCollectDate(time())), 0);
+				$Volet->UpdateHauteur();
+				cache::set('voletProp::Move::'.$Volet->getId(),false, 0);
+			}
 			$isUp=$Volet->getConfiguration('UpStateCmd').$Volet->getConfiguration('UpStateOperande').$Volet->getConfiguration('UpStateValue');
 			if($Volet->EvaluateCondition($isUp)){
 				cache::set('voletProp::ChangeState::'.$Volet->getId(),true, 0);
@@ -67,6 +72,11 @@ class voletProp extends eqLogic {
 		$detectedCmd = cmd::byId($_option['event_id']);
 		if (is_object($detectedCmd) && is_object($Volet) && $Volet->getIsEnable()) {
 			log::add('voletProp','info',$Volet->getHumanName().$detectedCmd->getHumanName());
+			if($this->getConfiguration('cmdStop') != '' && cache::byKey('voletProp::Move::'.$Volet->getId())->getValue(false) && !cache::byKey('voletProp::ChangeState::'.$Volet->getId())->getValue(false)){
+				cache::set('voletProp::ChangeStateStop::'.$Volet->getId(),strtotime($detectedCmd->getCollectDate(time())), 0);
+				$Volet->UpdateHauteur();
+				cche::set('voletProp::Move::'.$Volet->getId(),false, 0);
+			}
 			$isDown=$Volet->getConfiguration('DownStateCmd').$Volet->getConfiguration('DownStateOperande').$Volet->getConfiguration('DownStateValue');
 			if($Volet->EvaluateCondition($isDown)){
 				cache::set('voletProp::ChangeState::'.$Volet->getId(),false, 0);
@@ -229,9 +239,10 @@ class voletProp extends eqLogic {
 		}
 		sleep($temps);
 		$Stop->execute(null);
-		log::add('voletProp','debug',$this->getHumanName().' Le volet est a '.$Hauteur.'%');
-		if($this->getConfiguration('UpStateCmd') == '' && $this->getConfiguration('DownStateCmd') == ''&& $this->getConfiguration('StopStateCmd') == '')		
+		if($this->getConfiguration('UpStateCmd') == '' && $this->getConfiguration('DownStateCmd') == ''&& $this->getConfiguration('StopStateCmd') == ''){		
 			$this->checkAndUpdateCmd('hauteur',$Hauteur);
+			log::add('voletProp','debug',$this->getHumanName().' Le volet est a '.$Hauteur.'%');
+		}
 	}
     	public function TpsAction($Hauteur, $Decol) {
 		$TpsGlobal=$this->getConfiguration('Ttotal');
