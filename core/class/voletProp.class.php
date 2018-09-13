@@ -202,8 +202,8 @@ class voletProp extends eqLogic {
 		}
 	}
     	public function execPropVolet($Hauteur) {
-		/*if(!$this->CheckSynchro($Hauteur))
-			return false;*/
+		if(!$this->CheckSynchro($Hauteur))
+			return false;
 		if($this->getConfiguration('cmdStop') != ''){
 			$Stop=cmd::byId(str_replace('#','',$this->getConfiguration('cmdStop')));
 			if(!is_object($Stop))
