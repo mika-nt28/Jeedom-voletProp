@@ -154,6 +154,9 @@ class voletProp extends eqLogic {
 		$this->checkAndUpdateCmd('hauteur',$Hauteur);
 	}
     	public function CheckSynchro($Hauteur) {
+		
+		if($this->getConfiguration('Synchronisation') == "")
+			return true;
 		if($this->getConfiguration('cmdStop') != ''){
 			$Stop=cmd::byId(str_replace('#','',$this->getConfiguration('cmdStop')));
 			if(!is_object($Stop))
@@ -165,7 +168,7 @@ class voletProp extends eqLogic {
 		$Up=cmd::byId(str_replace('#','',$this->getConfiguration('cmdUp')));
 		if(!is_object($Up))
 			return false;
-		foreach( $this->getConfiguration('Synchronisation') as $Synchronisation){
+		foreach($this->getConfiguration('Synchronisation') as $Synchronisation){
 			if($Synchronisation == '100' && $Hauteur == 100){
 				log::add('voletProp','info',$this->getHumanName().'[Synchronisation] Montée complete');
 				$Up->execute(null);
@@ -200,6 +203,7 @@ class voletProp extends eqLogic {
 				return true;
 			}
 		}
+		return true;
 	}
     	public function execPropVolet($Hauteur) {
 		if(!$this->CheckSynchro($Hauteur))
