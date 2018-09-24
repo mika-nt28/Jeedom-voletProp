@@ -236,7 +236,7 @@ class voletProp extends eqLogic {
 			$temps=$this->TpsAction($Delta,$Decol);
 			$Down->execute(null);
 			if(!isset($Stop))
-				$Stop=$Up;
+				$Stop=$Down;
 			log::add('voletProp','debug',$this->getHumanName().' Nous allons descendre le volet de '.$Delta.'%');
 		}else{
 			$Delta=$Hauteur-$HauteurVolet;
