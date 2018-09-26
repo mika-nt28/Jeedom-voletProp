@@ -137,6 +137,16 @@ $eqLogics = eqLogic::byType('voletProp');
 										<input type="checkbox" class="eqLogicAttr" data-label-text="{{Visible}}" data-l1key="isVisible" checked/>
 									</div>
 								</div>
+								<div class="form-group ">
+									<label class="col-md-3 control-label">{{Délais minimum entre 2 commandes}}
+										<sup>
+											<i class="fa fa-question-circle tooltips" title="{{Saisir un délais minimum(s) entre 2 commande}}" style="font-size : 1em;color:grey;"></i>
+										</sup>
+									</label>
+									<div class="col-md-5">
+										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration"  data-l2key="delaisMini" placeholder="{{Délais minimum (s)}}"/>
+									</div>
+								</div>
 								<div class="form-group">
 									<label class="col-md-3 control-label" >
 										{{Synchronisation}}
