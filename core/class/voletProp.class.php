@@ -150,8 +150,6 @@ class voletProp extends eqLogic {
 			$Hauteur=0;
 		if($Hauteur>100)
 			$Hauteur=100;
-		if($this->getConfiguration('Inverser'))
-			$Hauteur=100-$Hauteur;
 		log::add('voletProp','debug',$this->getHumanName().' Le volet est a '.$Hauteur.'%');
 		$this->checkAndUpdateCmd('hauteur',$Hauteur);
 	}
@@ -221,8 +219,6 @@ class voletProp extends eqLogic {
 		if(!is_object($Up))
 			return false;
 		$HauteurVolet=$this->getCmd(null,'hauteur')->execCmd();
-		if($this->getConfiguration('Inverser'))
-			$HauteurVolet=100-$HauteurVolet;
 		if($HauteurVolet == $Hauteur)
 			return;
 		$Decol=false;
