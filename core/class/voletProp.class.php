@@ -247,7 +247,7 @@ class voletProp extends eqLogic {
 				$Stop=$Up;
 			log::add('voletProp','debug',$this->getHumanName().' Nous allons monter le volet de '.$Delta.'%');
 		}
-		sleep($temps);
+		usleep($temps);
 		$Stop->execute(null);
 		if($this->getConfiguration('UpStateCmd') == '' && $this->getConfiguration('DownStateCmd') == ''){		
 			cache::set('voletProp::ChangeStateStop::'.$this->getId(),time(), 0);
@@ -259,10 +259,10 @@ class voletProp extends eqLogic {
 		$TpsGlobal=$this->getConfiguration('Ttotal');
 		if(!$Decol)
 			$TpsGlobal-=$this->getConfiguration('Tdecol');
-		$tps=round($TpsGlobal*$Hauteur/100);		
-		if($tps <= $this->getConfiguration('delaisMini')) 
-			$tps = $this->getConfiguration('delaisMini');
-		log::add('voletProp','debug',$this->getHumanName().' Temps d\'action '.$tps.'s');
+		$tps=round(($TpsGlobal*$Hauteur/100)*1000000);		
+		if($tps <= $this->getConfiguration('delaisMini')*1000000) 
+			$tps = $this->getConfiguration('delaisMini')*1000000;
+		log::add('voletProp','debug',$this->getHumanName().' Temps d\'action '.$tps.'µs');
 		return $tps;
 	}
 	public function StopListener() {
