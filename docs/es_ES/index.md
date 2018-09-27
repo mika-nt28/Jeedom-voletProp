@@ -17,7 +17,8 @@ Géneral
 * Catégorie : Déclare l'équipement dans une catégorie
 * Visible : Permet de rendre l'équipement visible dans le Dashboard
 * Activer : Permet d'activer l'équipement
-* Synchro : Si activé, le plugin commencera chaque execution par une ouverture total suivis de la descent necessaire.
+* Délais minimal : Permet de determiner le delais entre 2 commande (Attention plus le delais est grand et plus le petite montée seront impossible).
+* Synchro : Sélectioner les types de synchro que vous souhaité.
 
 Objet de control du volet
 ---
