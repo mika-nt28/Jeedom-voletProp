@@ -140,8 +140,12 @@ class voletProp extends eqLogic {
 		$ChangeStateStart = cache::byKey('voletProp::ChangeStateStart::'.$this->getId())->getValue(time());
 		$ChangeStateStop = cache::byKey('voletProp::ChangeStateStop::'.$this->getId())->getValue(time());		
 		$Tps=$ChangeStateStop-$ChangeStateStart;
-		$Hauteur=$Tps*100/$this->getConfiguration('Ttotal');
+		$TpsGlobal=$this->getConfiguration('Ttotal');
+		
 		$HauteurActuel=$this->getCmd(null,'hauteur')->execCmd();
+		if($HauteurActuel != 0)
+			$TpsGlobal-=$this->getConfiguration('Tdecol');
+		$Hauteur=$Tps*100/$TpsGlobal;
 		if($ChangeState)
 			$Hauteur=round($HauteurActuel+$Hauteur);
 		else
