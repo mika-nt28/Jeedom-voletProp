@@ -332,7 +332,14 @@ $eqLogics = eqLogic::byType('voletProp');
 										</sup>
 									</label>
 									<div class="col-md-5">
-										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="Ttotal" placeholder="{{Saisir le temps total d'execution (s)}}"/>
+										<div class="input-group">
+											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="Ttotal" placeholder="{{Saisir le temps de décollement}}"/>
+											<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="TtotalBase">
+												<option value="s">{{Seconde}}</option>                  
+												<option value="ms">{{Miliseconde}}</option>                  
+												<option value="us">{{Microseconde}}</option>   
+											</select>
+										</div>
 									</div>
 								</div>
 								<div class="form-group">
@@ -342,7 +349,14 @@ $eqLogics = eqLogic::byType('voletProp');
 										</sup>
 									</label>
 									<div class="col-md-5">
-										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="Tdecol" placeholder="{{Saisir le temps de décollement (s)}}"/>
+										<div class="input-group">
+											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="Tdecol" placeholder="{{Saisir le temps de décollement}}"/>
+											<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="TdecolBase">
+												<option value="s">{{Seconde}}</option>                  
+												<option value="ms">{{Miliseconde}}</option>                  
+												<option value="us">{{Microseconde}}</option>   
+											</select>
+										</div>
 									</div>
 								</div>
 							</fieldset>

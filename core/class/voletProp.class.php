@@ -4,8 +4,8 @@ class voletProp extends eqLogic {
 	public static function cron() {
 		foreach(eqLogic::byType('voletProp') as $Volet){ 
 			if(cache::byKey('voletProp::Move::'.$Volet->getId())->getValue(false)){
-				$ChangeStateStart = cache::byKey('voletProp::ChangeStateStart::'.$Volet->getId())->getValue(microtime()+$Volet->getConfiguration('Ttotal')*1000000);
-				if(microtime()-$ChangeStateStart >=$Volet->getConfiguration('Ttotal')*1000000){
+				$ChangeStateStart = cache::byKey('voletProp::ChangeStateStart::'.$Volet->getId())->getValue(microtime()+$Volet->getTotalTime());
+				if(microtime()-$ChangeStateStart >=$Volet->getTotalTime()){
 					$cmd=cmd::byId(str_replace('#','',$Volet->getConfiguration('cmdStop')));
 					if(is_object($cmd))
 						$cmd->execute(null);
@@ -135,17 +135,22 @@ class voletProp extends eqLogic {
 			return false;		
 		return true;
 	}
+    	public function getTotalTime($decole=true) {
+		$TpsGlobal = $this->getConfiguration('Ttotal')*$this->getConfiguration('TtotalBase',1000000);
+		if(!$decole)
+			$TpsGlobal -= $this->getConfiguration('Tdecol')*$this->getConfiguration('TdecolBase',1000000);
+		return $TpsGlobal;
+	}
     	public function UpdateHauteur() {
 		$ChangeState = cache::byKey('voletProp::ChangeState::'.$this->getId())->getValue(false);
 		$ChangeStateStart = cache::byKey('voletProp::ChangeStateStart::'.$this->getId())->getValue(microtime());
 		$ChangeStateStop = cache::byKey('voletProp::ChangeStateStop::'.$this->getId())->getValue(microtime());		
-		$Tps=$ChangeStateStop-$ChangeStateStart;
-		$TpsGlobal=$this->getConfiguration('Ttotal')*1000000;
-		
+		$Tps=$ChangeStateStop-$ChangeStateStart;		
 		$HauteurActuel=$this->getCmd(null,'hauteur')->execCmd();
-		if($HauteurActuel != 0)
-			$TpsGlobal-=$this->getConfiguration('Tdecol')*1000000;
-		$Hauteur=$Tps*100/$TpsGlobal;
+		$decole=false;
+		if($HauteurActuel == 0)
+			$decole=true;
+		$Hauteur=$Tps*100/$this->getTotalTime($decole);
 		if($ChangeState)
 			$Hauteur=round($HauteurActuel+$Hauteur);
 		else
@@ -177,7 +182,7 @@ class voletProp extends eqLogic {
 				$Up->execute(null);
 				if(!isset($Stop))
 					$Stop=$Down;
-				usleep($this->getConfiguration('Ttotal')*1000000);
+				usleep($this->getTotalTime());
 				$Stop->execute(null);		
 				if($this->getConfiguration('UpStateCmd') == '' && $this->getConfiguration('DownStateCmd') == '')
 					$this->checkAndUpdateCmd('hauteur',100);
@@ -188,7 +193,7 @@ class voletProp extends eqLogic {
 				$Down->execute(null);
 				if(!isset($Stop))
 					$Stop=$Up;
-				usleep($this->getConfiguration('Ttotal')*1000000);
+				usleep($this->getTotalTime());
 				$Stop->execute(null);		
 				if($this->getConfiguration('UpStateCmd') == '' && $this->getConfiguration('DownStateCmd') == '')
 					$this->checkAndUpdateCmd('hauteur',0);
@@ -199,7 +204,7 @@ class voletProp extends eqLogic {
 				$Up->execute(null);
 				if(!isset($Stop))
 					$Stop=$Down;
-				usleep($this->getConfiguration('Ttotal')*1000000);
+				usleep($this->getTotalTime());
 				$Stop->execute(null);		
 				if($this->getConfiguration('UpStateCmd') == '' && $this->getConfiguration('DownStateCmd') == '')
 					$this->checkAndUpdateCmd('hauteur',100);
@@ -256,10 +261,7 @@ class voletProp extends eqLogic {
 		cache::set('voletProp::Move::'.$this->getId(),false, 0);
 	}
     	public function TpsAction($Hauteur, $Decol) {
-		$TpsGlobal=$this->getConfiguration('Ttotal')*1000000;
-		if(!$Decol)
-			$TpsGlobal-=$this->getConfiguration('Tdecol')*1000000;
-		$tps=round(($TpsGlobal*$Hauteur/100));		
+		$tps=round(($this->getTotalTime($Decol)*$Hauteur/100));		
 		if($tps <= $this->getConfiguration('delaisMini')*1000000) 
 			$tps = $this->getConfiguration('delaisMini')*1000000;
 		log::add('voletProp','debug',$this->getHumanName().' Temps d\'action '.$tps.'µs');
@@ -281,6 +283,18 @@ class voletProp extends eqLogic {
 		$listener = listener::byClassAndFunction('voletProp', 'End', array('Volets_id' => $this->getId()));
 		if (is_object($listener))
 			$listener->remove();
+		$cache = cache::byKey('voletProp::ChangeStateStart::'.$this->getId());
+		if (is_object($cache))
+			$cache->remove();
+		$cache = cache::byKey('voletProp::ChangeStateStop::'.$this->getId());
+		if (is_object($cache))
+			$cache->remove();
+		$cache = cache::byKey('voletProp::Move::'.$this->getId());
+		if (is_object($cache))
+			$cache->remove();
+		$cache = cache::byKey('voletProp::ChangeState::'.$this->getId());
+		if (is_object($cache))
+			$cache->remove();
 	}
 	public function StartListener() {
 		if($this->getIsEnable()){
