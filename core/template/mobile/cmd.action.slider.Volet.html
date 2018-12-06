@@ -1,49 +1,51 @@
-<div class="cmd cmd-widget" style="width:130px; height:100px; padding-top: 8%;" data-type="action" data-subtype="slider" data-cmd_id="#id#" data-cmd_uid="#uid#" >  
-	<style>
-		#voletvertical.slider.slider-vertical{height:85px; width:64px;}
-		#voletvertical.slider.slider-vertical .slider-track {width:63px; height:100%;}
+<span class="cmd cmd-widget" data-type="action" data-subtype="slider" data-cmd_id="#id#" >  
+	<style>	
+		.slider-volet-value{
+			height: 30px;
+		}
+		.slider-track > .slider-track-high { display:none; }
+		.tooltip-inner{
+			background-color: #666;
+		}
+		.tooltip-arrow{
+			border-left-color: #555;
+		}
 	</style>
-	<center>
-		<div class="slider-volet" data-slider-handle="square" value="#state#"></div>
-	</center>
-	<center>
-		<div class="slider-volet-value slid-v-left" id="SlidVal#id#">#state# %</div>	
-	</center>
+	<div class="slider-volet-value" id="SlidVal#id#"></div>
+	<div class="slider-volet" data-slider-handle="square" value="#state#"></div>
 	<script>
-	jeedom.cmd.update['#id#'] = function(_options){
-		$.include(['plugins/voletProp/core/template/SlidVertical/bootstrapslider.js'], function() {  
-			$.include(['plugins/voletProp/core/template/SlidVertical/slidervc.css'], function() {
-				$(".cmd[data-cmd_uid=#uid#] .slider-volet").bootstrapSlider({
-					id: 'voletvertical',
-					orientation: 'vertical',
-					reversed : 'true',
-					min: ('#minValue#' == '') ? 0 : parseInt('#minValue#'),
-					max: ('#maxValue#' == '') ? 100 : parseInt('#maxValue#'),
-					value: ('#state#' == '') ? 0 : parseInt('#state#'),
-				}).on('slideStop', function (ev) {
-					jeedom.cmd.execute({id: '#id#', value: {slider: ev.value}});
-				}).on('slide', function (ev) {
-					$(".cmd[data-cmd_uid=#uid#] .slider-volet-value").text(ev.value +' %');
+		jeedom.cmd.update['#id#'] = function(_options){
+			$.include(['plugins/voletProp/core/template/SlidVertical/bootstrapslider.js'], function() {    
+				$.include(['plugins/voletProp/core/template/SlidVertical/slidervolet.css'], function() {
+					$(".cmd[data-cmd_id=#id#] .slider-volet").bootstrapSlider({
+						id: 'voletvertical',
+						orientation: 'vertical',
+						reversed : 'true',
+						tooltip : 'true',
+						tooltip_position : 'left',
+						min:  _options.minValue ,
+						max: _options.maxValue,
+						value: ('#state#' == '') ? 0 : parseInt(_options.display_value),
+					}).on('slideStop', function (ev) {
+						jeedom.cmd.execute({id: '#id#', value: {slider: ev.value}});
+					})
+					.on('slide', function (ev) {
+						$(".cmd[data-cmd_id=#id#] .slider-volet-value").text(ev.value +' %');
+					});
 				});
 			});
-		});
-		if (_options.display_value == '0' || _options.display_value == 0 || _options.display_value == '') {
-			$(".cmd[data-cmd_uid=#uid#] .slider-vertical .slider-selection").css('background', "url(plugins/voletProp/core/template/SlidVertical/lamep.png)");
-		}else {
-			if (_options.display_value != '0' || _options.display_value != 0) {
-				$(".cmd[data-cmd_uid=#uid#] .slider-vertical .slider-selection").css('background', "url(plugins/voletProp/core/template/SlidVertical/lamej.png)");
-			}
-		}
-		if (_options.display_value == '' || _options.display_value == 0){
-			$("#SlidVal#id#").empty();
-			$("#SlidVal#id#").text("0 %");
-		}
-		if ('#PourcentLeft#'.trim() == '0') {
-			$("#SlidVal#id#").css("display","none");
-			$(".cmd[data-cmd_id=#id#]").css("padding-top", "1%");
+			var sliderVal = _options.display_value;
+			if (sliderVal == '') sliderVal = 0;
+			if (sliderVal == 0)
+				$(".cmd[data-cmd_id=#id#] .slider-vertical .slider-selection").css('background', "url(plugins/voletProp/core/template/SlidVerticallamep.png)");
+			else 
+				$(".cmd[data-cmd_id=#id#] .slider-vertical .slider-selection").css('background', "url(plugins/voletProp/core/template/SlidVertical/lamej.png)");
+			$("#SlidVal#id#").text( sliderVal + ' %');
+			$(".cmd[data-cmd_id=#id#] .slider-volet").attr('data-slider-value',sliderVal);
+			$(".cmd[data-cmd_id=#id#] .slider-volet").bootstrapSlider('refresh');
+			$(".cmd[data-cmd_id=#id#]").css("padding-top", "3%");
 			$(".cmd[data-cmd_id=#id#]").css("width", "75px");
 		}
-	}
-        jeedom.cmd.update['#id#']({display_value:'#state#'});
+		jeedom.cmd.update['#id#']({display_value:'#state#',minValue:'#minValue#',maxValue:'#maxValue#',valueDate:'#valueDate#',collectDate:'#collectDate#'});
 	</script>
-</div>
+</span>
