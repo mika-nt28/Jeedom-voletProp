@@ -5,7 +5,7 @@ class voletProp extends eqLogic {
 		foreach(eqLogic::byType('voletProp') as $Volet){ 
 			if(cache::byKey('voletProp::Move::'.$Volet->getId())->getValue(false)){
 				$ChangeStateStart = cache::byKey('voletProp::ChangeStateStart::'.$Volet->getId())->getValue(microtime()+$Volet->getTotalTime());
-				if(microtime()-$ChangeStateStart >=$Volet->getTotalTime()){
+				if(microtime()-$ChangeStateStart >=$Volet->getTime('Ttotal')){
 					$cmd=cmd::byId(str_replace('#','',$Volet->getConfiguration('cmdStop')));
 					if(is_object($cmd))
 						$cmd->execute(null);
@@ -135,12 +135,6 @@ class voletProp extends eqLogic {
 			return false;		
 		return true;
 	}
-    	public function getTotalTime($decole=true) {
-		$TpsGlobal = $this->getConfiguration('Ttotal')*$this->getConfiguration('TtotalBase',1000000);
-		if(!$decole)
-			$TpsGlobal -= $this->getConfiguration('Tdecol')*$this->getConfiguration('TdecolBase',1000000);
-		return $TpsGlobal;
-	}
     	public function UpdateHauteur() {
 		$ChangeState = cache::byKey('voletProp::ChangeState::'.$this->getId())->getValue(false);
 		$ChangeStateStart = cache::byKey('voletProp::ChangeStateStart::'.$this->getId())->getValue(microtime());
@@ -148,9 +142,14 @@ class voletProp extends eqLogic {
 		$Tps=$ChangeStateStop-$ChangeStateStart;		
 		$HauteurActuel=$this->getCmd(null,'hauteur')->execCmd();
 		$decole=false;
-		if($HauteurActuel == 0)
-			$decole=true;
-		$Hauteur=$Tps*100/$this->getTotalTime($decole);
+		$TempsAction=$this->getTime('Ttotal');
+		if($HauteurActuel != 0)
+			$TempsAction-=$this->getTime('Tdecol');
+		$Hauteur=100*$Tps/$TempsAction;
+		if(!$decole)
+			$TempsAction += $this->getTime('Tdecol');	
+		if($TempsAction <= $this->getConfiguration('delaisMini')*1000000) 
+			$TempsAction = $this->getConfiguration('delaisMini')*1000000;
 		if($ChangeState)
 			$Hauteur=round($HauteurActuel+$Hauteur);
 		else
@@ -182,7 +181,7 @@ class voletProp extends eqLogic {
 				$Up->execute(null);
 				if(!isset($Stop))
 					$Stop=$Down;
-				usleep($this->getTotalTime());
+				usleep($this->getTime('Ttotal'));
 				$Stop->execute(null);		
 				if($this->getConfiguration('UpStateCmd') == '' && $this->getConfiguration('DownStateCmd') == '')
 					$this->checkAndUpdateCmd('hauteur',100);
@@ -193,7 +192,7 @@ class voletProp extends eqLogic {
 				$Down->execute(null);
 				if(!isset($Stop))
 					$Stop=$Up;
-				usleep($this->getTotalTime());
+				usleep($this->getTime('Ttotal'));
 				$Stop->execute(null);		
 				if($this->getConfiguration('UpStateCmd') == '' && $this->getConfiguration('DownStateCmd') == '')
 					$this->checkAndUpdateCmd('hauteur',0);
@@ -204,7 +203,7 @@ class voletProp extends eqLogic {
 				$Up->execute(null);
 				if(!isset($Stop))
 					$Stop=$Down;
-				usleep($this->getTotalTime());
+				usleep($this->getTime('Ttotal'));
 				$Stop->execute(null);		
 				if($this->getConfiguration('UpStateCmd') == '' && $this->getConfiguration('DownStateCmd') == '')
 					$this->checkAndUpdateCmd('hauteur',100);
@@ -260,12 +259,17 @@ class voletProp extends eqLogic {
 		}
 		cache::set('voletProp::Move::'.$this->getId(),false, 0);
 	}
-    	public function TpsAction($Hauteur, $Decol) {
-		$tps=round(($this->getTotalTime($Decol)*$Hauteur/100));		
-		if($tps <= $this->getConfiguration('delaisMini')*1000000) 
-			$tps = $this->getConfiguration('delaisMini')*1000000;
-		log::add('voletProp','debug',$this->getHumanName().' Temps d\'action '.$tps.'µs');
-		return $tps;
+    	private function getTime($Type) {
+		return $this->getConfiguration($Type)*$this->getConfiguration($Type.'Base',1000000);
+	}
+    	public function TpsAction($Hauteur, $Decole) {
+		$TempsAction=round(($this->getTime('Ttotal')-$this->getTime('Tdecol'))*$Hauteur/100);
+		if(!$Decole)
+			$TempsAction += $this->getTime('Tdecol');	
+		if($TempsAction <= $this->getConfiguration('delaisMini')*1000000) 
+			$TempsAction = $this->getConfiguration('delaisMini')*1000000;
+		log::add('voletProp','debug',$this->getHumanName().' Temps d\'action '.$TempsAction.'µs');
+		return $TempsAction;
 	}
 	public function StopListener() {
 		$listener = listener::byClassAndFunction('voletProp', 'pull', array('Volets_id' => $this->getId()));
