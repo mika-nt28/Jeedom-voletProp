@@ -4,12 +4,12 @@ class voletProp extends eqLogic {
 	public static function cron() {
 		foreach(eqLogic::byType('voletProp') as $Volet){ 
 			if(cache::byKey('voletProp::Move::'.$Volet->getId())->getValue(false)){
-				$ChangeStateStart = cache::byKey('voletProp::ChangeStateStart::'.$Volet->getId())->getValue(microtime()+$Volet->getTotalTime());
-				if(microtime()-$ChangeStateStart >=$Volet->getTime('Ttotal')){
+				$ChangeStateStart = cache::byKey('voletProp::ChangeStateStart::'.$Volet->getId())->getValue(microtime(true)+$Volet->getTotalTime());
+				if(microtime(true)-$ChangeStateStart >=$Volet->getTime('Ttotal')){
 					$cmd=cmd::byId(str_replace('#','',$Volet->getConfiguration('cmdStop')));
 					if(is_object($cmd))
 						$cmd->execute(null);
-					cache::set('voletProp::ChangeStateStop::'.$Volet->getId(),microtime(), 0);
+					cache::set('voletProp::ChangeStateStop::'.$Volet->getId(),microtime(true), 0);
 					$Volet->UpdateHauteur();
 				}
 			}
@@ -55,7 +55,7 @@ class voletProp extends eqLogic {
 		if (is_object($detectedCmd) && is_object($Volet) && $Volet->getIsEnable()) {
 			log::add('voletProp','info',$Volet->getHumanName().$detectedCmd->getHumanName());
 			if($this->getConfiguration('cmdStop') == '' && cache::byKey('voletProp::Move::'.$Volet->getId())->getValue(false) && cache::byKey('voletProp::ChangeState::'.$Volet->getId())->getValue(false)){
-				cache::set('voletProp::ChangeStateStop::'.$Volet->getId(),microtime(), 0);
+				cache::set('voletProp::ChangeStateStop::'.$Volet->getId(),microtime(true), 0);
 				$Volet->UpdateHauteur();
 				cache::set('voletProp::Move::'.$Volet->getId(),false, 0);
 			}else{
@@ -63,7 +63,7 @@ class voletProp extends eqLogic {
 				if($Volet->EvaluateCondition($isUp)){
 					cache::set('voletProp::ChangeState::'.$Volet->getId(),true, 0);
 					cache::set('voletProp::Move::'.$Volet->getId(),true, 0);
-					cache::set('voletProp::ChangeStateStart::'.$Volet->getId(),microtime(), 0);
+					cache::set('voletProp::ChangeStateStart::'.$Volet->getId(),microtime(true), 0);
 				}
 			}
 		}
@@ -75,7 +75,7 @@ class voletProp extends eqLogic {
 		if (is_object($detectedCmd) && is_object($Volet) && $Volet->getIsEnable()) {
 			log::add('voletProp','info',$Volet->getHumanName().$detectedCmd->getHumanName());
 			if($this->getConfiguration('cmdStop') == '' && cache::byKey('voletProp::Move::'.$Volet->getId())->getValue(false) && !cache::byKey('voletProp::ChangeState::'.$Volet->getId())->getValue(false)){
-				cache::set('voletProp::ChangeStateStop::'.$Volet->getId(),microtime(), 0);
+				cache::set('voletProp::ChangeStateStop::'.$Volet->getId(),microtime(true), 0);
 				$Volet->UpdateHauteur();
 				cache::set('voletProp::Move::'.$Volet->getId(),false, 0);
 			}else{
@@ -83,7 +83,7 @@ class voletProp extends eqLogic {
 				if($Volet->EvaluateCondition($isDown)){
 					cache::set('voletProp::ChangeState::'.$Volet->getId(),false, 0);
 					cache::set('voletProp::Move::'.$Volet->getId(),true, 0);
-					cache::set('voletProp::ChangeStateStart::'.$Volet->getId(),microtime(), 0);
+					cache::set('voletProp::ChangeStateStart::'.$Volet->getId(),microtime(true), 0);
 				}
 			}
 		}
@@ -97,7 +97,7 @@ class voletProp extends eqLogic {
 			$isStop=$Volet->getConfiguration('StopStateCmd').$Volet->getConfiguration('StopStateOperande').$Volet->getConfiguration('StopStateValue');
 			if($Volet->EvaluateCondition($isStop)){
 				$Move=cache::byKey('voletProp::Move::'.$Volet->getId());
-				cache::set('voletProp::ChangeStateStop::'.$Volet->getId(),microtime(), 0);
+				cache::set('voletProp::ChangeStateStop::'.$Volet->getId(),microtime(true), 0);
 				if(is_object($Move) && $Move->getValue(false)){
 					$Volet->UpdateHauteur();
 					cache::set('voletProp::Move::'.$Volet->getId(),false, 0);
@@ -137,10 +137,10 @@ class voletProp extends eqLogic {
 	}
     	public function UpdateHauteur() {
 		$ChangeState = cache::byKey('voletProp::ChangeState::'.$this->getId())->getValue(false);
-		$ChangeStateStart = cache::byKey('voletProp::ChangeStateStart::'.$this->getId())->getValue(microtime());
-		log::add('voletProp','debug',$this->getHumanName().' Delta de temps '.$ChangeStateStart.'µs actuel'.microtime().'µs');
-		$ChangeStateStop = cache::byKey('voletProp::ChangeStateStop::'.$this->getId())->getValue(microtime());	
-		log::add('voletProp','debug',$this->getHumanName().' Delta de temps '.$ChangeStateStop.'µs actuel'.microtime().'µs');
+		$ChangeStateStart = cache::byKey('voletProp::ChangeStateStart::'.$this->getId())->getValue(microtime(true));
+		log::add('voletProp','debug',$this->getHumanName().' Delta de temps '.$ChangeStateStart.'µs actuel'.microtime(true).'µs');
+		$ChangeStateStop = cache::byKey('voletProp::ChangeStateStop::'.$this->getId())->getValue(microtime(true));	
+		log::add('voletProp','debug',$this->getHumanName().' Delta de temps '.$ChangeStateStop.'µs actuel'.microtime(true).'µs');
 		$Tps=$ChangeStateStop-$ChangeStateStart;	
 		
 		log::add('voletProp','debug',$this->getHumanName().' Delta de temps '.$Tps.'µs');
@@ -238,7 +238,7 @@ class voletProp extends eqLogic {
 		if($Hauteur == 0 || $HauteurVolet == 0)
 			$Decol=true;
 		cache::set('voletProp::Move::'.$this->getId(),true, 0);
-		cache::set('voletProp::ChangeStateStart::'.$this->getId(),microtime(), 0);
+		cache::set('voletProp::ChangeStateStart::'.$this->getId(),microtime(true), 0);
 		if($HauteurVolet > $Hauteur){
 			$Delta=$HauteurVolet-$Hauteur;
 			$temps=$this->TpsAction($Delta,$Decol);
@@ -260,7 +260,7 @@ class voletProp extends eqLogic {
 		$Stop->execute(null);
 		cache::set('voletProp::Move::'.$this->getId(),false, 0);
 		if($this->getConfiguration('UpStateCmd') == '' && $this->getConfiguration('DownStateCmd') == ''){		
-			cache::set('voletProp::ChangeStateStop::'.$this->getId(),microtime(), 0);
+			cache::set('voletProp::ChangeStateStop::'.$this->getId(),microtime(true), 0);
 			$this->UpdateHauteur();
 		}
 	}
@@ -415,7 +415,7 @@ class voletPropCmd extends cmd {
 				if(!is_object($cmd))
 					return;
 				$cmd->execute(null);
-				cache::set('voletProp::ChangeStateStart::'.$this->getEqLogic()->getId(),microtime(), 0);
+				cache::set('voletProp::ChangeStateStart::'.$this->getEqLogic()->getId(),microtime(true), 0);
 				cache::set('voletProp::Move::'.$this->getEqLogic()->getId(),true, 0);
 				cache::set('voletProp::ChangeState::'.$this->getEqLogic()->getId(),true, 0);
 			break;
@@ -424,7 +424,7 @@ class voletPropCmd extends cmd {
 				if(!is_object($cmd))
 					return;
 				$cmd->execute(null);
-				cache::set('voletProp::ChangeStateStart::'.$this->getEqLogic()->getId(),microtime(), 0);
+				cache::set('voletProp::ChangeStateStart::'.$this->getEqLogic()->getId(),microtime(true), 0);
 				cache::set('voletProp::Move::'.$this->getEqLogic()->getId(),true, 0);
 				cache::set('voletProp::ChangeState::'.$this->getEqLogic()->getId(),false, 0);
 			break;
@@ -443,7 +443,7 @@ class voletPropCmd extends cmd {
 				}				
 				if($this->getEqLogic()->getConfiguration('UpStateCmd') == '' && $this->getEqLogic()->getConfiguration('DownStateCmd') == ''){		
 					if(cache::byKey('voletProp::Move::'.$this->getEqLogic()->getId())->getValue(false)){
-						cache::set('voletProp::ChangeStateStop::'.$this->getEqLogic()->getId(),microtime(), 0);
+						cache::set('voletProp::ChangeStateStop::'.$this->getEqLogic()->getId(),microtime(true), 0);
 						$this->getEqLogic()->UpdateHauteur();
 					}
 				}
