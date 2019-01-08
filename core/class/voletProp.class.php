@@ -141,14 +141,12 @@ class voletProp extends eqLogic {
 		$ChangeStateStop = cache::byKey('voletProp::ChangeStateStop::'.$this->getId())->getValue(microtime(true));	
 		$Tps=$ChangeStateStop-$ChangeStateStart;	
 		$Tps*=1000000;
-		log::add('voletProp','debug',$this->getHumanName().' Delta de temps '.$Tps.'µs');
 		$HauteurActuel=$this->getCmd(null,'hauteur')->execCmd();
 		$decole=false;
 		$TempsAction=$this->getTime('Ttotal');
 		if($HauteurActuel != 0)
 			$TempsAction-=$this->getTime('Tdecol');
 		$Hauteur=100*$Tps/$TempsAction;
-		log::add('voletProp','debug',$this->getHumanName().' Le volet est a '.$Hauteur.'%');
 		if(!$decole)
 			$TempsAction += $this->getTime('Tdecol');	
 		if($TempsAction <= $this->getConfiguration('delaisMini')*1000000) 
@@ -448,7 +446,8 @@ class voletPropCmd extends cmd {
 				cache::set('voletProp::Move::'.$this->getEqLogic()->getId(),false, 0);
 			break;
 			case "position":
-				$this->getEqLogic()->execPropVolet($_options['slider']);
+				if(!cache::byKey('voletProp::Move::'.$this->getEqLogic()->getId())->getValue(false))
+					$this->getEqLogic()->execPropVolet($_options['slider']);
 			break;
 		}
 	}
