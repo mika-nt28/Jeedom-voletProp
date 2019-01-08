@@ -147,10 +147,11 @@ class voletProp extends eqLogic {
 		if($HauteurActuel != 0)
 			$TempsAction-=$this->getTime('Tdecol');
 		$Hauteur=100*$Tps/$TempsAction;
-		if(!$decole)
+		log::add('voletProp','debug',$this->getHumanName().' Mouvement du volet de '.$Hauteur.'%');
+		/*if(!$decole)
 			$TempsAction += $this->getTime('Tdecol');	
 		if($TempsAction <= $this->getConfiguration('delaisMini')*1000000) 
-			$TempsAction = $this->getConfiguration('delaisMini')*1000000;
+			$TempsAction = $this->getConfiguration('delaisMini')*1000000;*/
 		if($ChangeState)
 			$Hauteur=round($HauteurActuel+$Hauteur);
 		else
