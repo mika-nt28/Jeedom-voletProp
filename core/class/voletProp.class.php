@@ -139,13 +139,16 @@ class voletProp extends eqLogic {
 		$ChangeState = cache::byKey('voletProp::ChangeState::'.$this->getId())->getValue(false);
 		$ChangeStateStart = cache::byKey('voletProp::ChangeStateStart::'.$this->getId())->getValue(microtime());
 		$ChangeStateStop = cache::byKey('voletProp::ChangeStateStop::'.$this->getId())->getValue(microtime());		
-		$Tps=$ChangeStateStop-$ChangeStateStart;		
+		$Tps=$ChangeStateStop-$ChangeStateStart;	
+		
+		log::add('voletProp','debug',$this->getHumanName().' Delta de temps '.$Tps.'µs');
 		$HauteurActuel=$this->getCmd(null,'hauteur')->execCmd();
 		$decole=false;
 		$TempsAction=$this->getTime('Ttotal');
 		if($HauteurActuel != 0)
 			$TempsAction-=$this->getTime('Tdecol');
 		$Hauteur=100*$Tps/$TempsAction;
+		log::add('voletProp','debug',$this->getHumanName().' Le volet est a '.$Hauteur.'%');
 		if(!$decole)
 			$TempsAction += $this->getTime('Tdecol');	
 		if($TempsAction <= $this->getConfiguration('delaisMini')*1000000) 
@@ -253,11 +256,11 @@ class voletProp extends eqLogic {
 		}
 		usleep($temps);
 		$Stop->execute(null);
+		cache::set('voletProp::Move::'.$this->getId(),false, 0);
 		if($this->getConfiguration('UpStateCmd') == '' && $this->getConfiguration('DownStateCmd') == ''){		
 			cache::set('voletProp::ChangeStateStop::'.$this->getId(),microtime(), 0);
 			$this->UpdateHauteur();
 		}
-		cache::set('voletProp::Move::'.$this->getId(),false, 0);
 	}
     	private function getTime($Type) {
 		return $this->getConfiguration($Type)*$this->getConfiguration($Type.'Base',1000000);
