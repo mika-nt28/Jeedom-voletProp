@@ -141,6 +141,7 @@ class voletProp extends eqLogic {
 		$ChangeStateStop = cache::byKey('voletProp::ChangeStateStop::'.$this->getId())->getValue(microtime(true));	
 		$Tps=$ChangeStateStop-$ChangeStateStart;	
 		$Tps*=1000000;
+		log::add('voletProp','debug',$this->getHumanName().' Temps de mouvement du volet de '.$Tps.'µs');
 		$HauteurActuel=$this->getCmd(null,'hauteur')->execCmd();
 		$decole=false;
 		$TempsAction=$this->getTime('Ttotal');
