@@ -139,20 +139,14 @@ class voletProp extends eqLogic {
 		$ChangeState = cache::byKey('voletProp::ChangeState::'.$this->getId())->getValue(false);
 		$ChangeStateStart = cache::byKey('voletProp::ChangeStateStart::'.$this->getId())->getValue(microtime(true));
 		$ChangeStateStop = cache::byKey('voletProp::ChangeStateStop::'.$this->getId())->getValue(microtime(true));	
-		$Tps=$ChangeStateStop-$ChangeStateStart;	
-		$Tps*=1000000;
-		log::add('voletProp','debug',$this->getHumanName().' Temps de mouvement du volet de '.$Tps.'µs');
+		$TempsAction=$ChangeStateStop-$ChangeStateStart;	
+		$TempsAction=round($TempsAction*1000000);
+		log::add('voletProp','debug',$this->getHumanName().' Temps de mouvement du volet de '.$TempsAction.'µs');
 		$HauteurActuel=$this->getCmd(null,'hauteur')->execCmd();
-		$decole=false;
-		$TempsAction=$this->getTime('Ttotal');
 		if($HauteurActuel != 0)
 			$TempsAction-=$this->getTime('Tdecol');
-		$Hauteur=100*$Tps/$TempsAction;
+		$Hauteur=round($TempsAction*100/($this->getTime('Ttotal')-$this->getTime('Tdecol')));
 		log::add('voletProp','debug',$this->getHumanName().' Mouvement du volet de '.$Hauteur.'%');
-		/*if(!$decole)
-			$TempsAction += $this->getTime('Tdecol');	
-		if($TempsAction <= $this->getConfiguration('delaisMini')*1000000) 
-			$TempsAction = $this->getConfiguration('delaisMini')*1000000;*/
 		if($ChangeState)
 			$Hauteur=round($HauteurActuel+$Hauteur);
 		else
