@@ -4,7 +4,7 @@ class voletProp extends eqLogic {
 	public static function cron() {
 		foreach(eqLogic::byType('voletProp') as $Volet){ 
 			if(cache::byKey('voletProp::Move::'.$Volet->getId())->getValue(false)){
-				$ChangeStateStart = cache::byKey('voletProp::ChangeStateStart::'.$Volet->getId())->getValue(microtime(true)+$Volet->getTotalTime());
+				$ChangeStateStart = cache::byKey('voletProp::ChangeStateStart::'.$Volet->getId())->getValue(microtime(true));
 				if(microtime(true)-$ChangeStateStart >=$Volet->getTime('Ttotal')){
 					$cmd=cmd::byId(str_replace('#','',$Volet->getConfiguration('cmdStop')));
 					if(is_object($cmd))
