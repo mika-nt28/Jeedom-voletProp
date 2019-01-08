@@ -138,7 +138,9 @@ class voletProp extends eqLogic {
     	public function UpdateHauteur() {
 		$ChangeState = cache::byKey('voletProp::ChangeState::'.$this->getId())->getValue(false);
 		$ChangeStateStart = cache::byKey('voletProp::ChangeStateStart::'.$this->getId())->getValue(microtime());
-		$ChangeStateStop = cache::byKey('voletProp::ChangeStateStop::'.$this->getId())->getValue(microtime());		
+		log::add('voletProp','debug',$this->getHumanName().' Delta de temps '.$ChangeStateStart.'µs actuel'.microtime().'µs');
+		$ChangeStateStop = cache::byKey('voletProp::ChangeStateStop::'.$this->getId())->getValue(microtime());	
+		log::add('voletProp','debug',$this->getHumanName().' Delta de temps '.$ChangeStateStop.'µs actuel'.microtime().'µs');
 		$Tps=$ChangeStateStop-$ChangeStateStart;	
 		
 		log::add('voletProp','debug',$this->getHumanName().' Delta de temps '.$Tps.'µs');
