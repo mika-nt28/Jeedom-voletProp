@@ -142,9 +142,10 @@ class voletProp extends eqLogic {
 		$TempsAction=round($TempsAction*1000000);
 		log::add('voletProp','debug',$this->getHumanName().' Temps de mouvement du volet de '.$TempsAction.'µs');
 		$HauteurActuel=$this->getCmd(null,'hauteur')->execCmd();
+		$TempsTotal = $this->getTime('Ttotal');
 		if($HauteurActuel != 0)
-			$TempsAction-=$this->getTime('Tdecol');
-		$Hauteur=round($TempsAction*100/($this->getTime('Ttotal')-$this->getTime('Tdecol')));
+			$TempsTotal-=$this->getTime('Tdecol');
+		$Hauteur=round($TempsAction*100/$TempsTotal);
 		log::add('voletProp','debug',$this->getHumanName().' Mouvement du volet de '.$Hauteur.'%');
 		if($ChangeState)
 			$Hauteur=round($HauteurActuel+$Hauteur);
@@ -225,14 +226,14 @@ class voletProp extends eqLogic {
 		$HauteurVolet=$this->getCmd(null,'hauteur')->execCmd();
 		if($HauteurVolet == $Hauteur)
 			return;
-		$Decol=false;
+		$AutorisationDecollement=false;
 		if($Hauteur == 0 || $HauteurVolet == 0)
-			$Decol=true;
+			$AutorisationDecollement=true;
 		cache::set('voletProp::Move::'.$this->getId(),true, 0);
 		cache::set('voletProp::ChangeStateStart::'.$this->getId(),microtime(true), 0);
 		if($HauteurVolet > $Hauteur){
 			$Delta=$HauteurVolet-$Hauteur;
-			$temps=$this->TpsAction($Delta,$Decol);
+			$temps=$this->TpsAction($Delta,$AutorisationDecollement);
 			cache::set('voletProp::ChangeState::'.$this->getId(),false, 0);
 			$Down->execute(null);
 			if(!isset($Stop))
@@ -240,7 +241,7 @@ class voletProp extends eqLogic {
 			log::add('voletProp','debug',$this->getHumanName().' Nous allons descendre le volet de '.$Delta.'%');
 		}else{
 			$Delta=$Hauteur-$HauteurVolet;
-			$temps=$this->TpsAction($Delta,$Decol);
+			$temps=$this->TpsAction($Delta,$AutorisationDecollement);
 			cache::set('voletProp::ChangeState::'.$this->getId(),true, 0);
 			$Up->execute(null);
 			if(!isset($Stop))
@@ -258,10 +259,12 @@ class voletProp extends eqLogic {
     	private function getTime($Type) {
 		return $this->getConfiguration($Type)*$this->getConfiguration($Type.'Base',1000000);
 	}
-    	public function TpsAction($Hauteur, $Decole) {
+    	public function TpsAction($Hauteur, $AutorisationDecollement) {
 		$TempsAction=round(($this->getTime('Ttotal')-$this->getTime('Tdecol'))*$Hauteur/100);
-		if(!$Decole)
+		if(!$AutorisationDecollement){
+			log::add('voletProp','debug',$this->getHumanName().' Le temps de décollement a été ajouté : '$TempsAction.'µs +'$this->getTime('Tdecol').'µs');
 			$TempsAction += $this->getTime('Tdecol');	
+		}
 		if($TempsAction <= $this->getConfiguration('delaisMini')*1000000) 
 			$TempsAction = $this->getConfiguration('delaisMini')*1000000;
 		log::add('voletProp','debug',$this->getHumanName().' Temps d\'action '.$TempsAction.'µs');
