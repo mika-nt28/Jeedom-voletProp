@@ -262,7 +262,7 @@ class voletProp extends eqLogic {
     	public function TpsAction($Hauteur, $AutorisationDecollement) {
 		$TempsAction=round(($this->getTime('Ttotal')-$this->getTime('Tdecol'))*$Hauteur/100);
 		if(!$AutorisationDecollement){
-			log::add('voletProp','debug',$this->getHumanName().' Le temps de décollement a été ajouté : '$TempsAction.'µs +'$this->getTime('Tdecol').'µs');
+			log::add('voletProp','debug',$this->getHumanName().' Le temps de décollement a été ajouté : Temps d\'action ('.$TempsAction.'µs) + Temps de décollement ('.$this->getTime('Tdecol').'µs)');
 			$TempsAction += $this->getTime('Tdecol');	
 		}
 		if($TempsAction <= $this->getConfiguration('delaisMini')*1000000) 
