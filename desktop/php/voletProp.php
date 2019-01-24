@@ -156,7 +156,6 @@ $eqLogics = eqLogic::byType('voletProp');
 									</label>
 									<div class="col-md-5">
 										<select class="eqLogicAttr form-control input-sm" data-l1key="configuration" data-l2key="Synchronisation" multiple>
-											<option value="">{{Aucune}}</option>
 											<option value="all">{{A chaque mouvement}}</option>
 											<option value="100">{{Lors d'une montée total (100%)}}</option>
 											<option value="0">{{Lors d'une descente total (0%)}}</option>
@@ -178,7 +177,7 @@ $eqLogics = eqLogic::byType('voletProp');
 									</label>
 									<div class="col-md-5">
 										<div class="input-group">
-											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="cmdUp" placeholder="{{Séléctionner une commande}}"/>
+											<input type="text" class="eqLogicAttr form-control CmdAction" data-l1key="configuration" data-l2key="cmdUp" placeholder="{{Séléctionner une commande}}"/>
 											<span class="input-group-btn">
 												<a class="btn btn-success btn-sm listCmdAction" data-type="action">
 													<i class="fa fa-list-alt"></i>
@@ -195,7 +194,7 @@ $eqLogics = eqLogic::byType('voletProp');
 									</label>
 									<div class="col-md-5">
 										<div class="input-group">
-											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="cmdStop" placeholder="{{Séléctionner une commande}}"/>
+											<input type="text" class="eqLogicAttr form-control CmdAction" data-l1key="configuration" data-l2key="cmdStop" placeholder="{{Séléctionner une commande}}"/>
 											<span class="input-group-btn">
 												<a class="btn btn-success btn-sm listCmdAction" data-type="action">
 													<i class="fa fa-list-alt"></i>
@@ -212,7 +211,7 @@ $eqLogics = eqLogic::byType('voletProp');
 									</label>
 									<div class="col-md-5">
 										<div class="input-group">
-											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="cmdDown" placeholder="{{Séléctionner une commande}}"/>
+											<input type="text" class="eqLogicAttr form-control CmdAction" data-l1key="configuration" data-l2key="cmdDown" placeholder="{{Séléctionner une commande}}"/>
 											<span class="input-group-btn">
 												<a class="btn btn-success btn-sm listCmdAction" data-type="action">
 													<i class="fa fa-list-alt"></i>
@@ -242,7 +241,7 @@ $eqLogics = eqLogic::byType('voletProp');
 													<i class="fa fa-list-alt"></i>
 												</a>
 											</span>
-											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="UpStateCmd" placeholder="{{Séléctionner une commande}}"/>
+											<input type="text" class="eqLogicAttr form-control CmdAction" data-l1key="configuration" data-l2key="UpStateCmd" placeholder="{{Séléctionner une commande}}"/>
 											<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="UpStateOperande">
 												<option value="==">{{égal}}</option>                  
 												<option value=">">{{supérieur}}</option>                  
@@ -266,7 +265,7 @@ $eqLogics = eqLogic::byType('voletProp');
 													<i class="fa fa-list-alt"></i>
 												</a>
 											</span>
-											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="DownStateCmd" placeholder="{{Séléctionner une commande}}"/>
+											<input type="text" class="eqLogicAttr form-control CmdAction" data-l1key="configuration" data-l2key="DownStateCmd" placeholder="{{Séléctionner une commande}}"/>
 											<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="DownStateOperande">
 												<option value="==">{{égal}}</option>                  
 												<option value=">">{{supérieur}}</option>                  
@@ -286,7 +285,7 @@ $eqLogics = eqLogic::byType('voletProp');
 									<div class="col-md-5">
 										<div class="input-group">
 											<span class="input-group-btn">
-												<a class="btn btn-success listCmdAction" data-type="info">
+												<a class="btn btn-success listCmdAction CmdAction" data-type="info">
 													<i class="fa fa-list-alt"></i>
 												</a>
 											</span>
@@ -309,7 +308,7 @@ $eqLogics = eqLogic::byType('voletProp');
 									</label>
 									<div class="col-md-5">
 										<div class="input-group">
-											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="cmdEnd" placeholder="{{Séléctionner une commande}}"/>
+											<input type="text" class="eqLogicAttr form-control CmdAction" data-l1key="configuration" data-l2key="cmdEnd" placeholder="{{Séléctionner une commande}}"/>
 											<span class="input-group-btn">
 												<a class="btn btn-success btn-sm listCmdAction" data-type="info">
 													<i class="fa fa-list-alt"></i>

@@ -3,31 +3,19 @@ $('#tab_zones a').click(function(e) {
     e.preventDefault();
     $(this).tab('show');
 });
-$("body").on('click', ".listAction", function() {
-	var el = $(this).closest('.input-group').find('input');
-	jeedom.getSelectActionModal({}, function (result) {
-		el.value(result.human);
-		jeedom.cmd.displayActionOption(el.value(), '', function (html) {
-			el.closest('.form-group').find('.actionOptions').html(html);
-		});
-	});
-}); 
 $("body").on('click', ".listCmdAction", function() {
-	var el = $(this).closest('.input-group').find('input');
+	var el = $(this).closest('.input-group').find('.CmdAction');
 	var type=$(this).attr('data-type');
 	jeedom.cmd.getSelectModal({cmd: {type: type}}, function (result) {
 		el.value(result.human);
-		jeedom.cmd.displayActionOption(el.value(), '', function (html) {
-			el.closest('.form-group').find('.actionOptions').html(html);
-		});
 	});
-});/*
+});
 function printEqLogic(_eqLogic) {
+	$('.eqLogicAttr[data-l1key=configuration][data-l2key=Synchronisation] option').attr("selected", false);
 	$.each(_eqLogic.configuration.Synchronisation, function( index, value ) {
-		$('.eqLogicAttr[data-l1key=configuration][data-l1key=Synchronisation] option[value='+value+']').attr("selected", 'selected');
-		alert(value);
+		$('.eqLogicAttr[data-l1key=configuration][data-l2key=Synchronisation] option[value='+value+']').attr("selected", true);
 	});
-}*/
+}
 function addCmdToTable(_cmd) {
 	var tr =$('<tr class="cmd" data-cmd_id="' + init(_cmd.id) + '">');
 	tr.append($('<td>')
