@@ -13,7 +13,8 @@ $("body").on('click', ".listCmdAction", function() {
 function printEqLogic(_eqLogic) {
 	$('.eqLogicAttr[data-l1key=configuration][data-l2key=Synchronisation] option').attr("selected", false);
 	$.each(_eqLogic.configuration.Synchronisation, function( index, value ) {
-		$('.eqLogicAttr[data-l1key=configuration][data-l2key=Synchronisation] option[value='+value+']').attr("selected", true);
+		if(typeof value !== 'undefined' && value != '') 
+			$('.eqLogicAttr[data-l1key=configuration][data-l2key=Synchronisation] option[value='+value+']').attr("selected", true);
 	});
 }
 function addCmdToTable(_cmd) {
