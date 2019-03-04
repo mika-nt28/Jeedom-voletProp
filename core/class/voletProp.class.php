@@ -54,14 +54,15 @@ class voletProp extends eqLogic {
 		$Volet = eqLogic::byId($_option['Volets_id']);
 		$detectedCmd = cmd::byId($_option['event_id']);
 		if (is_object($detectedCmd) && is_object($Volet) && $Volet->getIsEnable()) {
-			log::add('voletProp','info',$Volet->getHumanName().$detectedCmd->getHumanName());
-			if($this->getConfiguration('cmdStop') == '' && cache::byKey('voletProp::Move::'.$Volet->getId())->getValue(false) && cache::byKey('voletProp::ChangeState::'.$Volet->getId())->getValue(false)){
-				cache::set('voletProp::ChangeStateStop::'.$Volet->getId(),microtime(true), 0);
-				$Volet->UpdateHauteur();
-				cache::set('voletProp::Move::'.$Volet->getId(),false, 0);
-			}else{
-				$isUp=$Volet->getConfiguration('UpStateCmd').$Volet->getConfiguration('UpStateOperande').$Volet->getConfiguration('UpStateValue');
-				if($Volet->EvaluateCondition($isUp)){
+			$isUp=$Volet->getConfiguration('UpStateCmd').$Volet->getConfiguration('UpStateOperande').$Volet->getConfiguration('UpStateValue');
+			if($Volet->EvaluateCondition($isUp)){
+				if($this->getConfiguration('StopStateCmd') == '' && cache::byKey('voletProp::Move::'.$Volet->getId())->getValue(false) && cache::byKey('voletProp::ChangeState::'.$Volet->getId())->getValue(false)){
+					log::add('voletProp','info',$Volet->getHumanName().' Stop du mouvement détécté par '.$detectedCmd->getHumanName());
+					cache::set('voletProp::ChangeStateStop::'.$Volet->getId(),microtime(true), 0);
+					$Volet->UpdateHauteur();
+					cache::set('voletProp::Move::'.$Volet->getId(),false, 0);
+				}else{
+					log::add('voletProp','info',$Volet->getHumanName().' Mouvement détécter sur '.$detectedCmd->getHumanName());
 					cache::set('voletProp::ChangeState::'.$Volet->getId(),true, 0);
 					cache::set('voletProp::Move::'.$Volet->getId(),true, 0);
 					cache::set('voletProp::ChangeStateStart::'.$Volet->getId(),microtime(true), 0);
@@ -74,14 +75,15 @@ class voletProp extends eqLogic {
 		$Volet = eqLogic::byId($_option['Volets_id']);
 		$detectedCmd = cmd::byId($_option['event_id']);
 		if (is_object($detectedCmd) && is_object($Volet) && $Volet->getIsEnable()) {
-			log::add('voletProp','info',$Volet->getHumanName().$detectedCmd->getHumanName());
-			if($this->getConfiguration('cmdStop') == '' && cache::byKey('voletProp::Move::'.$Volet->getId())->getValue(false) && !cache::byKey('voletProp::ChangeState::'.$Volet->getId())->getValue(false)){
-				cache::set('voletProp::ChangeStateStop::'.$Volet->getId(),microtime(true), 0);
-				$Volet->UpdateHauteur();
-				cache::set('voletProp::Move::'.$Volet->getId(),false, 0);
-			}else{
-				$isDown=$Volet->getConfiguration('DownStateCmd').$Volet->getConfiguration('DownStateOperande').$Volet->getConfiguration('DownStateValue');
-				if($Volet->EvaluateCondition($isDown)){
+			$isDown=$Volet->getConfiguration('DownStateCmd').$Volet->getConfiguration('DownStateOperande').$Volet->getConfiguration('DownStateValue');
+			if($Volet->EvaluateCondition($isDown)){
+				if($this->getConfiguration('StopStateCmd') == '' && cache::byKey('voletProp::Move::'.$Volet->getId())->getValue(false) && !cache::byKey('voletProp::ChangeState::'.$Volet->getId())->getValue(true)){
+					log::add('voletProp','info',$Volet->getHumanName().' Stop du mouvement détécté par '.$detectedCmd->getHumanName());
+					cache::set('voletProp::ChangeStateStop::'.$Volet->getId(),microtime(true), 0);
+					$Volet->UpdateHauteur();
+					cache::set('voletProp::Move::'.$Volet->getId(),false, 0);
+				}else{
+					log::add('voletProp','info',$Volet->getHumanName().' Mouvement détécter sur '.$detectedCmd->getHumanName());
 					cache::set('voletProp::ChangeState::'.$Volet->getId(),false, 0);
 					cache::set('voletProp::Move::'.$Volet->getId(),true, 0);
 					cache::set('voletProp::ChangeStateStart::'.$Volet->getId(),microtime(true), 0);
