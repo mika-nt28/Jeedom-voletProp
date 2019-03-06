@@ -112,9 +112,12 @@ class voletProp extends eqLogic {
 		log::add('voletProp','debug','Detection sur le listener End : '.json_encode($_option));
 		$Volet = eqLogic::byId($_option['Volets_id']);
 		$detectedCmd = cmd::byId($_option['event_id']);
-		if (is_object($detectedCmd) && is_object($Volet) && $Volet->getIsEnable()) {
-			log::add('voletProp','info',$Volet->getHumanName().$detectedCmd->getHumanName());
-			if($_option['value'])
+		if (is_object($detectedCmd) && is_object($Volet) && $Volet->getIsEnable()) {log::add('voletProp','info',$Volet->getHumanName().$detectedCmd->getHumanName());
+			$isEndUp=$Volet->getConfiguration('EndUpCmd').$Volet->getConfiguration('EndUpOperande').$Volet->getConfiguration('EndUpValue');
+			if($Volet->EvaluateCondition($isEndUp))
+				$Volet->checkAndUpdateCmd('hauteur',100);
+			$isEndDown=$Volet->getConfiguration('EndDownCmd').$Volet->getConfiguration('EndDownOperande').$Volet->getConfiguration('EndDownValue');
+			if($Volet->EvaluateCondition($isEndDown))
 				$Volet->checkAndUpdateCmd('hauteur',0);
 		}
 	}
@@ -348,7 +351,8 @@ class voletProp extends eqLogic {
 				$listener->setFunction('End');
 				$listener->setOption(array('Volets_id' => $this->getId()));
 				$listener->emptyEvent();	
-					$listener->addEvent($this->getConfiguration('cmdEnd'));
+				$listener->addEvent($this->getConfiguration('EndUpCmd'));
+				$listener->addEvent($this->getConfiguration('EndDownCmd'));
 				$listener->save();
 			}
 		}
