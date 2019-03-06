@@ -301,22 +301,53 @@ $eqLogics = eqLogic::byType('voletProp');
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-md-3 control-label">{{Fin de course}}
+									<label class="col-md-3 control-label">{{Fin de course haute}}
 										<sup>
-											<i class="fa fa-question-circle tooltips" title="{{Sélectionner la commande déterminant la fin de course}}"></i>
+											<i class="fa fa-question-circle tooltips" title="{{Saisir la condition qui valide un fin de course du volet ouvert}}"></i>
 										</sup>
 									</label>
 									<div class="col-md-5">
 										<div class="input-group">
-											<input type="text" class="eqLogicAttr form-control CmdAction" data-l1key="configuration" data-l2key="cmdEnd" placeholder="{{Séléctionner une commande}}"/>
 											<span class="input-group-btn">
-												<a class="btn btn-success btn-sm listCmdAction" data-type="info">
+												<a class="btn btn-success listCmdAction CmdAction" data-type="info">
 													<i class="fa fa-list-alt"></i>
 												</a>
 											</span>
+											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="EndUpCmd" placeholder="{{Séléctionner une commande}}"/>
+											<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="EndUpOperande">
+												<option value="==">{{égal}}</option>                  
+												<option value=">">{{supérieur}}</option>                  
+												<option value="<">{{inférieur}}</option>                 
+												<option value="!=">{{différent}}</option> 
+											</select>
+											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="EndUpValue" placeholder="{{Valeur pour validé la condition}}"/>
 										</div>
 									</div>
-								</div>	
+								</div>
+								<div class="form-group">
+									<label class="col-md-3 control-label">{{Fin de course basse}}
+										<sup>
+											<i class="fa fa-question-circle tooltips" title="{{Saisir la condition qui valide un fin de course du volet fermer}}"></i>
+										</sup>
+									</label>
+									<div class="col-md-5">
+										<div class="input-group">
+											<span class="input-group-btn">
+												<a class="btn btn-success listCmdAction CmdAction" data-type="info">
+													<i class="fa fa-list-alt"></i>
+												</a>
+											</span>
+											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="EndDownCmd" placeholder="{{Séléctionner une commande}}"/>
+											<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="EndDownOperande">
+												<option value="==">{{égal}}</option>                  
+												<option value=">">{{supérieur}}</option>                  
+												<option value="<">{{inférieur}}</option>                 
+												<option value="!=">{{différent}}</option> 
+											</select>
+											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="EndDownValue" placeholder="{{Valeur pour validé la condition}}"/>
+										</div>
+									</div>
+								</div>
 							</fieldset>
 						</form>
 					</div>
