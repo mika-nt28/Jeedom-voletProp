@@ -132,12 +132,12 @@ class voletProp extends eqLogic {
 		if (is_object($detectedCmd) && is_object($Volet) && $Volet->getIsEnable()) {
 			$isEndUp=$Volet->getConfiguration('EndUpCmd').$Volet->getConfiguration('EndUpOperande').$Volet->getConfiguration('EndUpValue');
 			if($Volet->EvaluateCondition($isEndUp)){
-				log::add('voletProp','info',$Volet->getHumanName().': Fin de course haute détécté, mise a 100% de l\'etat';
+				log::add('voletProp','info',$Volet->getHumanName().': Fin de course haute détécté, mise a 100% de l\'etat');
 				$Volet->checkAndUpdateCmd('hauteur',100);
 			}
 			$isEndDown=$Volet->getConfiguration('EndDownCmd').$Volet->getConfiguration('EndDownOperande').$Volet->getConfiguration('EndDownValue');
 			if($Volet->EvaluateCondition($isEndDown)){
-				log::add('voletProp','info',$Volet->getHumanName().': Fin de course basse détécté, mise a 100% de l\'etat';
+				log::add('voletProp','info',$Volet->getHumanName().': Fin de course basse détécté, mise a 100% de l\'etat');
 				$Volet->checkAndUpdateCmd('hauteur',0);
 			}
 		}
