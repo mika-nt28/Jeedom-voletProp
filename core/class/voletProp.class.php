@@ -371,7 +371,7 @@ class voletProp extends eqLogic {
 				$listener->emptyEvent();	
 				if ($this->getConfiguration('EndUpCmd') != '')
 					$listener->addEvent($this->getConfiguration('EndUpCmd'));
-				if (this->getConfiguration('EndDownCmd') != '')
+				if ($this->getConfiguration('EndDownCmd') != '')
 					$listener->addEvent($this->getConfiguration('EndDownCmd'));
 				$listener->save();
 			}
