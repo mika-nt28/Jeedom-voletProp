@@ -229,6 +229,19 @@ $eqLogics = eqLogic::byType('voletProp');
 							<legend>Objet d'état du volet</legend>
 							<fieldset>
 								<div class="form-group">
+									<label class="col-md-3 control-label">{{Utiliser les etat sur :}}
+										<sup>
+											<i class="fa fa-question-circle tooltips" title="{{Cocher les options d'utilisataion du retour d'etat}}"></i>
+										</sup>
+									</label>
+									<div class="col-md-5">
+										<label>{{Les mouvement Jeedom}}</label>
+										<input type="checkbox" class="eqLogicAttr" data-label-text="{{Jeedom}}" data-l1key="useStateJeedom" checked/>
+										<label>{{Les mouvement manuel}}</label>
+										<input type="checkbox" class="eqLogicAttr" data-label-text="{{Manuel}}" data-l1key="useStateManual" checked/>
+									</div>
+								</div>	
+								<div class="form-group">
 									<label class="col-md-3 control-label">{{Condition d'etat montée}}
 										<sup>
 											<i class="fa fa-question-circle tooltips" title="{{Saisir la condition qui valide une montée}}"></i>

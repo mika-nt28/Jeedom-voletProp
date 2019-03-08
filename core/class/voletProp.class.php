@@ -71,18 +71,20 @@ class voletProp extends eqLogic {
 		$Volet = eqLogic::byId($_option['Volets_id']);
 		$detectedCmd = cmd::byId($_option['event_id']);
 		if (is_object($detectedCmd) && is_object($Volet) && $Volet->getIsEnable()) {
-			$isUp=$Volet->getConfiguration('UpStateCmd').$Volet->getConfiguration('UpStateOperande').$Volet->getConfiguration('UpStateValue');
-			if($Volet->EvaluateCondition($isUp)){
-				if($Volet->getConfiguration('StopStateCmd') == '' && cache::byKey('voletProp::Move::'.$Volet->getId())->getValue(false) && cache::byKey('voletProp::ChangeState::'.$Volet->getId())->getValue(false)){
-					log::add('voletProp','info',$Volet->getHumanName().' Stop du mouvement détécté par '.$detectedCmd->getHumanName());
-					cache::set('voletProp::ChangeStateStop::'.$Volet->getId(),microtime(true), 0);
-					$Volet->UpdateHauteur();
-					cache::set('voletProp::Move::'.$Volet->getId(),false, 0);
-				}else{
-					log::add('voletProp','info',$Volet->getHumanName().' Mouvement détécter sur '.$detectedCmd->getHumanName());
-					cache::set('voletProp::ChangeState::'.$Volet->getId(),true, 0);
-					cache::set('voletProp::Move::'.$Volet->getId(),true, 0);
-					cache::set('voletProp::ChangeStateStart::'.$Volet->getId(),microtime(true), 0);
+			if($Volet->getConfiguration('useStateJeedom') || $Volet->getConfiguration('useStateManual')){	
+				$isUp=$Volet->getConfiguration('UpStateCmd').$Volet->getConfiguration('UpStateOperande').$Volet->getConfiguration('UpStateValue');
+				if($Volet->EvaluateCondition($isUp)){
+					if($Volet->getConfiguration('StopStateCmd') == '' && cache::byKey('voletProp::Move::'.$Volet->getId())->getValue(false) && cache::byKey('voletProp::ChangeState::'.$Volet->getId())->getValue(false)){
+						log::add('voletProp','info',$Volet->getHumanName().' Stop du mouvement détécté par '.$detectedCmd->getHumanName());
+						cache::set('voletProp::ChangeStateStop::'.$Volet->getId(),microtime(true), 0);
+						$Volet->UpdateHauteur();
+						cache::set('voletProp::Move::'.$Volet->getId(),false, 0);
+					}else{
+						log::add('voletProp','info',$Volet->getHumanName().' Mouvement détécter sur '.$detectedCmd->getHumanName());
+						cache::set('voletProp::ChangeState::'.$Volet->getId(),true, 0);
+						cache::set('voletProp::Move::'.$Volet->getId(),true, 0);
+						cache::set('voletProp::ChangeStateStart::'.$Volet->getId(),microtime(true), 0);
+					}
 				}
 			}
 		}
@@ -92,18 +94,20 @@ class voletProp extends eqLogic {
 		$Volet = eqLogic::byId($_option['Volets_id']);
 		$detectedCmd = cmd::byId($_option['event_id']);
 		if (is_object($detectedCmd) && is_object($Volet) && $Volet->getIsEnable()) {
-			$isDown=$Volet->getConfiguration('DownStateCmd').$Volet->getConfiguration('DownStateOperande').$Volet->getConfiguration('DownStateValue');
-			if($Volet->EvaluateCondition($isDown)){
-				if($Volet->getConfiguration('StopStateCmd') == '' && cache::byKey('voletProp::Move::'.$Volet->getId())->getValue(false) && !cache::byKey('voletProp::ChangeState::'.$Volet->getId())->getValue(true)){
-					log::add('voletProp','info',$Volet->getHumanName().' Stop du mouvement détécté par '.$detectedCmd->getHumanName());
-					cache::set('voletProp::ChangeStateStop::'.$Volet->getId(),microtime(true), 0);
-					$Volet->UpdateHauteur();
-					cache::set('voletProp::Move::'.$Volet->getId(),false, 0);
-				}else{
-					log::add('voletProp','info',$Volet->getHumanName().' Mouvement détécter sur '.$detectedCmd->getHumanName());
-					cache::set('voletProp::ChangeState::'.$Volet->getId(),false, 0);
-					cache::set('voletProp::Move::'.$Volet->getId(),true, 0);
-					cache::set('voletProp::ChangeStateStart::'.$Volet->getId(),microtime(true), 0);
+			if($Volet->getConfiguration('useStateJeedom') || $Volet->getConfiguration('useStateManual')){	
+				$isDown=$Volet->getConfiguration('DownStateCmd').$Volet->getConfiguration('DownStateOperande').$Volet->getConfiguration('DownStateValue');
+				if($Volet->EvaluateCondition($isDown)){
+					if($Volet->getConfiguration('StopStateCmd') == '' && cache::byKey('voletProp::Move::'.$Volet->getId())->getValue(false) && !cache::byKey('voletProp::ChangeState::'.$Volet->getId())->getValue(true)){
+						log::add('voletProp','info',$Volet->getHumanName().' Stop du mouvement détécté par '.$detectedCmd->getHumanName());
+						cache::set('voletProp::ChangeStateStop::'.$Volet->getId(),microtime(true), 0);
+						$Volet->UpdateHauteur();
+						cache::set('voletProp::Move::'.$Volet->getId(),false, 0);
+					}else{
+						log::add('voletProp','info',$Volet->getHumanName().' Mouvement détécter sur '.$detectedCmd->getHumanName());
+						cache::set('voletProp::ChangeState::'.$Volet->getId(),false, 0);
+						cache::set('voletProp::Move::'.$Volet->getId(),true, 0);
+						cache::set('voletProp::ChangeStateStart::'.$Volet->getId(),microtime(true), 0);
+					}
 				}
 			}
 		}
@@ -112,15 +116,17 @@ class voletProp extends eqLogic {
 		log::add('voletProp','debug','Detection sur le listener Stop : '.json_encode($_option));
 		$Volet = eqLogic::byId($_option['Volets_id']);
 		$detectedCmd = cmd::byId($_option['event_id']);
-		if (is_object($detectedCmd) && is_object($Volet) && $Volet->getIsEnable()) {
-			$isStop=$Volet->getConfiguration('StopStateCmd').$Volet->getConfiguration('StopStateOperande').$Volet->getConfiguration('StopStateValue');
-			if($Volet->EvaluateCondition($isStop)){
-				log::add('voletProp','info',$Volet->getHumanName().' Action détécter sur '.$detectedCmd->getHumanName());
-				$Move=cache::byKey('voletProp::Move::'.$Volet->getId());
-				cache::set('voletProp::ChangeStateStop::'.$Volet->getId(),microtime(true), 0);
-				if(is_object($Move) && $Move->getValue(false)){
-					$Volet->UpdateHauteur();
-					cache::set('voletProp::Move::'.$Volet->getId(),false, 0);
+		if (is_object($detectedCmd) && is_object($Volet) && $Volet->getIsEnable()) {			
+			if($Volet->getConfiguration('useStateJeedom') || $Volet->getConfiguration('useStateManual')){	
+				$isStop=$Volet->getConfiguration('StopStateCmd').$Volet->getConfiguration('StopStateOperande').$Volet->getConfiguration('StopStateValue');
+				if($Volet->EvaluateCondition($isStop)){
+					log::add('voletProp','info',$Volet->getHumanName().' Action détécter sur '.$detectedCmd->getHumanName());
+					$Move=cache::byKey('voletProp::Move::'.$Volet->getId());
+					cache::set('voletProp::ChangeStateStop::'.$Volet->getId(),microtime(true), 0);
+					if(is_object($Move) && $Move->getValue(false)){
+						$Volet->UpdateHauteur();
+						cache::set('voletProp::Move::'.$Volet->getId(),false, 0);
+					}
 				}
 			}
 		}
@@ -208,7 +214,8 @@ class voletProp extends eqLogic {
 					$Stop=$Down;
 				usleep($this->getTime('Ttotal'));
 				$Stop->execute(null);		
-				if($this->getConfiguration('UpStateCmd') == '' && $this->getConfiguration('DownStateCmd') == '')
+				if(!$this->getConfiguration('useStateJeedom'))
+				//if($this->getConfiguration('UpStateCmd') == '' && $this->getConfiguration('DownStateCmd') == '')
 					$this->checkAndUpdateCmd('hauteur',100);
 				return false;
 			}
@@ -219,7 +226,8 @@ class voletProp extends eqLogic {
 					$Stop=$Up;
 				usleep($this->getTime('Ttotal'));
 				$Stop->execute(null);		
-				if($this->getConfiguration('UpStateCmd') == '' && $this->getConfiguration('DownStateCmd') == '')
+				if(!$this->getConfiguration('useStateJeedom'))
+				//if($this->getConfiguration('UpStateCmd') == '' && $this->getConfiguration('DownStateCmd') == '')
 					$this->checkAndUpdateCmd('hauteur',0);
 				return false;
 			}
@@ -230,7 +238,8 @@ class voletProp extends eqLogic {
 					$Stop=$Down;
 				usleep($this->getTime('Ttotal'));
 				$Stop->execute(null);		
-				if($this->getConfiguration('UpStateCmd') == '' && $this->getConfiguration('DownStateCmd') == '')
+				if(!$this->getConfiguration('useStateJeedom'))
+				//if($this->getConfiguration('UpStateCmd') == '' && $this->getConfiguration('DownStateCmd') == '')
 					$this->checkAndUpdateCmd('hauteur',100);
 				return true;
 			}
@@ -279,7 +288,8 @@ class voletProp extends eqLogic {
 		usleep($temps);
 		$Stop->execute(null);
 		cache::set('voletProp::Move::'.$this->getId(),false, 0);
-		if($this->getConfiguration('UpStateCmd') == '' && $this->getConfiguration('DownStateCmd') == ''){		
+		if(!$this->getConfiguration('useStateJeedom')){
+		//if($this->getConfiguration('UpStateCmd') == '' && $this->getConfiguration('DownStateCmd') == ''){		
 			cache::set('voletProp::ChangeStateStop::'.$this->getId(),microtime(true), 0);
 			$this->UpdateHauteur();
 		}
