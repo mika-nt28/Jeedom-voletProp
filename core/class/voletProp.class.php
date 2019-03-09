@@ -462,18 +462,25 @@ class voletPropCmd extends cmd {
 			case "stop":
 				if($this->getEqLogic()->getConfiguration('cmdStop') != ''){
 					$cmd=cmd::byId(str_replace('#','',$this->getEqLogic()->getConfiguration('cmdStop')));
-					if(is_object($cmd))
+					if(is_object($cmd)){
+						log::add('voletProp','debug',$this->getEqLogic()->getHumanName().' Execution de la commande '.$cmd->getHumanName());
 						$cmd->execute(null);
+					}
 				}else{
-					if(cache::byKey('voletProp::ChangeState::'.$this->getEqLogic()->getId())->getValue(false))
-						$cmd=cmd::byId(str_replace('#','',$this->getEqLogic()->getConfiguration('cmdUp')));
-					else
-						$cmd=cmd::byId(str_replace('#','',$this->getEqLogic()->getConfiguration('cmdDown')));
-					if(is_object($cmd))
-						$cmd->execute(null);
-				}				
-				if($this->getEqLogic()->getConfiguration('UpStateCmd') == '' && $this->getEqLogic()->getConfiguration('DownStateCmd') == ''){		
 					if(cache::byKey('voletProp::Move::'.$this->getEqLogic()->getId())->getValue(false)){
+						if(cache::byKey('voletProp::ChangeState::'.$this->getEqLogic()->getId())->getValue(false))
+							$cmd=cmd::byId(str_replace('#','',$this->getEqLogic()->getConfiguration('cmdUp')));
+						else
+							$cmd=cmd::byId(str_replace('#','',$this->getEqLogic()->getConfiguration('cmdDown')));
+						if(is_object($cmd)){
+							log::add('voletProp','debug',$this->getEqLogic()->getHumanName().' Execution de la commande '.$cmd->getHumanName());
+							$cmd->execute(null);
+						}
+					}
+				}				
+				if(!$this->getEqLogic()->getConfiguration('useStateJeedom')){		
+					if(cache::byKey('voletProp::Move::'.$this->getEqLogic()->getId())->getValue(false)){
+						log::add('voletProp','debug',$this->getEqLogic()->getHumanName().' Mise a jours manuel de la hauteur');
 						cache::set('voletProp::ChangeStateStop::'.$this->getEqLogic()->getId(),microtime(true), 0);
 						$this->getEqLogic()->UpdateHauteur();
 					}
