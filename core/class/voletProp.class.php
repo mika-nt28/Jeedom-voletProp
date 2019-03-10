@@ -143,7 +143,7 @@ class voletProp extends eqLogic {
 			}
 			$isEndDown=$Volet->getConfiguration('EndDownCmd').$Volet->getConfiguration('EndDownOperande').$Volet->getConfiguration('EndDownValue');
 			if($Volet->EvaluateCondition($isEndDown)){
-				log::add('voletProp','info',$Volet->getHumanName().': Fin de course basse détécté, mise a 100% de l\'etat');
+				log::add('voletProp','info',$Volet->getHumanName().': Fin de course basse détécté, mise a 0% de l\'etat');
 				$Volet->checkAndUpdateCmd('hauteur',0);
 			}
 		}
