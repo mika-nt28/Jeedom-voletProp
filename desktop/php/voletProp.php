@@ -132,9 +132,9 @@ $eqLogics = eqLogic::byType('voletProp');
 									</label>
 									<div class="col-md-5">
 										<label>{{Activer}}</label>
-										<input type="checkbox" class="eqLogicAttr" data-label-text="{{Activer}}" data-l1key="isEnable" checked/>
+										<input type="checkbox" class="eqLogicAttr" data-label-text="{{Activer}}" data-l1key="isEnable"/>
 										<label>{{Visible}}</label>
-										<input type="checkbox" class="eqLogicAttr" data-label-text="{{Visible}}" data-l1key="isVisible" checked/>
+										<input type="checkbox" class="eqLogicAttr" data-label-text="{{Visible}}" data-l1key="isVisible"/>
 									</div>
 								</div>
 								<div class="form-group ">
@@ -236,9 +236,9 @@ $eqLogics = eqLogic::byType('voletProp');
 									</label>
 									<div class="col-md-5">
 										<label>{{Les mouvement Jeedom}}</label>
-										<input type="checkbox" class="eqLogicAttr" data-label-text="{{Jeedom}}" data-l1key="useStateJeedom" checked/>
+										<input type="checkbox" class="eqLogicAttr" data-label-text="{{Jeedom}}" data-l1key="useStateJeedom"/>
 										<label>{{Les mouvement manuel}}</label>
-										<input type="checkbox" class="eqLogicAttr" data-label-text="{{Manuel}}" data-l1key="useStateManual" checked/>
+										<input type="checkbox" class="eqLogicAttr" data-label-text="{{Manuel}}" data-l1key="useStateManual"/>
 									</div>
 								</div>	
 								<div class="form-group">
