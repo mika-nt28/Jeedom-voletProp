@@ -236,9 +236,9 @@ $eqLogics = eqLogic::byType('voletProp');
 									</label>
 									<div class="col-md-5">
 										<label>{{Les mouvement Jeedom}}</label>
-										<input type="checkbox" class="eqLogicAttr" data-label-text="{{Jeedom}}" data-l1key="useStateJeedom"/>
+										<input type="checkbox" class="eqLogicAttr" data-label-text="{{Jeedom}}" data-l1key="configuration" data-l2key="useStateJeedom"/>
 										<label>{{Les mouvement manuel}}</label>
-										<input type="checkbox" class="eqLogicAttr" data-label-text="{{Manuel}}" data-l1key="useStateManual"/>
+										<input type="checkbox" class="eqLogicAttr" data-label-text="{{Manuel}}" data-l1key="configuration" data-l2key="useStateManual"/>
 									</div>
 								</div>	
 								<div class="form-group">
