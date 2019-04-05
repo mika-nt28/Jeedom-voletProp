@@ -257,20 +257,20 @@ $eqLogics = eqLogic::byType($plugin->getId());
 										</sup>
 									</label>
 									<div class="col-sm-5">
-										<div class="input-group">
+										<div class="input-group input-group-sm">
 											<span class="input-group-btn">
-												<a class="btn btn-success listCmdAction" data-type="info">
+												<a class="btn btn-success listCmdAction input-group-addon roundedLeft" data-type="info">
 													<i class="fa fa-list-alt"></i>
 												</a>
 											</span>
-											<input type="text" class="eqLogicAttr form-control CmdAction" data-l1key="configuration" data-l2key="UpStateCmd" placeholder="{{Séléctionner une commande}}"/>
-											<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="UpStateOperande">
-												<option value="==">{{égal}}</option>                  
-												<option value=">">{{supérieur}}</option>                  
-												<option value="<">{{inférieur}}</option>                 
-												<option value="!=">{{différent}}</option> 
+											<input type="text" class="eqLogicAttr form-control CmdAction" data-l1key="configuration" data-l2key="UpStateCmd" placeholder="Séléctionner une commande" style="width: 180px">
+											<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="UpStateOperande" style="width: 80px">
+												<option value="==" selected="selected">égal</option>                  
+												<option value=">">supérieur</option>                  
+												<option value="<">inférieur</option>                 
+												<option value="!=">différent</option> 
 											</select>
-											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="UpStateValue" placeholder="{{Valeur pour validé la condition}}"/>
+											<input type="text" class="eqLogicAttr form-control roundedRight" data-l1key="configuration" data-l2key="UpStateValue" placeholder="Valeur pour validé la condition" style="width: 80px">
 										</div>
 									</div>
 								</div>	
@@ -281,20 +281,20 @@ $eqLogics = eqLogic::byType($plugin->getId());
 										</sup>
 									</label>
 									<div class="col-sm-5">
-										<div class="input-group">
+										<div class="input-group input-group-sm">
 											<span class="input-group-btn">
-												<a class="btn btn-success listCmdAction" data-type="info">
+												<a class="btn btn-success listCmdAction input-group-addon roundedLeft" data-type="info">
 													<i class="fa fa-list-alt"></i>
 												</a>
 											</span>
-											<input type="text" class="eqLogicAttr form-control CmdAction" data-l1key="configuration" data-l2key="DownStateCmd" placeholder="{{Séléctionner une commande}}"/>
-											<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="DownStateOperande">
-												<option value="==">{{égal}}</option>                  
-												<option value=">">{{supérieur}}</option>                  
-												<option value="<">{{inférieur}}</option>                 
-												<option value="!=">{{différent}}</option> 
+											<input type="text" class="eqLogicAttr form-control CmdAction" data-l1key="configuration" data-l2key="DownStateCmd" placeholder="Séléctionner une commande" style="width: 180px">
+											<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="DownStateOperande" style="width: 80px">
+												<option value="==" selected="selected">égal</option>                  
+												<option value=">">supérieur</option>                  
+												<option value="<">inférieur</option>                 
+												<option value="!=">différent</option> 
 											</select>
-											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="DownStateValue" placeholder="{{Valeur pour validé la condition}}"/>
+											<input type="text" class="eqLogicAttr form-control roundedRight" data-l1key="configuration" data-l2key="DownStateValue" placeholder="Valeur pour validé la condition" style="width: 80px">
 										</div>
 									</div>
 								</div>	
@@ -305,20 +305,20 @@ $eqLogics = eqLogic::byType($plugin->getId());
 										</sup>
 									</label>
 									<div class="col-sm-5">
-										<div class="input-group">
+										<div class="input-group input-group-sm">
 											<span class="input-group-btn">
-												<a class="btn btn-success listCmdAction CmdAction" data-type="info">
+												<a class="btn btn-success listCmdAction input-group-addon roundedLeft" data-type="info">
 													<i class="fa fa-list-alt"></i>
 												</a>
 											</span>
-											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="StopStateCmd" placeholder="{{Séléctionner une commande}}"/>
-											<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="StopStateOperande">
-												<option value="==">{{égal}}</option>                  
-												<option value=">">{{supérieur}}</option>                  
-												<option value="<">{{inférieur}}</option>                 
-												<option value="!=">{{différent}}</option> 
+											<input type="text" class="eqLogicAttr form-control CmdAction" data-l1key="configuration" data-l2key="StopStateCmd" placeholder="Séléctionner une commande" style="width: 180px">
+											<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="StopStateOperande" style="width: 80px">
+												<option value="==" selected="selected">égal</option>                  
+												<option value=">">supérieur</option>                  
+												<option value="<">inférieur</option>                 
+												<option value="!=">différent</option> 
 											</select>
-											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="StopStateValue" placeholder="{{Valeur pour validé la condition}}"/>
+											<input type="text" class="eqLogicAttr form-control roundedRight" data-l1key="configuration" data-l2key="StopStateValue" placeholder="Valeur pour validé la condition" style="width: 80px">
 										</div>
 									</div>
 								</div>
@@ -329,20 +329,20 @@ $eqLogics = eqLogic::byType($plugin->getId());
 										</sup>
 									</label>
 									<div class="col-sm-5">
-										<div class="input-group">
+										<div class="input-group input-group-sm">
 											<span class="input-group-btn">
-												<a class="btn btn-success listCmdAction CmdAction" data-type="info">
+												<a class="btn btn-success listCmdAction input-group-addon roundedLeft" data-type="info">
 													<i class="fa fa-list-alt"></i>
 												</a>
 											</span>
-											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="EndUpCmd" placeholder="{{Séléctionner une commande}}"/>
-											<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="EndUpOperande">
-												<option value="==">{{égal}}</option>                  
-												<option value=">">{{supérieur}}</option>                  
-												<option value="<">{{inférieur}}</option>                 
-												<option value="!=">{{différent}}</option> 
+											<input type="text" class="eqLogicAttr form-control CmdAction" data-l1key="configuration" data-l2key="EndUpCmd" placeholder="Séléctionner une commande" style="width: 180px">
+											<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="EndUpOperande" style="width: 80px">
+												<option value="==" selected="selected">égal</option>                  
+												<option value=">">supérieur</option>                  
+												<option value="<">inférieur</option>                 
+												<option value="!=">différent</option> 
 											</select>
-											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="EndUpValue" placeholder="{{Valeur pour validé la condition}}"/>
+											<input type="text" class="eqLogicAttr form-control roundedRight" data-l1key="configuration" data-l2key="EndUpValue" placeholder="Valeur pour validé la condition" style="width: 80px">
 										</div>
 									</div>
 								</div>
@@ -353,20 +353,20 @@ $eqLogics = eqLogic::byType($plugin->getId());
 										</sup>
 									</label>
 									<div class="col-sm-5">
-										<div class="input-group">
+										<div class="input-group input-group-sm">
 											<span class="input-group-btn">
-												<a class="btn btn-success listCmdAction CmdAction" data-type="info">
+												<a class="btn btn-success listCmdAction input-group-addon roundedLeft" data-type="info">
 													<i class="fa fa-list-alt"></i>
 												</a>
 											</span>
-											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="EndDownCmd" placeholder="{{Séléctionner une commande}}"/>
-											<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="EndDownOperande">
-												<option value="==">{{égal}}</option>                  
-												<option value=">">{{supérieur}}</option>                  
-												<option value="<">{{inférieur}}</option>                 
-												<option value="!=">{{différent}}</option> 
+											<input type="text" class="eqLogicAttr form-control CmdAction" data-l1key="configuration" data-l2key="EndDownCmd" placeholder="Séléctionner une commande" style="width: 180px">
+											<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="EndDownOperande" style="width: 80px">
+												<option value="==" selected="selected">égal</option>                  
+												<option value=">">supérieur</option>                  
+												<option value="<">inférieur</option>                 
+												<option value="!=">différent</option> 
 											</select>
-											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="EndDownValue" placeholder="{{Valeur pour validé la condition}}"/>
+											<input type="text" class="eqLogicAttr form-control roundedRight" data-l1key="configuration" data-l2key="EndDownValue" placeholder="Valeur pour validé la condition" style="width: 80px">
 										</div>
 									</div>
 								</div>
