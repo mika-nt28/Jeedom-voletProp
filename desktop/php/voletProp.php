@@ -256,7 +256,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 											<i class="fa fa-question-circle tooltips" title="{{Saisir la condition qui valide une montée}}"></i>
 										</sup>
 									</label>
-									<div class="col-sm-5">
+									<div class="col-sm-9">
 										<div class="input-group input-group-sm">
 											<span class="input-group-btn">
 												<a class="btn btn-success listCmdAction input-group-addon roundedLeft" data-type="info">
@@ -280,7 +280,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 											<i class="fa fa-question-circle tooltips" title="{{Saisir la condition qui valide une descente}}"></i>
 										</sup>
 									</label>
-									<div class="col-sm-5">
+									<div class="col-sm-9">
 										<div class="input-group input-group-sm">
 											<span class="input-group-btn">
 												<a class="btn btn-success listCmdAction input-group-addon roundedLeft" data-type="info">
@@ -304,7 +304,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 											<i class="fa fa-question-circle tooltips" title="{{Saisir la condition qui valide un arret du volet}}"></i>
 										</sup>
 									</label>
-									<div class="col-sm-5">
+									<div class="col-sm-9">
 										<div class="input-group input-group-sm">
 											<span class="input-group-btn">
 												<a class="btn btn-success listCmdAction input-group-addon roundedLeft" data-type="info">
@@ -328,7 +328,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 											<i class="fa fa-question-circle tooltips" title="{{Saisir la condition qui valide un fin de course du volet ouvert}}"></i>
 										</sup>
 									</label>
-									<div class="col-sm-5">
+									<div class="col-sm-9">
 										<div class="input-group input-group-sm">
 											<span class="input-group-btn">
 												<a class="btn btn-success listCmdAction input-group-addon roundedLeft" data-type="info">
@@ -352,7 +352,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 											<i class="fa fa-question-circle tooltips" title="{{Saisir la condition qui valide un fin de course du volet fermer}}"></i>
 										</sup>
 									</label>
-									<div class="col-sm-5">
+									<div class="col-sm-9">
 										<div class="input-group input-group-sm">
 											<span class="input-group-btn">
 												<a class="btn btn-success listCmdAction input-group-addon roundedLeft" data-type="info">
