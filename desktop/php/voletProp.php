@@ -201,7 +201,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 											<i class="fa fa-question-circle tooltips" title="{{Sélectionner la commande déterminant la arret du volet}}"></i>
 										</sup>
 									</label>
-									<div class="col-dm-5">
+									<div class="col-sm-5">
 										<div class="input-group">
 											<input type="text" class="eqLogicAttr form-control CmdAction" data-l1key="configuration" data-l2key="cmdStop" placeholder="{{Séléctionner une commande}}"/>
 											<span class="input-group-btn">
