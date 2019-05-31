@@ -1,6 +1,5 @@
 <?php
 require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
-include_file('core', 'VoletTimeout', 'class', 'voletProp');
 class voletProp extends eqLogic {
 	public static function cron() {
 		foreach(eqLogic::byType('voletProp') as $Volet){ 
@@ -450,7 +449,6 @@ class voletPropCmd extends cmd {
 				if(!is_object($cmd))
 					return;
 				$cmd->execute(null);
-				//new VoletTimeout($this->getEqLogic()->getId());
 			break;
 			case "down":
 				cache::set('voletProp::ChangeStateStart::'.$this->getEqLogic()->getId(),microtime(true), 0);
@@ -460,7 +458,6 @@ class voletPropCmd extends cmd {
 				if(!is_object($cmd))
 					return;
 				$cmd->execute(null);
-				//new VoletTimeout($this->getEqLogic()->getId());
 			break;
 			case "stop":
 				if($this->getEqLogic()->getConfiguration('cmdStop') != ''){
