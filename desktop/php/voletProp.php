@@ -84,7 +84,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 						<legend>Général</legend>
 							<fieldset>
 								<div class="form-group ">
-									<label class="col-ms-3 control-label">{{Nom du volet}}
+									<label class="col-sm-3 control-label">{{Nom du volet}}
 										<sup>
 											<i class="fa fa-question-circle tooltips" title="{{Indiquer le nom de votre volet}}" style="font-size : 1em;color:grey;"></i>
 										</sup>
@@ -95,7 +95,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-sm-2 control-label" >{{Objet parent}}
+									<label class="col-sm-3 control-label" >{{Objet parent}}
 										<sup>
 											<i class="fa fa-question-circle tooltips" title="{{Indiquer l'objet dans lequel le widget de cette zone apparaîtra sur le Dashboard}}" style="font-size : 1em;color:grey;"></i>
 										</sup>
@@ -201,7 +201,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 											<i class="fa fa-question-circle tooltips" title="{{Sélectionner la commande déterminant la arret du volet}}"></i>
 										</sup>
 									</label>
-									<div class="col-dm-5">
+									<div class="col-sm-5">
 										<div class="input-group">
 											<input type="text" class="eqLogicAttr form-control CmdAction" data-l1key="configuration" data-l2key="cmdStop" placeholder="{{Séléctionner une commande}}"/>
 											<span class="input-group-btn">
