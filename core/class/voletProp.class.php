@@ -215,7 +215,6 @@ class voletProp extends eqLogic {
 				usleep($this->getTime('Ttotal'));
 				$Stop->execute(null);		
 				if(!$this->getConfiguration('useStateJeedom'))
-				//if($this->getConfiguration('UpStateCmd') == '' && $this->getConfiguration('DownStateCmd') == '')
 					$this->checkAndUpdateCmd('hauteur',100);
 				return false;
 			}
@@ -227,7 +226,6 @@ class voletProp extends eqLogic {
 				usleep($this->getTime('Ttotal'));
 				$Stop->execute(null);		
 				if(!$this->getConfiguration('useStateJeedom'))
-				//if($this->getConfiguration('UpStateCmd') == '' && $this->getConfiguration('DownStateCmd') == '')
 					$this->checkAndUpdateCmd('hauteur',0);
 				return false;
 			}
@@ -239,7 +237,6 @@ class voletProp extends eqLogic {
 				usleep($this->getTime('Ttotal'));
 				$Stop->execute(null);		
 				if(!$this->getConfiguration('useStateJeedom'))
-				//if($this->getConfiguration('UpStateCmd') == '' && $this->getConfiguration('DownStateCmd') == '')
 					$this->checkAndUpdateCmd('hauteur',100);
 				return true;
 			}
