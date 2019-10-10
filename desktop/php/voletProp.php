@@ -243,7 +243,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 											<i class="fa fa-question-circle tooltips" title="{{Cocher les options d’utilisation du retour d’état}}"></i>
 										</sup>
 									</label>
-									<div class="col-sm-5">
+									<div class="col-sm-9">
 										<label>{{Les mouvement Jeedom}}</label>
 										<input type="checkbox" class="eqLogicAttr" data-label-text="{{Jeedom}}" data-l1key="configuration" data-l2key="useStateJeedom"/>
 										<label>{{Les mouvement manuel}}</label>
