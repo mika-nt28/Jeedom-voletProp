@@ -149,7 +149,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								<div class="form-group ">
 									<label class="col-sm-3 control-label">{{Délais minimum entre 2 commandes}}
 										<sup>
-											<i class="fa fa-question-circle tooltips" title="{{Saisir un délais minimum(s) entre 2 commande}}" style="font-size : 1em;color:grey;"></i>
+											<i class="fa fa-question-circle tooltips" title="{{Saisir un délai minimum(s) entre 2 commande}}" style="font-size : 1em;color:grey;"></i>
 										</sup>
 									</label>
 									<div class="col-sm-5">
@@ -160,7 +160,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 									<label class="col-sm-3 control-label" >
 										{{Synchronisation}}
 										<sup>
-											<i class="fa fa-question-circle tooltips" title="{{Si actif le volet se fermera completement avant de remonté a la bonne hauteur}}" style="font-size : 1em;color:grey;"></i>
+											<i class="fa fa-question-circle tooltips" title="{{Si actif le volet se fermera complètement avant de remonter à la bonne hauteur}}" style="font-size : 1em;color:grey;"></i>
 										</sup>
 									</label>
 									<div class="col-sm-5">
@@ -198,7 +198,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								<div class="form-group">
 									<label class="col-sm-3 control-label">{{Objet de stop}}
 										<sup>
-											<i class="fa fa-question-circle tooltips" title="{{Sélectionner la commande déterminant la arret du volet}}"></i>
+											<i class="fa fa-question-circle tooltips" title="{{Sélectionner la commande déterminant l’arrêt du volet}}"></i>
 										</sup>
 									</label>
 									<div class="col-sm-5">
@@ -215,7 +215,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								<div class="form-group">
 									<label class="col-sm-3 control-label">{{Objet de decente}}
 										<sup>
-											<i class="fa fa-question-circle tooltips" title="{{Sélectionner la commande déterminant la decente du volet}}"></i>
+											<i class="fa fa-question-circle tooltips" title="{{Sélectionner la commande déterminant la descente du volet}}"></i>
 										</sup>
 									</label>
 									<div class="col-sm-5">
@@ -240,7 +240,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								<div class="form-group">
 									<label class="col-sm-3 control-label">{{Utiliser les etat sur :}}
 										<sup>
-											<i class="fa fa-question-circle tooltips" title="{{Cocher les options d'utilisataion du retour d'etat}}"></i>
+											<i class="fa fa-question-circle tooltips" title="{{Cocher les options d’utilisation du retour d’état}}"></i>
 										</sup>
 									</label>
 									<div class="col-sm-5">
@@ -325,7 +325,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								<div class="form-group">
 									<label class="col-sm-3 control-label">{{Fin de course haute}}
 										<sup>
-											<i class="fa fa-question-circle tooltips" title="{{Saisir la condition qui valide un fin de course du volet ouvert}}"></i>
+											<i class="fa fa-question-circle tooltips" title="{{Saisir la condition qui valide une fin de course du volet ouvert}}"></i>
 										</sup>
 									</label>
 									<div class="col-sm-9">
@@ -349,7 +349,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								<div class="form-group">
 									<label class="col-sm-3 control-label">{{Fin de course basse}}
 										<sup>
-											<i class="fa fa-question-circle tooltips" title="{{Saisir la condition qui valide un fin de course du volet fermer}}"></i>
+											<i class="fa fa-question-circle tooltips" title="{{Saisir la condition qui valide une fin de course du volet fermé}}"></i>
 										</sup>
 									</label>
 									<div class="col-sm-9">
@@ -380,7 +380,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								<div class="form-group">
 									<label class="col-sm-3 control-label">{{Temps total}}
 										<sup>
-											<i class="fa fa-question-circle tooltips" title="{{Saisissez le temps total pour executer une montée ou une decente}}"></i>
+											<i class="fa fa-question-circle tooltips" title="{{Saisissez le temps total pour exécuter une montée ou une descente}}"></i>
 										</sup>
 									</label>
 									<div class="col-sm-5">
@@ -397,7 +397,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								<div class="form-group">
 									<label class="col-sm-3 control-label">{{Temps de décollement}}
 										<sup>
-											<i class="fa fa-question-circle tooltips" title="{{Saisissez le temps de decollement. Temps avant que le volet se decolle de son seuil}}"></i>
+											<i class="fa fa-question-circle tooltips" title="{{Saisissez le temps de décollement. Temps avant que le volet se décolle de son seuil}}"></i>
 										</sup>
 									</label>
 									<div class="col-sm-5">
