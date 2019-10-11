@@ -1,18 +1,23 @@
 <?php
 require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 class voletProp extends eqLogic {
-	public static function cron() {
-		foreach(eqLogic::byType('voletProp') as $Volet){ 
-			if(cache::byKey('voletProp::Move::'.$Volet->getId())->getValue(false)){
-				$ChangeStateStart = cache::byKey('voletProp::ChangeStateStart::'.$Volet->getId())->getValue(microtime(true));
-				$Timeout = microtime(true)-$ChangeStateStart;
-				$Timeout*=1000000;
-				$TempsTotal = $Volet->getTime('Ttotal');
-				log::add('voletProp','debug',$Volet->getHumanName()."[Timeout] Temps d'attente: ".$Timeout." > ".$TempsTotal." ?");
-				if($Timeout >= $TempsTotal){
-					log::add('voletProp','info',$Volet->getHumanName()."[Timeout] Execution du stop");
-					$Volet->getCmd(null,'stop')->execute(null);					
+	public static function timeout() ($_option) {	
+		$Volet = eqlogic::byId($_option['id']); 
+		if (is_object($Volet) && $Volet->getIsEnable()) {
+			while(true){
+				$TempsTimeout = $Volet->getTime('Ttotal');
+				if(cache::byKey('voletProp::Move::'.$Volet->getId())->getValue(false)){
+					$ChangeStateStart = cache::byKey('voletProp::ChangeStateStart::'.$Volet->getId())->getValue(microtime(true));
+					$Timeout = microtime(true)-$ChangeStateStart;
+					$Timeout*=1000000;
+					log::add('voletProp','debug',$Volet->getHumanName()."[Timeout] Temps d'attente: ".$Timeout." > ".$TempsTimeout." ?");
+					if($Timeout >= $TempsTimeout){
+						log::add('voletProp','info',$Volet->getHumanName()."[Timeout] Execution du stop");
+						$Volet->getCmd(null,'stop')->execute(null);					
+					}
+					$TempsTimeout -= $Timeout;
 				}
+				usleep($TempsTimeout);
 			}
 		}
 	}
@@ -43,6 +48,10 @@ class voletProp extends eqLogic {
 					if (!is_object($listener))
 						return $return;
 				}
+				
+				$cron = cron::byClassAndFunction('voletProp', 'timeout', array('id' => $Volet->getId()));
+				if (!is_object($cron))  	
+					return $return;
 			}
 		}
 		$return['state'] = 'ok';
@@ -59,11 +68,15 @@ class voletProp extends eqLogic {
 		foreach(eqLogic::byType('voletProp') as $Volet){
 			cache::set('voletProp::Move::'.$Volet->getId(),false, 0);
 			$Volet->StartListener();
+			$Volet->CreateDemon();   
 		}
 	}
 	public static function deamon_stop() {	
 		foreach(eqLogic::byType('voletProp') as $Volet){
 			$Volet->StopListener();
+			$cron = cron::byClassAndFunction('voletProp', 'timeout', array('id' => $Volet->getId()));
+			if (is_object($cron)) 	
+				$cron->remove();
 		}
 	}
 	public static function Up($_option) {
@@ -147,6 +160,24 @@ class voletProp extends eqLogic {
 				$Volet->checkAndUpdateCmd('hauteur',0);
 			}
 		}
+	}
+	private function CreateDemon() {
+		$cron =cron::byClassAndFunction('voletProp', 'pull', array('id' => $this->getId()));
+		if (!is_object($cron)) {
+			$cron = new cron();
+			$cron->setClass('voletProp');
+			$cron->setFunction('timeout');
+			$cron->setOption(array('id' => $this->getId()));
+			$cron->setEnable(1);
+			$cron->setDeamon(1);
+			$cron->setSchedule('* * * * *');
+			$cron->setTimeout('1');
+			$cron->save();
+		}
+		$cron->save();
+		$cron->start();
+		$cron->run();
+		return $cron;
 	}
 	public function boolToText($value){
 		if (is_bool($value)) {
