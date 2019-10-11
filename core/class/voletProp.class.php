@@ -2,7 +2,7 @@
 require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 class voletProp extends eqLogic {
 	public static function timeout() ($_option) {	
-		$Volet = eqlogic::byId($_option['id']); 
+		$Volet = eqlogic::byId($_option['Volets_id']); 
 		if (is_object($Volet) && $Volet->getIsEnable()) {
 			while(true){
 				$TempsTimeout = $Volet->getTime('Ttotal');
@@ -49,7 +49,7 @@ class voletProp extends eqLogic {
 						return $return;
 				}
 				
-				$cron = cron::byClassAndFunction('voletProp', 'timeout', array('id' => $Volet->getId()));
+				$cron = cron::byClassAndFunction('voletProp', 'timeout', array('Volets_id' => $Volet->getId()));
 				if (!is_object($cron))  	
 					return $return;
 			}
@@ -74,7 +74,7 @@ class voletProp extends eqLogic {
 	public static function deamon_stop() {	
 		foreach(eqLogic::byType('voletProp') as $Volet){
 			$Volet->StopListener();
-			$cron = cron::byClassAndFunction('voletProp', 'timeout', array('id' => $Volet->getId()));
+			$cron = cron::byClassAndFunction('voletProp', 'timeout', array('Volets_id' => $Volet->getId()));
 			if (is_object($cron)) 	
 				$cron->remove();
 		}
@@ -167,7 +167,7 @@ class voletProp extends eqLogic {
 			$cron = new cron();
 			$cron->setClass('voletProp');
 			$cron->setFunction('timeout');
-			$cron->setOption(array('id' => $this->getId()));
+			$cron->setOption(array('Volets_id' => $this->getId()));
 			$cron->setEnable(1);
 			$cron->setDeamon(1);
 			$cron->setSchedule('* * * * *');
@@ -445,6 +445,7 @@ class voletProp extends eqLogic {
 		$this->AddCommande("Down","down","action", 'other',1,null,'<i class="fa fa-arrow-down"></i>','FLAP_DOWN');
 		$this->AddCommande("Stop","stop","action", 'other',1,null,'<i class="fa fa-stop"></i>','FLAP_STOP');
 		$this->StartListener();
+		$this->CreateDemon();   
 	}	
 	
 	public function preRemove() {
@@ -460,6 +461,9 @@ class voletProp extends eqLogic {
 		$listener = listener::byClassAndFunction('voletProp', 'End', array('Volets_id' => $this->getId()));
 		if (is_object($listener))
 			$listener->remove();
+		$cron = cron::byClassAndFunction('voletProp', 'timeout', array('Volets_id' => $this->getId()));
+		if (is_object($cron)) 	
+			$cron->remove();
 	}
 }
 class voletPropCmd extends cmd {
