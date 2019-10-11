@@ -1,7 +1,7 @@
 <?php
 require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 class voletProp extends eqLogic {
-	public static function timeout() ($_option) {	
+	public static function timeout($_option) {	
 		$Volet = eqlogic::byId($_option['Volets_id']); 
 		if (is_object($Volet) && $Volet->getIsEnable()) {
 			while(true){
@@ -162,7 +162,7 @@ class voletProp extends eqLogic {
 		}
 	}
 	private function CreateDemon() {
-		$cron =cron::byClassAndFunction('voletProp', 'pull', array('id' => $this->getId()));
+		$cron =cron::byClassAndFunction('voletProp', 'pull', array('Volets_id' => $this->getId()));
 		if (!is_object($cron)) {
 			$cron = new cron();
 			$cron->setClass('voletProp');
