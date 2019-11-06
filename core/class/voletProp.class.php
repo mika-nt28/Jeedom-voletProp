@@ -10,12 +10,14 @@ class voletProp extends eqLogic {
 					$ChangeStateStart = cache::byKey('voletProp::ChangeStateStart::'.$Volet->getId())->getValue(microtime(true));
 					$Timeout = microtime(true)-$ChangeStateStart;
 					$Timeout*=1000000;
-					log::add('voletProp','debug',$Volet->getHumanName()."[Timeout] Temps d'attente: ".$Timeout." > ".$TempsTimeout." ?");
 					if($Timeout >= $TempsTimeout){
 						log::add('voletProp','info',$Volet->getHumanName()."[Timeout] Execution du stop");
-						$Volet->getCmd(null,'stop')->execute(null);					
+						$Volet->getCmd(null,'stop')->execute(null);	
+						
+					}else{
+						log::add('voletProp','info',$Volet->getHumanName()."[Timeout] Temps d'attente: ".$Timeout." < ".$TempsTimeout.", Nous attendons");
+						$TempsTimeout -= ceil($Timeout);
 					}
-					$TempsTimeout -= $Timeout;
 				}
 				usleep($TempsTimeout);
 			}
