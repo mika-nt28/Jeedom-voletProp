@@ -10,12 +10,14 @@ class voletProp extends eqLogic {
 					$ChangeStateStart = cache::byKey('voletProp::ChangeStateStart::'.$Volet->getId())->getValue(microtime(true));
 					$Timeout = microtime(true)-$ChangeStateStart;
 					$Timeout*=1000000;
-					log::add('voletProp','debug',$Volet->getHumanName()."[Timeout] Temps d'attente: ".$Timeout." > ".$TempsTimeout." ?");
 					if($Timeout >= $TempsTimeout){
 						log::add('voletProp','info',$Volet->getHumanName()."[Timeout] Execution du stop");
-						$Volet->getCmd(null,'stop')->execute(null);					
+						$Volet->getCmd(null,'stop')->execute(null);	
+						
+					}else{
+						log::add('voletProp','info',$Volet->getHumanName()."[Timeout] Temps d'attente: ".$Timeout." < ".$TempsTimeout.", Nous attendons");
+						$TempsTimeout -= ceil($Timeout);
 					}
-					$TempsTimeout -= $Timeout;
 				}
 				usleep($TempsTimeout);
 			}
@@ -436,6 +438,12 @@ class voletProp extends eqLogic {
 			$Commande->setDisplay('generic_type', $generic_type);
 		$Commande->save();
 		return $Commande;
+	}
+	public function preSave() {
+		if(($this->getConfiguration('UpStateCmd') == '' && $this->getConfiguration('DownStateCmd') == '' 
+		   || ($this->getConfiguration('EndUpCmd') == '' && $this->getConfiguration('EndDownCmd') == ''))
+		   && ($this->getConfiguration('useStateManual')  || $this->getConfiguration('useStateJeedom')))
+			throw new Exception(__('Erreur dans la configuration, il n\'est pas possible d\'activer la gestion des etat si pas d\'etat de configurer', __FILE__));
 	}
 	public function postSave() {
 		$this->StopListener();
