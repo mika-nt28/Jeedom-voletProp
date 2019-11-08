@@ -440,9 +440,9 @@ class voletProp extends eqLogic {
 		return $Commande;
 	}
 	public function preSave() {
-		if($this->getConfiguration('UpStateCmd') == '' && $this->getConfiguration('DownStateCmd') == '' 
-		   || ($this->getConfiguration('EndUpCmd') == '' && $this->getConfiguration('EndDownCmd') == '')
-		   && ($this->getConfiguration('useStateManual')  || $this->getConfiguration('useStateJeedom'))
+		if(($this->getConfiguration('UpStateCmd') == '' && $this->getConfiguration('DownStateCmd') == '' 
+		   || ($this->getConfiguration('EndUpCmd') == '' && $this->getConfiguration('EndDownCmd') == ''))
+		   && ($this->getConfiguration('useStateManual')  || $this->getConfiguration('useStateJeedom')))
 			throw new Exception(__('Erreur dans la configuration, il n\'est pas possible d\'activer la gestion des etat si pas d\'etat de configurer', __FILE__));
 	}
 	public function postSave() {
