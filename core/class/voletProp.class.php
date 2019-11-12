@@ -164,7 +164,7 @@ class voletProp extends eqLogic {
 		}
 	}
 	private function CreateDemon() {
-		$cron =cron::byClassAndFunction('voletProp', 'pull', array('Volets_id' => $this->getId()));
+		$cron =cron::byClassAndFunction('voletProp', 'timeout', array('Volets_id' => $this->getId()));
 		if (!is_object($cron)) {
 			$cron = new cron();
 			$cron->setClass('voletProp');
