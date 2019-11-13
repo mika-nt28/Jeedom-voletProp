@@ -207,12 +207,12 @@ class voletProp extends eqLogic {
 		$ChangeStateStop = cache::byKey('voletProp::ChangeStateStop::'.$this->getId())->getValue(microtime(true));	
 		$TempsAction=$ChangeStateStop-$ChangeStateStart;	
 		$TempsAction=round($TempsAction*1000000);
-		log::add('voletProp','debug',$this->getHumanName().' Temps de mouvement du volet de '.$TempsAction.'µs');
 		$HauteurActuel=$this->getCmd(null,'hauteur')->execCmd();
-		$TempsTotal = $this->getTime('Ttotal');
-		if($HauteurActuel != 0)
-			$TempsTotal-=$this->getTime('Tdecol');
-		$Hauteur=round($TempsAction*100/$TempsTotal);
+		if($HauteurActuel == 0)
+			$TempsAction -= $this->getTime('Tdecol');
+		log::add('voletProp','debug',$this->getHumanName().' Temps de mouvement du volet de '.$TempsAction.'µs');
+		$Temps = $this->getTime('Ttotal') - $this->getTime('Tdecol');
+		$Hauteur=round($TempsAction*100/$Temps);
 		log::add('voletProp','debug',$this->getHumanName().' Mouvement du volet de '.$Hauteur.'%');
 		if($ChangeState)
 			$Hauteur=round($HauteurActuel+$Hauteur);
@@ -328,10 +328,10 @@ class voletProp extends eqLogic {
 		return $this->getConfiguration($Type)*$this->getConfiguration($Type.'Base',1000000);
 	}
     	public function TpsAction($Hauteur, $AutorisationDecollement) {
-		$TempsTotal = $this->getTime('Ttotal');
+		$Temps = $this->getTime('Ttotal') - $this->getTime('Tdecol');	
+		$TempsAction=round($Hauteur*$Temps/100);
 		if(!$AutorisationDecollement)
-			$TempsTotal -= $this->getTime('Tdecol');	
-		$TempsAction=round($Hauteur*$TempsTotal/100);
+			$TempsAction += $this->getTime('Tdecol');
 		if($TempsAction <= $this->getConfiguration('delaisMini')*1000000) 
 			$TempsAction = $this->getConfiguration('delaisMini')*1000000;
 		log::add('voletProp','debug',$this->getHumanName().' Temps d\'action '.$TempsAction.'µs');
