@@ -330,7 +330,7 @@ class voletProp extends eqLogic {
     	public function TpsAction($Hauteur, $AutorisationDecollement) {
 		$Temps = $this->getTime('Ttotal') - $this->getTime('Tdecol');	
 		$TempsAction=round($Hauteur*$Temps/100);
-		if(!$AutorisationDecollement)
+		if($AutorisationDecollement)
 			$TempsAction += $this->getTime('Tdecol');
 		if($TempsAction <= $this->getConfiguration('delaisMini')*1000000) 
 			$TempsAction = $this->getConfiguration('delaisMini')*1000000;
