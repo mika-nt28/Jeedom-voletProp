@@ -208,9 +208,11 @@ class voletProp extends eqLogic {
 		$TempsAction=$ChangeStateStop-$ChangeStateStart;	
 		$TempsAction=round($TempsAction*1000000);
 		$HauteurActuel=$this->getCmd(null,'hauteur')->execCmd();
-		if($HauteurActuel == 0)
-			$TempsAction -= $this->getTime('Tdecol');
 		log::add('voletProp','debug',$this->getHumanName().' Temps de mouvement du volet de '.$TempsAction.'µs');
+		if($HauteurActuel == 0){
+			$TempsAction -= $this->getTime('Tdecol');
+			log::add('voletProp','debug',$this->getHumanName().' Suppression du temps de decollement');
+		}
 		$Temps = $this->getTime('Ttotal') - $this->getTime('Tdecol');
 		$Hauteur=round($TempsAction*100/$Temps);
 		log::add('voletProp','debug',$this->getHumanName().' Mouvement du volet de '.$Hauteur.'%');
@@ -330,8 +332,10 @@ class voletProp extends eqLogic {
     	public function TpsAction($Hauteur, $AutorisationDecollement) {
 		$Temps = $this->getTime('Ttotal') - $this->getTime('Tdecol');	
 		$TempsAction=round($Hauteur*$Temps/100);
-		if($AutorisationDecollement)
+		if($AutorisationDecollement){
 			$TempsAction += $this->getTime('Tdecol');
+			log::add('voletProp','debug',$this->getHumanName().' Ajout du temps de décollement');
+		}
 		if($TempsAction <= $this->getConfiguration('delaisMini')*1000000) 
 			$TempsAction = $this->getConfiguration('delaisMini')*1000000;
 		log::add('voletProp','debug',$this->getHumanName().' Temps d\'action '.$TempsAction.'µs');
