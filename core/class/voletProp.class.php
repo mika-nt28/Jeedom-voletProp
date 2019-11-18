@@ -31,22 +31,22 @@ class voletProp extends eqLogic {
 		foreach(eqLogic::byType('voletProp') as $Volet){
 			if($Volet->getIsEnable()){
 				if($Volet->getConfiguration('UpStateCmd') != '' ){				
-					$listener = listener::byClassAndFunction('voletProp', 'Up', array('Volets_id' => $Volet->getId()));
+					$listener = listener::byClassAndFunction('voletProp', 'UpVolet', array('Volets_id' => $Volet->getId()));
 					if (!is_object($listener))
 						return $return;
 				}
 				if($Volet->getConfiguration('DownStateCmd') != ''){				
-					$listener = listener::byClassAndFunction('voletProp', 'Down', array('Volets_id' => $Volet->getId()));
+					$listener = listener::byClassAndFunction('voletProp', 'DownVolet', array('Volets_id' => $Volet->getId()));
 					if (!is_object($listener))
 						return $return;
 				}
 				if($Volet->getConfiguration('StopStateCmd') != ''){				
-					$listener = listener::byClassAndFunction('voletProp', 'Stop', array('Volets_id' => $Volet->getId()));
+					$listener = listener::byClassAndFunction('voletProp', 'StopVolet', array('Volets_id' => $Volet->getId()));
 					if (!is_object($listener))
 						return $return;
 				}
 				if($Volet->getConfiguration('EndUpCmd') != '' || $Volet->getConfiguration('EndDownCmd') != ''){
-					$listener = listener::byClassAndFunction('voletProp', 'End', array('Volets_id' => $Volet->getId()));
+					$listener = listener::byClassAndFunction('voletProp', 'EndVolet', array('Volets_id' => $Volet->getId()));
 					if (!is_object($listener))
 						return $return;
 				}
@@ -81,7 +81,7 @@ class voletProp extends eqLogic {
 				$cron->remove();
 		}
 	}
-	public static function Up($_option) {
+	public static function UpVolet($_option) {
 		log::add('voletProp','debug','Detection sur le listener Up : '.json_encode($_option));
 		$Volet = eqLogic::byId($_option['Volets_id']);
 		$detectedCmd = cmd::byId($_option['event_id']);
@@ -104,7 +104,7 @@ class voletProp extends eqLogic {
 			}
 		}
 	}
-	public static function Down($_option) {
+	public static function DownVolet($_option) {
 		log::add('voletProp','debug','Detection sur le listener Down : '.json_encode($_option));
 		$Volet = eqLogic::byId($_option['Volets_id']);
 		$detectedCmd = cmd::byId($_option['event_id']);
@@ -127,7 +127,7 @@ class voletProp extends eqLogic {
 			}
 		}
 	}
-	public static function Stop($_option) {
+	public static function StopVolet($_option) {
 		log::add('voletProp','debug','Detection sur le listener Stop : '.json_encode($_option));
 		$Volet = eqLogic::byId($_option['Volets_id']);
 		$detectedCmd = cmd::byId($_option['event_id']);
@@ -146,7 +146,7 @@ class voletProp extends eqLogic {
 			}
 		}
 	}
-	public static function End($_option) {
+	public static function EndVolet($_option) {
 		log::add('voletProp','debug','Detection sur le listener End : '.json_encode($_option));
 		$Volet = eqLogic::byId($_option['Volets_id']);
 		$detectedCmd = cmd::byId($_option['event_id']);
@@ -343,16 +343,16 @@ class voletProp extends eqLogic {
 		return $TempsAction;
 	}
 	public function StopListener() {
-		$listener = listener::byClassAndFunction('voletProp', 'Up', array('Volets_id' => $this->getId()));
+		$listener = listener::byClassAndFunction('voletProp', 'UpVolet', array('Volets_id' => $this->getId()));
 		if (is_object($listener))
 			$listener->remove();
-		$listener = listener::byClassAndFunction('voletProp', 'Down', array('Volets_id' => $this->getId()));
+		$listener = listener::byClassAndFunction('voletProp', 'DownVolet', array('Volets_id' => $this->getId()));
 		if (is_object($listener))
 			$listener->remove();
-		$listener = listener::byClassAndFunction('voletProp', 'Stop', array('Volets_id' => $this->getId()));
+		$listener = listener::byClassAndFunction('voletProp', 'StopVolet', array('Volets_id' => $this->getId()));
 		if (is_object($listener))
 			$listener->remove();
-		$listener = listener::byClassAndFunction('voletProp', 'End', array('Volets_id' => $this->getId()));
+		$listener = listener::byClassAndFunction('voletProp', 'EndVolet', array('Volets_id' => $this->getId()));
 		if (is_object($listener))
 			$listener->remove();
 		$cache = cache::byKey('voletProp::ChangeStateStart::'.$this->getId());
@@ -370,48 +370,48 @@ class voletProp extends eqLogic {
 	}
 	public function StartListener() {
 		if($this->getIsEnable()){
-			$listener = listener::byClassAndFunction('voletProp', 'Up', array('Volets_id' => $this->getId()));
+			$listener = listener::byClassAndFunction('voletProp', 'UpVolet', array('Volets_id' => $this->getId()));
 			$UpStateCmd=$this->getConfiguration('UpStateCmd');
 			if ($UpStateCmd != ''){
 				if (!is_object($listener))
 				    $listener = new listener();
 				$listener->setClass('voletProp');
-				$listener->setFunction('Up');
+				$listener->setFunction('UpVolet');
 				$listener->setOption(array('Volets_id' => $this->getId()));
 				$listener->emptyEvent();	
 				$listener->addEvent($UpStateCmd);
 				$listener->save();			
 			}
-			$listener = listener::byClassAndFunction('voletProp', 'Down', array('Volets_id' => $this->getId()));
+			$listener = listener::byClassAndFunction('voletProp', 'DownVolet', array('Volets_id' => $this->getId()));
 			$DownStateCmd=$this->getConfiguration('DownStateCmd');
 			if ($DownStateCmd != ''){
 				if (!is_object($listener))
 				    $listener = new listener();
 				$listener->setClass('voletProp');
-				$listener->setFunction('Down');
+				$listener->setFunction('DownVolet');
 				$listener->setOption(array('Volets_id' => $this->getId()));
 				$listener->emptyEvent();	
 					$listener->addEvent($DownStateCmd);
 				$listener->save();			
 			}
-			$listener = listener::byClassAndFunction('voletProp', 'Stop', array('Volets_id' => $this->getId()));
+			$listener = listener::byClassAndFunction('voletProp', 'StopVolet', array('Volets_id' => $this->getId()));
 			$StopStateCmd=$this->getConfiguration('StopStateCmd');
 			if ($StopStateCmd != ''){
 				if (!is_object($listener))
 				    $listener = new listener();
 				$listener->setClass('voletProp');
-				$listener->setFunction('Stop');
+				$listener->setFunction('StopVolet');
 				$listener->setOption(array('Volets_id' => $this->getId()));
 				$listener->emptyEvent();	
 				$listener->addEvent($StopStateCmd);
 				$listener->save();				
 			}
-			$listener = listener::byClassAndFunction('voletProp', 'End', array('Volets_id' => $this->getId()));
+			$listener = listener::byClassAndFunction('voletProp', 'EndVolet', array('Volets_id' => $this->getId()));
 			if ($this->getConfiguration('EndUpCmd') != '' || $this->getConfiguration('EndDownCmd') != ''){
 				if (!is_object($listener))
 				    $listener = new listener();
 				$listener->setClass('voletProp');
-				$listener->setFunction('End');
+				$listener->setFunction('EndVolet');
 				$listener->setOption(array('Volets_id' => $this->getId()));
 				$listener->emptyEvent();	
 				if ($this->getConfiguration('EndUpCmd') != '')
@@ -462,16 +462,16 @@ class voletProp extends eqLogic {
 	}	
 	
 	public function preRemove() {
-		$listener = listener::byClassAndFunction('voletProp', 'Up', array('Volets_id' => $this->getId()));
+		$listener = listener::byClassAndFunction('voletProp', 'UpVolet', array('Volets_id' => $this->getId()));
 		if (is_object($listener))
 			$listener->remove();
-		$listener = listener::byClassAndFunction('voletProp', 'Down', array('Volets_id' => $this->getId()));
+		$listener = listener::byClassAndFunction('voletProp', 'DownVolet', array('Volets_id' => $this->getId()));
 		if (is_object($listener))
 			$listener->remove();
-		$listener = listener::byClassAndFunction('voletProp', 'Stop', array('Volets_id' => $this->getId()));
+		$listener = listener::byClassAndFunction('voletProp', 'StopVolet', array('Volets_id' => $this->getId()));
 		if (is_object($listener))
 			$listener->remove();
-		$listener = listener::byClassAndFunction('voletProp', 'End', array('Volets_id' => $this->getId()));
+		$listener = listener::byClassAndFunction('voletProp', 'EndVolet', array('Volets_id' => $this->getId()));
 		if (is_object($listener))
 			$listener->remove();
 		$cron = cron::byClassAndFunction('voletProp', 'timeout', array('Volets_id' => $this->getId()));
