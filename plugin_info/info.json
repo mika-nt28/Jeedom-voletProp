@@ -8,7 +8,5 @@
 	"category" : "automatisation",
 	"compatibility" : ["miniplus","smart","rpi","docker","diy","mobile"],
 	"hasOwnDeamon" : true,
-	"issue" : "https://github.com/mika-nt28/Jeedom-voletProp/issues",
- 	"changelog" : "https://github.com/mika-nt28/Jeedom-voletProp/commits/master",
  	"documentation" : "https://mika-nt28.github.io/Jeedom-voletProp"
 }
