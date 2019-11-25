@@ -50,9 +50,8 @@ class voletProp extends eqLogic {
 					if (!is_object($listener))
 						return $return;
 				}
-				
 				$cron = cron::byClassAndFunction('voletProp', 'timeout', array('Volets_id' => $Volet->getId()));
-				if (!is_object($cron))  	
+				if(!is_object($cron) || !$cron->running()) 	
 					return $return;
 			}
 		}
