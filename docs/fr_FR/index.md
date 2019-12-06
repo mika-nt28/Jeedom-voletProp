@@ -46,3 +46,16 @@ Délais
 
 * Temps total : Temps total que met le volet pour une fermeture ou un ouverture
 * Temps de décollement : Temps avant lequel le volet se decolle du sol
+
+ChangeLog
+=========
+
+Beta
+----
+
+Stable
+------
+
+### 06/12/2019
+
+* Interdiction du timeout lors de l'utilisation de Up et Down direct
