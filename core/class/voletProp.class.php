@@ -300,7 +300,7 @@ class voletProp extends eqLogic {
 		if($Hauteur == 0 || $HauteurVolet == 0)
 			$AutorisationDecollement=true;
 		cache::set('voletProp::Move::'.$this->getId(),true, 0);
-		cache::set('voletProp::Prop::'.$Volet->getId(),true, 0);
+		cache::set('voletProp::Prop::'.$this->getId(),true, 0);
 		if($HauteurVolet > $Hauteur){
 			$Delta=$HauteurVolet-$Hauteur;
 			$temps=$this->TpsAction($Delta,$AutorisationDecollement);
