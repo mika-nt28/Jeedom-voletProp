@@ -55,7 +55,3 @@ Beta
 
 Stable
 ------
-
-### 06/12/2019
-
-* Interdiction du timeout lors de l'utilisation de Up et Down direct
