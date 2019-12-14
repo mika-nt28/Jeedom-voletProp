@@ -31,6 +31,9 @@ Objet d'état du volet
 ---
 
 Les états de mouvement sont defini comme une condition, c'est a dire qu'il faut definir une objet (de votre equipement connecter au volet) ainsi qu'un opérende et une valeur.
+* Utiliser les etat sur : 
+ * Les mouvement Jeedom : Permet de mettre a jours la hauteur par les retour d'etat sur ordre de jeedom  
+ * Les mouvement manuel : Permet de mettre a jours la hauteur par les retour d'etat sur ordre de manuel (interrupteur telecommande)  
 
 * Condition d'etat montée : Cette etat indique au plugin une montée
 * Condition d'etat descente  : Cette etat indique au plugin une descente
@@ -43,3 +46,16 @@ Délais
 
 * Temps total : Temps total que met le volet pour une fermeture ou un ouverture
 * Temps de décollement : Temps avant lequel le volet se decolle du sol
+
+ChangeLog
+=========
+
+Beta
+----
+
+Stable
+------
+
+### 06/12/2019
+
+* Interdiction du timeout lors de l'utilisation de Up et Down direct
