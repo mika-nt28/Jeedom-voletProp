@@ -433,7 +433,7 @@ class voletProp extends eqLogic {
 			$Commande->setEqLogic_id($this->getId());
 			$Commande->setType($Type);
 			$Commande->setSubType($SubType);
-		}
+		
 		if($Value != null)
 			$Commande->setValue($Value);
 		if($icon != null)
@@ -441,6 +441,7 @@ class voletProp extends eqLogic {
 		if($generic_type != null)
 			$Commande->setDisplay('generic_type', $generic_type);
 		$Commande->save();
+} 
 		return $Commande;
 	}
 	public function preSave() {
