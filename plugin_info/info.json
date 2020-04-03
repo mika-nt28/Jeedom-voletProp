@@ -6,8 +6,8 @@
 	"author" : "Halbout Michael",
 	"require" : "2.4",
 	"category" : "automatisation",
-	"compatibility" : ["miniplus","smart","rpi","docker","diy","mobile"],
+	"compatibility" : ["miniplus","smart","rpi","docker","diy","mobile","v4"],
 	"hasOwnDeamon" : true,
- 	"documentation" : "https://mika-nt28.github.io/Jeedom-voletProp",
-	"changelog" : "https://mika-nt28.github.io/Jeedom-voletProp/"
+ 	"documentation" : "https://mika-nt28.github.io/Documentations/voletProp",
+	"changelog" : "https://mika-nt28.github.io/Documentations/voletProp/changelog"
 }
