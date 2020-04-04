@@ -8,6 +8,6 @@
 	"category" : "automatisation",
 	"compatibility" : ["miniplus","smart","rpi","docker","diy","mobile","v4"],
 	"hasOwnDeamon" : true,
- 	"documentation" : "https://mika-nt28.github.io/Documentations/voletProp",
-	"changelog" : "https://mika-nt28.github.io/Documentations/voletProp/changelog"
+ 	"documentation" : "https://mika-nt28.github.io/Documentations/voletProp/#language#/",
+	"changelog" : "https://mika-nt28.github.io/Documentations/voletProp/#language#/changelog"
 }
