@@ -238,16 +238,14 @@ $eqLogics = eqLogic::byType($plugin->getId());
 							<legend>Objet d'état du volet</legend>
 							<fieldset>
 								<div class="form-group">
-									<label class="col-sm-3 control-label">{{Utiliser les etat sur :}}
+									<label class="col-sm-3 control-label">{{*Autorisation :}}
 										<sup>
-											<i class="fa fa-question-circle tooltips" title="{{Cocher les options d’utilisation du retour d’état}}"></i>
+											<i class="fa fa-question-circle tooltips" title="{{Cocher pour laisser l'etat du volet se mettre a jours par le retour d'etat}}"></i>
 										</sup>
 									</label>
 									<div class="col-sm-9">
-										<label>{{Les mouvement Jeedom}}</label>
+										<label>{{Les mouvements Jeedom}}</label>
 										<input type="checkbox" class="eqLogicAttr" data-label-text="{{Jeedom}}" data-l1key="configuration" data-l2key="useStateJeedom"/>
-										<label>{{Les mouvement manuel}}</label>
-										<input type="checkbox" class="eqLogicAttr" data-label-text="{{Manuel}}" data-l1key="configuration" data-l2key="useStateManual"/>
 									</div>
 								</div>	
 								<div class="form-group">
