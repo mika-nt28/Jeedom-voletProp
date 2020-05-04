@@ -10,13 +10,6 @@ $("body").on('click', ".listCmdAction", function() {
 		el.value(result.human);
 	});
 });
-function printEqLogic(_eqLogic) {
-	$('.eqLogicAttr[data-l1key=configuration][data-l2key=Synchronisation] option').attr("selected", false);
-	$.each(_eqLogic.configuration.Synchronisation, function( index, value ) {
-		if(typeof value !== 'undefined' && value != '') 
-			$('.eqLogicAttr[data-l1key=configuration][data-l2key=Synchronisation] option[value='+value+']').attr("selected", true);
-	});
-}
 function addCmdToTable(_cmd) {
 	var tr =$('<tr class="cmd" data-cmd_id="' + init(_cmd.id) + '">');
 	tr.append($('<td>')
