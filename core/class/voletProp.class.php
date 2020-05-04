@@ -234,7 +234,8 @@ class voletProp extends eqLogic {
 		$Up=cmd::byId(str_replace('#','',$this->getConfiguration('cmdUp')));
 		if(!is_object($Up))
 			return false;
-		foreach($this->getConfiguration('Synchronisation') as $Synchronisation){
+		$Synchronisations = explode('|',$this->getConfiguration('Synchronisation'));
+		foreach($Synchronisations as $Synchronisation){
 			if($Synchronisation == '100' && $Hauteur == 100){
 				log::add('voletProp','info',$this->getHumanName().'[Synchronisation] Montée complete');
 				$Up->execute(null);
