@@ -85,20 +85,18 @@ class voletProp extends eqLogic {
 		$Volet = eqLogic::byId($_option['Volets_id']);
 		$detectedCmd = cmd::byId($_option['event_id']);
 		if (is_object($detectedCmd) && is_object($Volet) && $Volet->getIsEnable()) {
-			if($Volet->getConfiguration('useStateJeedom') || $Volet->getConfiguration('useStateManual')){	
-				$isUp=$Volet->getConfiguration('UpStateCmd').$Volet->getConfiguration('UpStateOperande').$Volet->getConfiguration('UpStateValue');
-				if($Volet->EvaluateCondition($isUp)){
-					if($Volet->getConfiguration('StopStateCmd') == '' && cache::byKey('voletProp::Move::'.$Volet->getId())->getValue(false) && cache::byKey('voletProp::ChangeState::'.$Volet->getId())->getValue(false)){
-						log::add('voletProp','info',$Volet->getHumanName().' Stop du mouvement détécté par '.$detectedCmd->getHumanName());
-						cache::set('voletProp::ChangeStateStop::'.$Volet->getId(),microtime(true), 0);
-						$Volet->UpdateHauteur();
-						cache::set('voletProp::Move::'.$Volet->getId(),false, 0);
-					}else{
-						log::add('voletProp','info',$Volet->getHumanName().' Mouvement détécter sur '.$detectedCmd->getHumanName());
-						cache::set('voletProp::ChangeState::'.$Volet->getId(),true, 0);
-						cache::set('voletProp::Move::'.$Volet->getId(),true, 0);
-						cache::set('voletProp::ChangeStateStart::'.$Volet->getId(),microtime(true), 0);
-					}
+			$isUp=$Volet->getConfiguration('UpStateCmd').$Volet->getConfiguration('UpStateOperande').$Volet->getConfiguration('UpStateValue');
+			if($Volet->EvaluateCondition($isUp)){
+				if($Volet->getConfiguration('StopStateCmd') == '' && cache::byKey('voletProp::Move::'.$Volet->getId())->getValue(false) && cache::byKey('voletProp::ChangeState::'.$Volet->getId())->getValue(false)){
+					log::add('voletProp','info',$Volet->getHumanName().' Stop du mouvement détécté par '.$detectedCmd->getHumanName());
+					cache::set('voletProp::ChangeStateStop::'.$Volet->getId(),microtime(true), 0);
+					$Volet->UpdateHauteur();
+					cache::set('voletProp::Move::'.$Volet->getId(),false, 0);
+				}else{
+					log::add('voletProp','info',$Volet->getHumanName().' Mouvement détécter sur '.$detectedCmd->getHumanName());
+					cache::set('voletProp::ChangeState::'.$Volet->getId(),true, 0);
+					cache::set('voletProp::Move::'.$Volet->getId(),true, 0);
+					cache::set('voletProp::ChangeStateStart::'.$Volet->getId(),microtime(true), 0);
 				}
 			}
 		}
@@ -108,20 +106,18 @@ class voletProp extends eqLogic {
 		$Volet = eqLogic::byId($_option['Volets_id']);
 		$detectedCmd = cmd::byId($_option['event_id']);
 		if (is_object($detectedCmd) && is_object($Volet) && $Volet->getIsEnable()) {
-			if($Volet->getConfiguration('useStateJeedom') || $Volet->getConfiguration('useStateManual')){	
-				$isDown=$Volet->getConfiguration('DownStateCmd').$Volet->getConfiguration('DownStateOperande').$Volet->getConfiguration('DownStateValue');
-				if($Volet->EvaluateCondition($isDown)){
-					if($Volet->getConfiguration('StopStateCmd') == '' && cache::byKey('voletProp::Move::'.$Volet->getId())->getValue(false) && !cache::byKey('voletProp::ChangeState::'.$Volet->getId())->getValue(true)){
-						log::add('voletProp','info',$Volet->getHumanName().' Stop du mouvement détécté par '.$detectedCmd->getHumanName());
-						cache::set('voletProp::ChangeStateStop::'.$Volet->getId(),microtime(true), 0);
-						$Volet->UpdateHauteur();
-						cache::set('voletProp::Move::'.$Volet->getId(),false, 0);
-					}else{
-						log::add('voletProp','info',$Volet->getHumanName().' Mouvement détécter sur '.$detectedCmd->getHumanName());
-						cache::set('voletProp::ChangeState::'.$Volet->getId(),false, 0);
-						cache::set('voletProp::Move::'.$Volet->getId(),true, 0);
-						cache::set('voletProp::ChangeStateStart::'.$Volet->getId(),microtime(true), 0);
-					}
+			$isDown=$Volet->getConfiguration('DownStateCmd').$Volet->getConfiguration('DownStateOperande').$Volet->getConfiguration('DownStateValue');
+			if($Volet->EvaluateCondition($isDown)){
+				if($Volet->getConfiguration('StopStateCmd') == '' && cache::byKey('voletProp::Move::'.$Volet->getId())->getValue(false) && !cache::byKey('voletProp::ChangeState::'.$Volet->getId())->getValue(true)){
+					log::add('voletProp','info',$Volet->getHumanName().' Stop du mouvement détécté par '.$detectedCmd->getHumanName());
+					cache::set('voletProp::ChangeStateStop::'.$Volet->getId(),microtime(true), 0);
+					$Volet->UpdateHauteur();
+					cache::set('voletProp::Move::'.$Volet->getId(),false, 0);
+				}else{
+					log::add('voletProp','info',$Volet->getHumanName().' Mouvement détécter sur '.$detectedCmd->getHumanName());
+					cache::set('voletProp::ChangeState::'.$Volet->getId(),false, 0);
+					cache::set('voletProp::Move::'.$Volet->getId(),true, 0);
+					cache::set('voletProp::ChangeStateStart::'.$Volet->getId(),microtime(true), 0);
 				}
 			}
 		}
@@ -131,16 +127,14 @@ class voletProp extends eqLogic {
 		$Volet = eqLogic::byId($_option['Volets_id']);
 		$detectedCmd = cmd::byId($_option['event_id']);
 		if (is_object($detectedCmd) && is_object($Volet) && $Volet->getIsEnable()) {			
-			if($Volet->getConfiguration('useStateJeedom') || $Volet->getConfiguration('useStateManual')){	
-				$isStop=$Volet->getConfiguration('StopStateCmd').$Volet->getConfiguration('StopStateOperande').$Volet->getConfiguration('StopStateValue');
-				if($Volet->EvaluateCondition($isStop)){
-					log::add('voletProp','info',$Volet->getHumanName().' Action détécter sur '.$detectedCmd->getHumanName());
-					$Move=cache::byKey('voletProp::Move::'.$Volet->getId());
-					cache::set('voletProp::ChangeStateStop::'.$Volet->getId(),microtime(true), 0);
-					if(is_object($Move) && $Move->getValue(false)){
-						$Volet->UpdateHauteur();
-						cache::set('voletProp::Move::'.$Volet->getId(),false, 0);
-					}
+			$isStop=$Volet->getConfiguration('StopStateCmd').$Volet->getConfiguration('StopStateOperande').$Volet->getConfiguration('StopStateValue');
+			if($Volet->EvaluateCondition($isStop)){
+				log::add('voletProp','info',$Volet->getHumanName().' Action détécter sur '.$detectedCmd->getHumanName());
+				$Move=cache::byKey('voletProp::Move::'.$Volet->getId());
+				cache::set('voletProp::ChangeStateStop::'.$Volet->getId(),microtime(true), 0);
+				if(is_object($Move) && $Move->getValue(false)){
+					$Volet->UpdateHauteur();
+					cache::set('voletProp::Move::'.$Volet->getId(),false, 0);
 				}
 			}
 		}
@@ -423,8 +417,7 @@ class voletProp extends eqLogic {
 	}
 	public function AddCommande($Name,$_logicalId,$Type="info", $SubType='binary',$visible,$Value=null,$icon=null,$generic_type=null) {
 		$Commande = $this->getCmd(null,$_logicalId);
-		if (!is_object($Commande))
-		{
+		if (!is_object($Commande)){
 			$Commande = new voletPropCmd();
 			$Commande->setId(null);
 			$Commande->setName($Name);
@@ -432,22 +425,20 @@ class voletProp extends eqLogic {
 			$Commande->setLogicalId($_logicalId);
 			$Commande->setEqLogic_id($this->getId());
 			$Commande->setType($Type);
-			$Commande->setSubType($SubType);
-		
-		if($Value != null)
-			$Commande->setValue($Value);
-		if($icon != null)
-			$Commande->setDisplay('icon', $icon);
-		if($generic_type != null)
-			$Commande->setDisplay('generic_type', $generic_type);
-		$Commande->save();
-} 
+			$Commande->setSubType($SubType);		
+			if($Value != null)
+				$Commande->setValue($Value);
+			if($icon != null)
+				$Commande->setDisplay('icon', $icon);
+			if($generic_type != null)
+				$Commande->setDisplay('generic_type', $generic_type);
+			$Commande->save();
+		} 
 		return $Commande;
 	}
 	public function preSave() {
-		if(($this->getConfiguration('UpStateCmd') == '' && $this->getConfiguration('DownStateCmd') == '' 
-		   || ($this->getConfiguration('EndUpCmd') == '' && $this->getConfiguration('EndDownCmd') == ''))
-		   && ($this->getConfiguration('useStateManual')  || $this->getConfiguration('useStateJeedom')))
+		if(($this->getConfiguration('UpStateCmd') == '' || $this->getConfiguration('DownStateCmd') == '')
+		   &&  $this->getConfiguration('useStateJeedom'))
 			throw new Exception(__('Erreur dans la configuration, il n\'est pas possible d\'activer la gestion des etat si pas d\'etat de configurer', __FILE__));
 	}
 	public function postSave() {
