@@ -165,6 +165,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 									</label>
 									<div class="col-sm-5">
 										<select class="eqLogicAttr form-control custom-select" data-l1key="configuration" data-l2key="Synchronisation" multiple>
+											<option value="">{{Aucune}}</option>
 											<option value="all">{{A chaque mouvement}}</option>
 											<option value="0|100">{{Lors d'une  montée ou descente total}}</option>
 											<option value="100">{{Lors d'une montée total (100%)}}</option>
