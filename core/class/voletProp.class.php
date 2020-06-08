@@ -5,7 +5,10 @@ class voletProp extends eqLogic {
 		$Volet = eqlogic::byId($_option['Volets_id']); 
 		if (is_object($Volet) && $Volet->getIsEnable()) {
 			while(true){
-				$TempsTimeout = $Volet->getTime('Ttotal');
+				if(cache::byKey('voletProp::ChangeState::'.$Volet->getId())->getValue(false))
+					$TempsTimeout = $Volet->getTime('TpsUp');
+				else
+					$TempsTimeout = $Volet->getTime('TpsDown');
 				if(cache::byKey('voletProp::Move::'.$Volet->getId())->getValue(false)){
 					$ChangeStateStart = cache::byKey('voletProp::ChangeStateStart::'.$Volet->getId())->getValue(microtime(true));
 					$Timeout = microtime(true)-$ChangeStateStart;
@@ -206,7 +209,10 @@ class voletProp extends eqLogic {
 			$TempsAction -= $this->getTime('Tdecol');
 			log::add('voletProp','debug',$this->getHumanName().' Suppression du temps de decollement');
 		}
-		$Temps = $this->getTime('Ttotal') - $this->getTime('Tdecol');
+		if($ChangeState)
+			$Temps = $this->getTime('TpsUp') - $this->getTime('Tdecol');
+		else
+			$Temps = $this->getTime('TpsDown') - $this->getTime('Tdecol');
 		$Hauteur=round($TempsAction*100/$Temps);
 		log::add('voletProp','debug',$this->getHumanName().' Mouvement du volet de '.$Hauteur.'%');
 		if($ChangeState)
@@ -241,7 +247,7 @@ class voletProp extends eqLogic {
 				$Up->execute(null);
 				if(!isset($Stop))
 					$Stop=$Down;
-				usleep($this->getTime('Ttotal'));
+				usleep($this->getTime('TpsUp'));
 				$Stop->execute(null);		
 				if(!$this->getConfiguration('useStateJeedom'))
 					$this->checkAndUpdateCmd('hauteur',100);
@@ -252,7 +258,7 @@ class voletProp extends eqLogic {
 				$Down->execute(null);
 				if(!isset($Stop))
 					$Stop=$Up;
-				usleep($this->getTime('Ttotal'));
+				usleep($this->getTime('TpsDown'));
 				$Stop->execute(null);		
 				if(!$this->getConfiguration('useStateJeedom'))
 					$this->checkAndUpdateCmd('hauteur',0);
@@ -263,7 +269,7 @@ class voletProp extends eqLogic {
 				$Up->execute(null);
 				if(!isset($Stop))
 					$Stop=$Down;
-				usleep($this->getTime('Ttotal'));
+				usleep($this->getTime('TpsUp'));
 				$Stop->execute(null);		
 				if(!$this->getConfiguration('useStateJeedom'))
 					$this->checkAndUpdateCmd('hauteur',100);
@@ -325,7 +331,10 @@ class voletProp extends eqLogic {
 		return $this->getConfiguration($Type)*$this->getConfiguration($Type.'Base',1000000);
 	}
     	public function TpsAction($Hauteur, $AutorisationDecollement) {
-		$Temps = $this->getTime('Ttotal') - $this->getTime('Tdecol');	
+		if(cache::byKey('voletProp::ChangeState::'.$this->getId())->getValue(false))
+			$Temps = $this->getTime('TpsUp') - $this->getTime('Tdecol');
+		else
+			$Temps = $this->getTime('TpsDown') - $this->getTime('Tdecol');
 		$TempsAction=round($Hauteur*$Temps/100);
 		if($AutorisationDecollement){
 			$TempsAction += $this->getTime('Tdecol');

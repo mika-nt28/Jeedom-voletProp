@@ -379,15 +379,32 @@ $eqLogics = eqLogic::byType($plugin->getId());
 							<legend>Delais</legend>
 							<fieldset>
 								<div class="form-group">
-									<label class="col-sm-3 control-label">{{Temps total}}
+									<label class="col-sm-3 control-label">{{Temps de montée total}}
 										<sup>
 											<i class="fa fa-question-circle tooltips" title="{{Saisissez le temps total pour exécuter une montée ou une descente}}"></i>
 										</sup>
 									</label>
 									<div class="col-sm-5">
 										<div class="input-group">
-											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="Ttotal" placeholder="{{Saisir le temps de décollement}}"/>
-											<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="TtotalBase">
+											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="TpsUp" placeholder="{{Saisir le temps de décollement}}"/>
+											<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="TpsUpBase">
+												<option value="1000000">{{Seconde}}</option>                  
+												<option value="1000">{{Miliseconde}}</option>                  
+												<option value="1">{{Microseconde}}</option>   
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label">{{Temps descente total}}
+										<sup>
+											<i class="fa fa-question-circle tooltips" title="{{Saisissez le temps total pour exécuter une montée ou une descente}}"></i>
+										</sup>
+									</label>
+									<div class="col-sm-5">
+										<div class="input-group">
+											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="TpsDown" placeholder="{{Saisir le temps de décollement}}"/>
+											<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="TpsDownBase">
 												<option value="1000000">{{Seconde}}</option>                  
 												<option value="1000">{{Miliseconde}}</option>                  
 												<option value="1">{{Microseconde}}</option>   
