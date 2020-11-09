@@ -9,6 +9,8 @@ class voletProp extends eqLogic {
 					$TempsTimeout = $Volet->getTime('TpsUp');
 				else
 					$TempsTimeout = $Volet->getTime('TpsDown');
+				if($TempsTimeout <= 0)
+					break;
 				if(cache::byKey('voletProp::Move::'.$Volet->getId())->getValue(false)){
 					$ChangeStateStart = cache::byKey('voletProp::ChangeStateStart::'.$Volet->getId())->getValue(microtime(true));
 					$Timeout = microtime(true)-$ChangeStateStart;
@@ -330,7 +332,7 @@ class voletProp extends eqLogic {
 		}
 	}
     	private function getTime($Type) {
-		return $this->getConfiguration($Type)*$this->getConfiguration($Type.'Base',1000000);
+		return intval($this->getConfiguration($Type,0))*intval($this->getConfiguration($Type.'Base',1000000));
 	}
     	public function TpsAction($Hauteur, $AutorisationDecollement) {
 		if(cache::byKey('voletProp::ChangeState::'.$this->getId())->getValue(false))
