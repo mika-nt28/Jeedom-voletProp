@@ -288,7 +288,7 @@ class voletProp extends eqLogic {
 				else
 					$Stop->execute(null);		
 				if(!$this->getConfiguration('useStateJeedom'))
-					$this->checkAndUpdateCmd('hauteur',100);
+					$this->checkAndUpdateCmd('hauteur',0);
 			}
 			return true;
 		}
@@ -464,7 +464,7 @@ class voletProp extends eqLogic {
 	}
 	public function preSave() {
 		if(($this->getConfiguration('UpStateCmd') == '' || $this->getConfiguration('DownStateCmd') == '')
-		   &&  $this->getConfiguration('useStateJeedom'))
+		   &&  !$this->getConfiguration('useStateJeedom'))
 			throw new Exception(__('Erreur dans la configuration, il n\'est pas possible d\'activer la gestion des etat si pas d\'etat de configurer', __FILE__));
 	}
 	public function postSave() {
