@@ -250,7 +250,7 @@ class voletProp extends eqLogic {
 				$Up->execute(null);
 			else
 				$Stop->execute(null);		
-			if(!$this->getConfiguration('useStateJeedom'))
+			if($this->getConfiguration('useStateJeedom'))
 				$this->checkAndUpdateCmd('hauteur',100);
 			return false;
 		}
@@ -262,7 +262,7 @@ class voletProp extends eqLogic {
 				$Down->execute(null);
 			else
 				$Stop->execute(null);	
-			if(!$this->getConfiguration('useStateJeedom'))
+			if($this->getConfiguration('useStateJeedom'))
 				$this->checkAndUpdateCmd('hauteur',0);
 			return false;
 		}
@@ -275,7 +275,7 @@ class voletProp extends eqLogic {
 					$Down->execute(null);
 				else
 					$Stop->execute(null);	
-				if(!$this->getConfiguration('useStateJeedom'))
+				if($this->getConfiguration('useStateJeedom'))
 					$this->checkAndUpdateCmd('hauteur',100);
 			}else{
 				log::add('voletProp','info',$this->getHumanName().'[Synchronisation] Montée complete');
@@ -287,7 +287,7 @@ class voletProp extends eqLogic {
 					$Up->execute(null);
 				else
 					$Stop->execute(null);		
-				if(!$this->getConfiguration('useStateJeedom'))
+				if($this->getConfiguration('useStateJeedom'))
 					$this->checkAndUpdateCmd('hauteur',0);
 			}
 			return true;
