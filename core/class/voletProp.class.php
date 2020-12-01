@@ -230,9 +230,7 @@ class voletProp extends eqLogic {
 		log::add('voletProp','debug',$this->getHumanName().' Le volet est a '.$Hauteur.'%');
 		$this->checkAndUpdateCmd('hauteur',$Hauteur);
 	}
-    	public function CheckSynchro($Hauteur) {
-		if($this->getConfiguration('Synchronisation') == "")
-			return true;
+    	public function CheckSynchro($Hauteur,$HauteurVolet) {
 		if($this->getConfiguration('cmdStop') != ''){
 			$Stop=cmd::byId(str_replace('#','',$this->getConfiguration('cmdStop')));
 			if(!is_object($Stop))
@@ -244,46 +242,63 @@ class voletProp extends eqLogic {
 		$Up=cmd::byId(str_replace('#','',$this->getConfiguration('cmdUp')));
 		if(!is_object($Up))
 			return false;
-		$Synchronisations = explode('|',$this->getConfiguration('Synchronisation'));
-		foreach($Synchronisations as $Synchronisation){
-			if($Synchronisation == '100' && $Hauteur == 100){
-				log::add('voletProp','info',$this->getHumanName().'[Synchronisation] Montée complete');
+		if($Hauteur == 100){
+			log::add('voletProp','info',$this->getHumanName().'[Synchronisation] Montée complete');
+			$Up->execute(null);
+			usleep($this->getTime('TpsUp'));
+			if($this->getConfiguration('cmdStop') == '')			
 				$Up->execute(null);
-				if(!isset($Stop))
-					$Stop=$Down;
-				usleep($this->getTime('TpsUp'));
+			else
 				$Stop->execute(null);		
-				if(!$this->getConfiguration('useStateJeedom'))
-					$this->checkAndUpdateCmd('hauteur',100);
-				return false;
-			}
-			if($Synchronisation == '0' && $Hauteur == 0){
+			if($this->getConfiguration('useStateJeedom'))
+				$this->checkAndUpdateCmd('hauteur',100);
+			return false;
+		}
+		if($Hauteur == 0){
+			log::add('voletProp','info',$this->getHumanName().'[Synchronisation] Descente complete');
+			$Down->execute(null);
+			usleep($this->getTime('TpsDown'));
+			if($this->getConfiguration('cmdStop') == '')			
+				$Down->execute(null);
+			else
+				$Stop->execute(null);	
+			if($this->getConfiguration('useStateJeedom'))
+				$this->checkAndUpdateCmd('hauteur',0);
+			return false;
+		}
+		if($this->getConfiguration('Synchronisation')){
+			if($HauteurVolet > $Hauteur){
 				log::add('voletProp','info',$this->getHumanName().'[Synchronisation] Descente complete');
 				$Down->execute(null);
-				if(!isset($Stop))
-					$Stop=$Up;
 				usleep($this->getTime('TpsDown'));
-				$Stop->execute(null);		
-				if(!$this->getConfiguration('useStateJeedom'))
-					$this->checkAndUpdateCmd('hauteur',0);
-				return false;
-			}
-			if($Synchronisation == 'all'){
+				if($this->getConfiguration('cmdStop') == '')			
+					$Down->execute(null);
+				else
+					$Stop->execute(null);	
+				if($this->getConfiguration('useStateJeedom'))
+					$this->checkAndUpdateCmd('hauteur',100);
+			}else{
 				log::add('voletProp','info',$this->getHumanName().'[Synchronisation] Montée complete');
 				$Up->execute(null);
 				if(!isset($Stop))
 					$Stop=$Down;
 				usleep($this->getTime('TpsUp'));
-				$Stop->execute(null);		
-				if(!$this->getConfiguration('useStateJeedom'))
-					$this->checkAndUpdateCmd('hauteur',100);
-				return true;
+				if($this->getConfiguration('cmdStop') == '')			
+					$Up->execute(null);
+				else
+					$Stop->execute(null);		
+				if($this->getConfiguration('useStateJeedom'))
+					$this->checkAndUpdateCmd('hauteur',0);
 			}
+			return true;
 		}
 		return true;
 	}
     	public function execPropVolet($Hauteur) {
-		if(!$this->CheckSynchro($Hauteur))
+		$HauteurVolet=$this->getCmd(null,'hauteur')->execCmd();
+		if($HauteurVolet == $Hauteur)
+			return;
+		if(!$this->CheckSynchro($Hauteur,$HauteurVolet))
 			return false;
 		if($this->getConfiguration('cmdStop') != ''){
 			$Stop=cmd::byId(str_replace('#','',$this->getConfiguration('cmdStop')));
@@ -296,9 +311,6 @@ class voletProp extends eqLogic {
 		$Up=cmd::byId(str_replace('#','',$this->getConfiguration('cmdUp')));
 		if(!is_object($Up))
 			return false;
-		$HauteurVolet=$this->getCmd(null,'hauteur')->execCmd();
-		if($HauteurVolet == $Hauteur)
-			return;
 		$AutorisationDecollement=false;
 		if($Hauteur == 0 || $HauteurVolet == 0)
 			$AutorisationDecollement=true;
@@ -452,7 +464,7 @@ class voletProp extends eqLogic {
 	}
 	public function preSave() {
 		if(($this->getConfiguration('UpStateCmd') == '' || $this->getConfiguration('DownStateCmd') == '')
-		   &&  $this->getConfiguration('useStateJeedom'))
+		   &&  !$this->getConfiguration('useStateJeedom'))
 			throw new Exception(__('Erreur dans la configuration, il n\'est pas possible d\'activer la gestion des etat si pas d\'etat de configurer', __FILE__));
 	}
 	public function postSave() {
