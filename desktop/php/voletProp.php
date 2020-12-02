@@ -236,7 +236,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								<div class="form-group">
 									<label class="col-sm-3 control-label">{{*Autorisation :}}
 										<sup>
-											<i class="fa fa-question-circle tooltips" title="{{Cocher pour laisser l'etat du volet se mettre a jours par le retour d'etat}}"></i>
+											<i class="fa fa-question-circle tooltips" title="{{Cocher pour laisser l'état du volet se mettre à jour par le retour d'état}}"></i>
 										</sup>
 									</label>
 									<div class="col-sm-9">
