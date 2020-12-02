@@ -338,8 +338,6 @@ class voletProp extends eqLogic {
 		$Stop->execute(null);
 		cache::set('voletProp::Move::'.$this->getId(),false, 0);
 		if($this->getConfiguration('useStateJeedom'))
-			$this->checkAndUpdateCmd('hauteur',$Hauteur);
-		else{		
 			cache::set('voletProp::ChangeStateStop::'.$this->getId(),microtime(true), 0);
 			$this->UpdateHauteur();
 		}
@@ -539,12 +537,10 @@ class voletPropCmd extends cmd {
 						}
 					}
 				}				
-				if(!$this->getEqLogic()->getConfiguration('useStateJeedom')){		
-					if(cache::byKey('voletProp::Move::'.$this->getEqLogic()->getId())->getValue(false)){
-						log::add('voletProp','debug',$this->getEqLogic()->getHumanName().' Mise a jours manuel de la hauteur');
-						cache::set('voletProp::ChangeStateStop::'.$this->getEqLogic()->getId(),microtime(true), 0);
-						$this->getEqLogic()->UpdateHauteur();
-					}
+				if(cache::byKey('voletProp::Move::'.$this->getEqLogic()->getId())->getValue(false)){
+					log::add('voletProp','debug',$this->getEqLogic()->getHumanName().' Mise a jours manuel de la hauteur');
+					cache::set('voletProp::ChangeStateStop::'.$this->getEqLogic()->getId(),microtime(true), 0);
+					$this->getEqLogic()->UpdateHauteur();
 				}
 				cache::set('voletProp::Move::'.$this->getEqLogic()->getId(),false, 0);
 			break;
