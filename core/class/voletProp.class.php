@@ -337,8 +337,9 @@ class voletProp extends eqLogic {
 		usleep($temps);
 		$Stop->execute(null);
 		cache::set('voletProp::Move::'.$this->getId(),false, 0);
-		if(!$this->getConfiguration('useStateJeedom')){
-		//if($this->getConfiguration('UpStateCmd') == '' && $this->getConfiguration('DownStateCmd') == ''){		
+		if($this->getConfiguration('useStateJeedom'))
+			$this->checkAndUpdateCmd('hauteur',$Hauteur);
+		else{		
 			cache::set('voletProp::ChangeStateStop::'.$this->getId(),microtime(true), 0);
 			$this->UpdateHauteur();
 		}
@@ -466,7 +467,7 @@ class voletProp extends eqLogic {
 		if($this->getId() != null){
 			if(($this->getConfiguration('UpStateCmd') == '' || $this->getConfiguration('DownStateCmd') == '')
 			   &&  !$this->getConfiguration('useStateJeedom'))
-				throw new Exception(__('Erreur dans la configuration, il n\'est pas possible d\'activer la gestion des etat si pas d\'etat de configurer', __FILE__));
+				throw new Exception(__('Erreur dans la configuration, il n\'est pas possible d\'activer la gestion des états si aucun état n\’est configuré', __FILE__));
 		}
 	}
 	public function postSave() {
