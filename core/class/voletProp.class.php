@@ -505,18 +505,20 @@ class voletPropCmd extends cmd {
 				cache::set('voletProp::Move::'.$this->getEqLogic()->getId(),true, 0);
 				cache::set('voletProp::ChangeState::'.$this->getEqLogic()->getId(),true, 0);
 				$cmd=cmd::byId(str_replace('#','',$this->getEqLogic()->getConfiguration('cmdUp')));
-				if(!is_object($cmd))
-					return;
-				$cmd->execute(null);
+				if(is_object($cmd)){
+					log::add('voletProp','debug',$this->getEqLogic()->getHumanName().' Execution de la commande '.$cmd->getHumanName());
+					$cmd->execute(null);
+				}
 			break;
 			case "down":
 				cache::set('voletProp::ChangeStateStart::'.$this->getEqLogic()->getId(),microtime(true), 0);
 				cache::set('voletProp::Move::'.$this->getEqLogic()->getId(),true, 0);
 				cache::set('voletProp::ChangeState::'.$this->getEqLogic()->getId(),false, 0);
 				$cmd=cmd::byId(str_replace('#','',$this->getEqLogic()->getConfiguration('cmdDown')));
-				if(!is_object($cmd))
-					return;
-				$cmd->execute(null);
+				if(is_object($cmd)){
+					log::add('voletProp','debug',$this->getEqLogic()->getHumanName().' Execution de la commande '.$cmd->getHumanName());
+					$cmd->execute(null);
+				}
 			break;
 			case "stop":
 				if($this->getEqLogic()->getConfiguration('cmdStop') != ''){
