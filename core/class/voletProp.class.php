@@ -317,8 +317,8 @@ class voletProp extends eqLogic {
 		cache::set('voletProp::Move::'.$this->getId(),true, 0);
 		if($HauteurVolet > $Hauteur){
 			$Delta=$HauteurVolet-$Hauteur;
-			$temps=$this->TpsAction($Delta,$AutorisationDecollement);
 			cache::set('voletProp::ChangeState::'.$this->getId(),false, 0);
+			$temps=$this->TpsAction($Delta,$AutorisationDecollement);
 			$Down->execute(null);
 			cache::set('voletProp::ChangeStateStart::'.$this->getId(),microtime(true), 0);
 			if(!isset($Stop))
@@ -326,8 +326,8 @@ class voletProp extends eqLogic {
 			log::add('voletProp','debug',$this->getHumanName().' Nous allons descendre le volet de '.$Delta.'%');
 		}else{
 			$Delta=$Hauteur-$HauteurVolet;
-			$temps=$this->TpsAction($Delta,$AutorisationDecollement);
 			cache::set('voletProp::ChangeState::'.$this->getId(),true, 0);
+			$temps=$this->TpsAction($Delta,$AutorisationDecollement);
 			$Up->execute(null);
 			cache::set('voletProp::ChangeStateStart::'.$this->getId(),microtime(true), 0);
 			if(!isset($Stop))
