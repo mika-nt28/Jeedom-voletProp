@@ -319,11 +319,6 @@ class voletProp extends eqLogic {
 		}
 		usleep($temps);
 		$Stop->execute(null);
-		cache::set('voletProp::Move::'.$this->getId(),false, 0);
-		if($this->getConfiguration('useStateJeedom')){
-			cache::set('voletProp::ChangeStateStop::'.$this->getId(),microtime(true), 0);
-			$this->UpdateHauteur();
-		}
 	}
     	private function getTime($Type) {
 		return intval($this->getConfiguration($Type,0))*intval($this->getConfiguration($Type.'Base',1000000));
