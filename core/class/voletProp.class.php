@@ -231,6 +231,10 @@ class voletProp extends eqLogic {
 		$this->checkAndUpdateCmd('hauteur',$Hauteur);
 	}
     	public function CheckSynchro($Hauteur,$HauteurVolet) {
+		if($HauteurVolet == 0)
+			return 0;
+		if($HauteurVolet == 100)
+			return 100;
 		$Stop=$this->getCmd(null,'stop');
 		if(!is_object($Stop))
 			return false;
@@ -256,13 +260,9 @@ class voletProp extends eqLogic {
 			$Stop->execute(null);	
 			if($this->getConfiguration('useStateJeedom'))
 				$this->checkAndUpdateCmd('hauteur',0);
-			return 0;
+			return false;
 		}
 		if($this->getConfiguration('Synchronisation')){
-			if($HauteurVolet == 0)
-				return 0;
-			if($HauteurVolet == 100)
-				return 100;
 			if($HauteurVolet - $Hauteur < 0){
 				log::add('voletProp','info',$this->getHumanName().'[Synchronisation] Descente complete');
 				$Down->execute(null);
@@ -308,14 +308,14 @@ class voletProp extends eqLogic {
 			$temps=$this->TpsAction($Delta,$AutorisationDecollement);
 			$Down->execute(null);
 			cache::set('voletProp::ChangeStateStart::'.$this->getId(),microtime(true), 0);
-			log::add('voletProp','debug',$this->getHumanName().' Le volet et a '.$HauteurVolet.'et nous allons le descendre  de '.$Delta.'%');
+			log::add('voletProp','debug',$this->getHumanName().' Le volet et a '.$HauteurVolet.' et nous allons le descendre  de '.$Delta.'%');
 		}else{
 			$Delta=$Hauteur-$HauteurVolet;
 			cache::set('voletProp::ChangeState::'.$this->getId(),true, 0);
 			$temps=$this->TpsAction($Delta,$AutorisationDecollement);
 			$Up->execute(null);
 			cache::set('voletProp::ChangeStateStart::'.$this->getId(),microtime(true), 0);
-			log::add('voletProp','debug',$this->getHumanName().' Le volet et a '.$HauteurVolet.'et nous allons le monter de '.$Delta.'%');
+			log::add('voletProp','debug',$this->getHumanName().' Le volet et a '.$HauteurVolet.' et nous allons le monter de '.$Delta.'%');
 		}
 		usleep($temps);
 		$Stop->execute(null);
