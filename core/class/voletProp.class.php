@@ -516,8 +516,8 @@ class voletPropCmd extends cmd {
 							$cmd->execute(null);
 						}
 					}
-				}				
-				if(cache::byKey('voletProp::Move::'.$this->getEqLogic()->getId())->getValue(false)){
+				}
+				if($this->getConfiguration('useStateJeedom') && cache::byKey('voletProp::Move::'.$this->getEqLogic()->getId())->getValue(false)){
 					log::add('voletProp','debug',$this->getEqLogic()->getHumanName().' Mise a jours manuel de la hauteur');
 					cache::set('voletProp::ChangeStateStop::'.$this->getEqLogic()->getId(),microtime(true), 0);
 					$this->getEqLogic()->UpdateHauteur();
