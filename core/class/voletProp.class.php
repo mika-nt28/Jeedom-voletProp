@@ -264,7 +264,7 @@ class voletProp extends eqLogic {
 				$Stop->execute(null);	
 			if($this->getConfiguration('useStateJeedom'))
 				$this->checkAndUpdateCmd('hauteur',0);
-			return false;
+			return 0;
 		}
 		if($this->getConfiguration('Synchronisation')){
 			if($HauteurVolet > $Hauteur){
@@ -290,17 +290,17 @@ class voletProp extends eqLogic {
 				if($this->getConfiguration('useStateJeedom'))
 					$this->checkAndUpdateCmd('hauteur',0);
 			}
-			return true;
+			return 100;
 		}
-		return true;
+		return $HauteurVolet;
 	}
     	public function execPropVolet($Hauteur) {
 		$HauteurVolet=$this->getCmd(null,'hauteur')->execCmd();
 		if($HauteurVolet == $Hauteur)
 			return;
-		if(!$this->CheckSynchro($Hauteur,$HauteurVolet))
+		$HauteurVolet=$this->CheckSynchro($Hauteur,$HauteurVolet);
+		if($HauteurVolet === false)
 			return false;
-		$HauteurVolet=$this->getCmd(null,'hauteur')->execCmd();
 		if($this->getConfiguration('cmdStop') != ''){
 			$Stop=cmd::byId(str_replace('#','',$this->getConfiguration('cmdStop')));
 			if(!is_object($Stop))
@@ -324,7 +324,7 @@ class voletProp extends eqLogic {
 			cache::set('voletProp::ChangeStateStart::'.$this->getId(),microtime(true), 0);
 			if(!isset($Stop))
 				$Stop=$Down;
-			log::add('voletProp','debug',$this->getHumanName().' Nous allons descendre le volet de '.$Delta.'%');
+			log::add('voletProp','debug',$this->getHumanName().' Le volet et a '.$HauteurVolet.'et nous allons le descendre  de '.$Delta.'%');
 		}else{
 			$Delta=$Hauteur-$HauteurVolet;
 			cache::set('voletProp::ChangeState::'.$this->getId(),true, 0);
@@ -333,7 +333,7 @@ class voletProp extends eqLogic {
 			cache::set('voletProp::ChangeStateStart::'.$this->getId(),microtime(true), 0);
 			if(!isset($Stop))
 				$Stop=$Up;
-			log::add('voletProp','debug',$this->getHumanName().' Nous allons monter le volet de '.$Delta.'%');
+			log::add('voletProp','debug',$this->getHumanName().' Le volet et a '.$HauteurVolet.'et nous allons le monter de '.$Delta.'%');
 		}
 		usleep($temps);
 		$Stop->execute(null);
