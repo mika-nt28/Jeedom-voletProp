@@ -231,25 +231,20 @@ class voletProp extends eqLogic {
 		$this->checkAndUpdateCmd('hauteur',$Hauteur);
 	}
     	public function CheckSynchro($Hauteur,$HauteurVolet) {
-		if($this->getConfiguration('cmdStop') != ''){
-			$Stop=cmd::byId(str_replace('#','',$this->getConfiguration('cmdStop')));
-			if(!is_object($Stop))
-				return false;
-		}
-		$Down=cmd::byId(str_replace('#','',$this->getConfiguration('cmdDown')));
+		$Stop=$this->getCmd(null,'stop');
+		if(!is_object($Stop))
+			return false;
+		$Down=$this->getCmd(null,'down');
 		if(!is_object($Down))
 			return false;
-		$Up=cmd::byId(str_replace('#','',$this->getConfiguration('cmdUp')));
+		$Up=$this->getCmd(null,'up');
 		if(!is_object($Up))
 			return false;
 		if($Hauteur == 100){
 			log::add('voletProp','info',$this->getHumanName().'[Synchronisation] Montée complete');
 			$Up->execute(null);
 			usleep($this->getTime('TpsUp'));
-			if($this->getConfiguration('cmdStop') == '')			
-				$Up->execute(null);
-			else
-				$Stop->execute(null);		
+			$Stop->execute(null);		
 			if($this->getConfiguration('useStateJeedom'))
 				$this->checkAndUpdateCmd('hauteur',100);
 			return false;
@@ -258,35 +253,28 @@ class voletProp extends eqLogic {
 			log::add('voletProp','info',$this->getHumanName().'[Synchronisation] Descente complete');
 			$Down->execute(null);
 			usleep($this->getTime('TpsDown'));
-			if($this->getConfiguration('cmdStop') == '')			
-				$Down->execute(null);
-			else
-				$Stop->execute(null);	
+			$Stop->execute(null);	
 			if($this->getConfiguration('useStateJeedom'))
 				$this->checkAndUpdateCmd('hauteur',0);
 			return 0;
 		}
 		if($this->getConfiguration('Synchronisation')){
-			if($HauteurVolet > $Hauteur){
+			if($HauteurVolet == 0)
+				return 0;
+			if($HauteurVolet == 100)
+				return 100;
+			if($HauteurVolet - $Hauteur < 0){
 				log::add('voletProp','info',$this->getHumanName().'[Synchronisation] Descente complete');
 				$Down->execute(null);
 				usleep($this->getTime('TpsDown'));
-				if($this->getConfiguration('cmdStop') == '')			
-					$Down->execute(null);
-				else
-					$Stop->execute(null);	
+				$Stop->execute(null);	
 				if($this->getConfiguration('useStateJeedom'))
 					$this->checkAndUpdateCmd('hauteur',100);
 			}else{
 				log::add('voletProp','info',$this->getHumanName().'[Synchronisation] Montée complete');
 				$Up->execute(null);
-				if(!isset($Stop))
-					$Stop=$Down;
 				usleep($this->getTime('TpsUp'));
-				if($this->getConfiguration('cmdStop') == '')			
-					$Up->execute(null);
-				else
-					$Stop->execute(null);		
+				$Stop->execute(null);		
 				if($this->getConfiguration('useStateJeedom'))
 					$this->checkAndUpdateCmd('hauteur',0);
 			}
@@ -301,15 +289,13 @@ class voletProp extends eqLogic {
 		$HauteurVolet=$this->CheckSynchro($Hauteur,$HauteurVolet);
 		if($HauteurVolet === false)
 			return false;
-		if($this->getConfiguration('cmdStop') != ''){
-			$Stop=cmd::byId(str_replace('#','',$this->getConfiguration('cmdStop')));
-			if(!is_object($Stop))
-				return false;
-		}
-		$Down=cmd::byId(str_replace('#','',$this->getConfiguration('cmdDown')));
+		$Stop=$this->getCmd(null,'stop');
+		if(!is_object($Stop))
+			return false;
+		$Down=$this->getCmd(null,'down');
 		if(!is_object($Down))
 			return false;
-		$Up=cmd::byId(str_replace('#','',$this->getConfiguration('cmdUp')));
+		$Up=$this->getCmd(null,'up');
 		if(!is_object($Up))
 			return false;
 		$AutorisationDecollement=false;
@@ -322,8 +308,6 @@ class voletProp extends eqLogic {
 			$temps=$this->TpsAction($Delta,$AutorisationDecollement);
 			$Down->execute(null);
 			cache::set('voletProp::ChangeStateStart::'.$this->getId(),microtime(true), 0);
-			if(!isset($Stop))
-				$Stop=$Down;
 			log::add('voletProp','debug',$this->getHumanName().' Le volet et a '.$HauteurVolet.'et nous allons le descendre  de '.$Delta.'%');
 		}else{
 			$Delta=$Hauteur-$HauteurVolet;
@@ -331,8 +315,6 @@ class voletProp extends eqLogic {
 			$temps=$this->TpsAction($Delta,$AutorisationDecollement);
 			$Up->execute(null);
 			cache::set('voletProp::ChangeStateStart::'.$this->getId(),microtime(true), 0);
-			if(!isset($Stop))
-				$Stop=$Up;
 			log::add('voletProp','debug',$this->getHumanName().' Le volet et a '.$HauteurVolet.'et nous allons le monter de '.$Delta.'%');
 		}
 		usleep($temps);
