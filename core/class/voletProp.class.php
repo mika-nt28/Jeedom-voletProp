@@ -308,14 +308,14 @@ class voletProp extends eqLogic {
 			$temps=$this->TpsAction($Delta,$AutorisationDecollement);
 			$Down->execute(null);
 			cache::set('voletProp::ChangeStateStart::'.$this->getId(),microtime(true), 0);
-			log::add('voletProp','debug',$this->getHumanName().' Le volet et a '.$HauteurVolet.' et nous allons le descendre  de '.$Delta.'%');
+			log::add('voletProp','debug',$this->getHumanName().' Le volet est a '.$HauteurVolet.' et nous allons le descendre  de '.$Delta.'%');
 		}else{
 			$Delta=$Hauteur-$HauteurVolet;
 			cache::set('voletProp::ChangeState::'.$this->getId(),true, 0);
 			$temps=$this->TpsAction($Delta,$AutorisationDecollement);
 			$Up->execute(null);
 			cache::set('voletProp::ChangeStateStart::'.$this->getId(),microtime(true), 0);
-			log::add('voletProp','debug',$this->getHumanName().' Le volet et a '.$HauteurVolet.' et nous allons le monter de '.$Delta.'%');
+			log::add('voletProp','debug',$this->getHumanName().' Le volet est a '.$HauteurVolet.' et nous allons le monter de '.$Delta.'%');
 		}
 		usleep($temps);
 		$Stop->execute(null);
@@ -479,6 +479,10 @@ class voletPropCmd extends cmd {
     public function execute($_options = null) {
 		switch($this->getLogicalId()){
 			case "up":
+				if(cache::byKey('voletProp::Move::'.$this->getEqLogic()->getId())->getValue(false)){
+					$this->getEqLogic()->getCmd(null,'stop')->execute(null);
+					return;
+				}
 				cache::set('voletProp::ChangeStateStart::'.$this->getEqLogic()->getId(),microtime(true), 0);
 				cache::set('voletProp::Move::'.$this->getEqLogic()->getId(),true, 0);
 				cache::set('voletProp::ChangeState::'.$this->getEqLogic()->getId(),true, 0);
@@ -489,6 +493,10 @@ class voletPropCmd extends cmd {
 				}
 			break;
 			case "down":
+				if(cache::byKey('voletProp::Move::'.$this->getEqLogic()->getId())->getValue(false)){
+					$this->getEqLogic()->getCmd(null,'stop')->execute(null);
+					return;
+				}
 				cache::set('voletProp::ChangeStateStart::'.$this->getEqLogic()->getId(),microtime(true), 0);
 				cache::set('voletProp::Move::'.$this->getEqLogic()->getId(),true, 0);
 				cache::set('voletProp::ChangeState::'.$this->getEqLogic()->getId(),false, 0);
@@ -499,6 +507,8 @@ class voletPropCmd extends cmd {
 				}
 			break;
 			case "stop":
+				if(!cache::byKey('voletProp::Move::'.$this->getEqLogic()->getId())->getValue(false))
+					return;
 				if($this->getEqLogic()->getConfiguration('cmdStop') != ''){
 					$cmd=cmd::byId(str_replace('#','',$this->getEqLogic()->getConfiguration('cmdStop')));
 					if(is_object($cmd)){
@@ -506,17 +516,14 @@ class voletPropCmd extends cmd {
 						$cmd->execute(null);
 					}
 				}else{
-					if(cache::byKey('voletProp::Move::'.$this->getEqLogic()->getId())->getValue(false)){
-						if(cache::byKey('voletProp::ChangeState::'.$this->getEqLogic()->getId())->getValue(false))
-							$cmd=cmd::byId(str_replace('#','',$this->getEqLogic()->getConfiguration('cmdUp')));
-						else
-							$cmd=cmd::byId(str_replace('#','',$this->getEqLogic()->getConfiguration('cmdDown')));
-						if(is_object($cmd)){
-							log::add('voletProp','debug',$this->getEqLogic()->getHumanName().' Execution de la commande '.$cmd->getHumanName());
-							$cmd->execute(null);
-						}
+					if(cache::byKey('voletProp::ChangeState::'.$this->getEqLogic()->getId())->getValue(false))
+						$cmd=cmd::byId(str_replace('#','',$this->getEqLogic()->getConfiguration('cmdUp')));
+					else
+						$cmd=cmd::byId(str_replace('#','',$this->getEqLogic()->getConfiguration('cmdDown')));
+					if(is_object($cmd)){
+						log::add('voletProp','debug',$this->getEqLogic()->getHumanName().' Execution de la commande '.$cmd->getHumanName());
+						$cmd->execute(null);
 					}
-					
 				}
 				cache::set('voletProp::Move::'.$this->getEqLogic()->getId(),false, 0);
 				if($this->getEqLogic()->getConfiguration('useStateJeedom')){
