@@ -294,7 +294,6 @@ class voletProp extends eqLogic {
 		$AutorisationDecollement=false;
 		if($Hauteur == 0 || $HauteurVolet == 0)
 			$AutorisationDecollement=true;
-		cache::set('voletProp::Move::'.$this->getId(),true, 0);
 		if($HauteurVolet > $Hauteur){
 			$Delta=$HauteurVolet-$Hauteur;
 			cache::set('voletProp::ChangeState::'.$this->getId(),false, 0);
