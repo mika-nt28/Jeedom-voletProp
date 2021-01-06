@@ -249,8 +249,6 @@ class voletProp extends eqLogic {
 			$Up->execute(null);
 			usleep($this->getTime('TpsUp'));
 			$Stop->execute(null);		
-			if($this->getConfiguration('useStateJeedom'))
-				$this->checkAndUpdateCmd('hauteur',100);
 			return false;
 		}
 		if($Hauteur == 0){
@@ -258,8 +256,6 @@ class voletProp extends eqLogic {
 			$Down->execute(null);
 			usleep($this->getTime('TpsDown'));
 			$Stop->execute(null);	
-			if($this->getConfiguration('useStateJeedom'))
-				$this->checkAndUpdateCmd('hauteur',0);
 			return false;
 		}
 		if($this->getConfiguration('Synchronisation')){
@@ -268,17 +264,14 @@ class voletProp extends eqLogic {
 				$Down->execute(null);
 				usleep($this->getTime('TpsDown'));
 				$Stop->execute(null);	
-				if($this->getConfiguration('useStateJeedom'))
-					$this->checkAndUpdateCmd('hauteur',100);
+				return 0;
 			}else{
 				log::add('voletProp','info',$this->getHumanName().'[Synchronisation] Montée complete');
 				$Up->execute(null);
 				usleep($this->getTime('TpsUp'));
 				$Stop->execute(null);		
-				if($this->getConfiguration('useStateJeedom'))
-					$this->checkAndUpdateCmd('hauteur',0);
+				return 100;
 			}
-			return 100;
 		}
 		return $HauteurVolet;
 	}
@@ -479,10 +472,8 @@ class voletPropCmd extends cmd {
     public function execute($_options = null) {
 		switch($this->getLogicalId()){
 			case "up":
-				if(cache::byKey('voletProp::Move::'.$this->getEqLogic()->getId())->getValue(false)){
-					$this->getEqLogic()->getCmd(null,'stop')->execute(null);
+				if(cache::byKey('voletProp::Move::'.$this->getEqLogic()->getId())->getValue(false))
 					return;
-				}
 				cache::set('voletProp::ChangeStateStart::'.$this->getEqLogic()->getId(),microtime(true), 0);
 				cache::set('voletProp::Move::'.$this->getEqLogic()->getId(),true, 0);
 				cache::set('voletProp::ChangeState::'.$this->getEqLogic()->getId(),true, 0);
@@ -493,10 +484,8 @@ class voletPropCmd extends cmd {
 				}
 			break;
 			case "down":
-				if(cache::byKey('voletProp::Move::'.$this->getEqLogic()->getId())->getValue(false)){
-					$this->getEqLogic()->getCmd(null,'stop')->execute(null);
+				if(cache::byKey('voletProp::Move::'.$this->getEqLogic()->getId())->getValue(false))
 					return;
-				}
 				cache::set('voletProp::ChangeStateStart::'.$this->getEqLogic()->getId(),microtime(true), 0);
 				cache::set('voletProp::Move::'.$this->getEqLogic()->getId(),true, 0);
 				cache::set('voletProp::ChangeState::'.$this->getEqLogic()->getId(),false, 0);
