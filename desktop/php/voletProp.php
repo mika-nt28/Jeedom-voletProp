@@ -22,7 +22,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
     				<span>{{Configuration}}</span>
   			</div>
   		</div>
-  		<legend><i class="fas fa-table"></i> {{Mes volets proportionnel}}</legend>
+  		<legend><i class="fas fa-table"></i> {{Mes volets proportionnels}}</legend>
 	   	<input class="form-control" placeholder="{{Rechercher}}" id="in_searchEqlogic" />
 		<div class="eqLogicThumbnailContainer">
     		<?php
@@ -264,7 +264,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 												<option value="<">inférieur</option>                 
 												<option value="!=">différent</option> 
 											</select>
-											<input type="text" class="eqLogicAttr form-control roundedRight" data-l1key="configuration" data-l2key="UpStateValue" placeholder="Valeur pour validé la condition" style="width: 80px">
+											<input type="text" class="eqLogicAttr form-control roundedRight" data-l1key="configuration" data-l2key="UpStateValue" placeholder="Valeur pour valider la condition" style="width: 80px">
 										</div>
 									</div>
 								</div>	
@@ -288,7 +288,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 												<option value="<">inférieur</option>                 
 												<option value="!=">différent</option> 
 											</select>
-											<input type="text" class="eqLogicAttr form-control roundedRight" data-l1key="configuration" data-l2key="DownStateValue" placeholder="Valeur pour validé la condition" style="width: 80px">
+											<input type="text" class="eqLogicAttr form-control roundedRight" data-l1key="configuration" data-l2key="DownStateValue" placeholder="Valeur pour valider la condition" style="width: 80px">
 										</div>
 									</div>
 								</div>	
@@ -312,7 +312,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 												<option value="<">inférieur</option>                 
 												<option value="!=">différent</option> 
 											</select>
-											<input type="text" class="eqLogicAttr form-control roundedRight" data-l1key="configuration" data-l2key="StopStateValue" placeholder="Valeur pour validé la condition" style="width: 80px">
+											<input type="text" class="eqLogicAttr form-control roundedRight" data-l1key="configuration" data-l2key="StopStateValue" placeholder="Valeur pour valider la condition" style="width: 80px">
 										</div>
 									</div>
 								</div>
@@ -336,7 +336,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 												<option value="<">inférieur</option>                 
 												<option value="!=">différent</option> 
 											</select>
-											<input type="text" class="eqLogicAttr form-control roundedRight" data-l1key="configuration" data-l2key="EndUpValue" placeholder="Valeur pour validé la condition" style="width: 80px">
+											<input type="text" class="eqLogicAttr form-control roundedRight" data-l1key="configuration" data-l2key="EndUpValue" placeholder="Valeur pour valider la condition" style="width: 80px">
 										</div>
 									</div>
 								</div>
@@ -360,7 +360,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 												<option value="<">inférieur</option>                 
 												<option value="!=">différent</option> 
 											</select>
-											<input type="text" class="eqLogicAttr form-control roundedRight" data-l1key="configuration" data-l2key="EndDownValue" placeholder="Valeur pour validé la condition" style="width: 80px">
+											<input type="text" class="eqLogicAttr form-control roundedRight" data-l1key="configuration" data-l2key="EndDownValue" placeholder="Valeur pour valider la condition" style="width: 80px">
 										</div>
 									</div>
 								</div>
@@ -374,12 +374,12 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								<div class="form-group">
 									<label class="col-sm-3 control-label">{{Temps de montée total}}
 										<sup>
-											<i class="fa fa-question-circle tooltips" title="{{Saisissez le temps total pour exécuter une montée ou une descente}}"></i>
+											<i class="fa fa-question-circle tooltips" title="{{Saisissez le temps total pour exécuter une montée}}"></i>
 										</sup>
 									</label>
 									<div class="col-sm-5">
 										<div class="input-group">
-											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="TpsUp" placeholder="{{Saisir le temps de décollement}}"/>
+											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="TpsUp" placeholder="{{Saisir le temps de montée}}"/>
 											<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="TpsUpBase">
 												<option value="1000000">{{Seconde}}</option>                  
 												<option value="1000">{{Miliseconde}}</option>                  
@@ -391,12 +391,12 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								<div class="form-group">
 									<label class="col-sm-3 control-label">{{Temps descente total}}
 										<sup>
-											<i class="fa fa-question-circle tooltips" title="{{Saisissez le temps total pour exécuter une montée ou une descente}}"></i>
+											<i class="fa fa-question-circle tooltips" title="{{Saisissez le temps total pour exécuter une descente}}"></i>
 										</sup>
 									</label>
 									<div class="col-sm-5">
 										<div class="input-group">
-											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="TpsDown" placeholder="{{Saisir le temps de décollement}}"/>
+											<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="TpsDown" placeholder="{{Saisir le temps de descente}}"/>
 											<select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="TpsDownBase">
 												<option value="1000000">{{Seconde}}</option>                  
 												<option value="1000">{{Miliseconde}}</option>                  
