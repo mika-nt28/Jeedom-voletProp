@@ -431,13 +431,6 @@ class voletProp extends eqLogic {
 		} 
 		return $Commande;
 	}
-	public function preSave() {
-		if($this->getId() != null){
-			if(($this->getConfiguration('UpStateCmd') == '' || $this->getConfiguration('DownStateCmd') == '')
-			   &&  !$this->getConfiguration('useStateJeedom'))
-				throw new Exception(__('Erreur dans la configuration, il n\'est pas possible d\'activer la gestion des états si aucun état n\’est configuré', __FILE__));
-		}
-	}
 	public function postSave() {
 		$this->StopListener();
 		$hauteur=$this->AddCommande("Hauteur","hauteur","info",'numeric',0,null,null,'FLAP_STATE');
@@ -514,7 +507,7 @@ class voletPropCmd extends cmd {
 					}
 				}
 				cache::set('voletProp::Move::'.$this->getEqLogic()->getId(),false, 0);
-				if($this->getEqLogic()->getConfiguration('useStateJeedom')){
+				if(($this->getEqLogic()->getConfiguration('UpStateCmd') == '' || $this->getEqLogic()->getConfiguration('DownStateCmd') == '')){
 					log::add('voletProp','debug',$this->getEqLogic()->getHumanName().' Mise à jour manuelle de la hauteur');
 					cache::set('voletProp::ChangeStateStop::'.$this->getEqLogic()->getId(),microtime(true), 0);
 					$this->getEqLogic()->UpdateHauteur();
