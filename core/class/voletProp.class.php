@@ -5,15 +5,15 @@ class voletProp extends eqLogic {
 		$Volet = eqlogic::byId($_option['Volets_id']); 
 		if (is_object($Volet) && $Volet->getIsEnable()) {
 			while(true){
-				$TempsMove = cache::byKey('voletProp::TempsMove::'.$this->getId());
-				if (is_object($TempsMove)){
-					$TempsTimeout = $TempsMove->getValue(microtime(true));
-				}else{
-					if(cache::byKey('voletProp::ChangeState::'.$Volet->getId())->getValue(false))
-						$TempsTimeout = $Volet->getTime('TpsUp');
-					else
-						$TempsTimeout = $Volet->getTime('TpsDown');
+				$PropMove = cache::byKey('voletProp::PropMove::'.$Volet->getId());
+				if(is_object($PropMove)){
+					$Volet->execPropVolet($_PropMove->getValue(0));
+					$PropMove->remove();
 				}
+				if(cache::byKey('voletProp::ChangeState::'.$Volet->getId())->getValue(false))
+					$TempsTimeout = $Volet->getTime('TpsUp');
+				else
+					$TempsTimeout = $Volet->getTime('TpsDown');
 				if($TempsTimeout <= 0)
 					break;
 				if(cache::byKey('voletProp::Move::'.$Volet->getId())->getValue(false)){
@@ -23,7 +23,6 @@ class voletProp extends eqLogic {
 					if($Timeout >= $TempsTimeout){
 						log::add('voletProp','info',$Volet->getHumanName()."[Timeout] Execution du stop");
 						$Volet->getCmd(null,'stop')->execute(null);	
-						$TempsMove->remove();
 					}else{
 						log::add('voletProp','info',$Volet->getHumanName()."[Timeout] Temps d'attente: ".$Timeout." < ".$TempsTimeout.", Nous attendons");
 						$TempsTimeout -= ceil($Timeout);
@@ -314,9 +313,8 @@ class voletProp extends eqLogic {
 			cache::set('voletProp::ChangeStateStart::'.$this->getId(),microtime(true), 0);
 			log::add('voletProp','debug',$this->getHumanName().' Le volet est à '.$HauteurVolet.'% et nous allons le monter de '.$Delta.'%');
 		}
-		/*usleep($temps);
-		$Stop->execute(null);*/
-		cache::set('voletProp::TempsMove::'.$Volet->getId(),$temps, 0);
+		usleep($temps);
+		$Stop->execute(null);
 	}
     	private function getTime($Type) {
 		return intval($this->getConfiguration($Type,0))*intval($this->getConfiguration($Type.'Base',1000000));
@@ -361,7 +359,7 @@ class voletProp extends eqLogic {
 		$cache = cache::byKey('voletProp::ChangeState::'.$this->getId());
 		if (is_object($cache))
 			$cache->remove();
-		$cache = cache::byKey('voletProp::TempsMove::'.$this->getId());
+		$cache = cache::byKey('voletProp::PropMove::'.$this->getId());
 		if (is_object($cache))
 			$cache->remove();
 	}
@@ -473,6 +471,9 @@ class voletPropCmd extends cmd {
     public function execute($_options = null) {
 		switch($this->getLogicalId()){
 			case "up":
+				$PropMove = cache::byKey('voletProp::PropMove::'.$this->getEqLogic()->getId());
+				if(is_object($PropMove))
+					$PropMove->remove();
 				if(cache::byKey('voletProp::Move::'.$this->getEqLogic()->getId())->getValue(false))
 					return;
 				cache::set('voletProp::ChangeStateStart::'.$this->getEqLogic()->getId(),microtime(true), 0);
@@ -485,6 +486,9 @@ class voletPropCmd extends cmd {
 				}
 			break;
 			case "down":
+				$PropMove = cache::byKey('voletProp::PropMove::'.$this->getEqLogic()->getId());
+				if(is_object($PropMove))
+					$PropMove->remove();
 				if(cache::byKey('voletProp::Move::'.$this->getEqLogic()->getId())->getValue(false))
 					return;
 				cache::set('voletProp::ChangeStateStart::'.$this->getEqLogic()->getId(),microtime(true), 0);
@@ -497,6 +501,9 @@ class voletPropCmd extends cmd {
 				}
 			break;
 			case "stop":
+				$PropMove = cache::byKey('voletProp::PropMove::'.$this->getEqLogic()->getId());
+				if(is_object($PropMove))
+					$PropMove->remove();
 				if(!cache::byKey('voletProp::Move::'.$this->getEqLogic()->getId())->getValue(false))
 					return;
 				if($this->getEqLogic()->getConfiguration('cmdStop') != ''){
@@ -524,7 +531,8 @@ class voletPropCmd extends cmd {
 			break;
 			case "position":
 				if(!cache::byKey('voletProp::Move::'.$this->getEqLogic()->getId())->getValue(false)){
-					$this->getEqLogic()->execPropVolet($_options['slider']);
+					cache::set('voletProp::PropMove::'.$Volet->getId(),$_options['slider']), 0);
+					//$this->getEqLogic()->execPropVolet($_options['slider']);
 				}
 			break;
 		}
