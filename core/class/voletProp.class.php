@@ -5,10 +5,15 @@ class voletProp extends eqLogic {
 		$Volet = eqlogic::byId($_option['Volets_id']); 
 		if (is_object($Volet) && $Volet->getIsEnable()) {
 			while(true){
-				if(cache::byKey('voletProp::ChangeState::'.$Volet->getId())->getValue(false))
-					$TempsTimeout = $Volet->getTime('TpsUp');
-				else
-					$TempsTimeout = $Volet->getTime('TpsDown');
+				$TempsMove = cache::byKey('voletProp::TempsMove::'.$this->getId());
+				if (is_object($TempsMove)){
+					$TempsTimeout = $TempsMove->getValue(microtime(true));
+				}else{
+					if(cache::byKey('voletProp::ChangeState::'.$Volet->getId())->getValue(false))
+						$TempsTimeout = $Volet->getTime('TpsUp');
+					else
+						$TempsTimeout = $Volet->getTime('TpsDown');
+				}
 				if($TempsTimeout <= 0)
 					break;
 				if(cache::byKey('voletProp::Move::'.$Volet->getId())->getValue(false)){
@@ -18,7 +23,7 @@ class voletProp extends eqLogic {
 					if($Timeout >= $TempsTimeout){
 						log::add('voletProp','info',$Volet->getHumanName()."[Timeout] Execution du stop");
 						$Volet->getCmd(null,'stop')->execute(null);	
-						
+						$TempsMove->remove();
 					}else{
 						log::add('voletProp','info',$Volet->getHumanName()."[Timeout] Temps d'attente: ".$Timeout." < ".$TempsTimeout.", Nous attendons");
 						$TempsTimeout -= ceil($Timeout);
@@ -309,8 +314,9 @@ class voletProp extends eqLogic {
 			cache::set('voletProp::ChangeStateStart::'.$this->getId(),microtime(true), 0);
 			log::add('voletProp','debug',$this->getHumanName().' Le volet est à '.$HauteurVolet.'% et nous allons le monter de '.$Delta.'%');
 		}
-		usleep($temps);
-		$Stop->execute(null);
+		/*usleep($temps);
+		$Stop->execute(null);*/
+		cache::set('voletProp::TempsMove::'.$Volet->getId(),$temps, 0);
 	}
     	private function getTime($Type) {
 		return intval($this->getConfiguration($Type,0))*intval($this->getConfiguration($Type.'Base',1000000));
@@ -353,6 +359,9 @@ class voletProp extends eqLogic {
 		if (is_object($cache))
 			$cache->remove();
 		$cache = cache::byKey('voletProp::ChangeState::'.$this->getId());
+		if (is_object($cache))
+			$cache->remove();
+		$cache = cache::byKey('voletProp::TempsMove::'.$this->getId());
 		if (is_object($cache))
 			$cache->remove();
 	}
