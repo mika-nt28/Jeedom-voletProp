@@ -46,7 +46,7 @@ class voletProp extends eqLogic {
 						$Volet->getCmd(null,'stop')->execute(null);	
 					}
 				}
-				if($Timeout - $TempsTimeout > 1000000)
+				if($Timeout - $TempsTimeout > 1000000 && $Timeout - $TempsTimeout != 0)
 					usleep(1000000);
 				else
 					usleep($Timeout - $TempsTimeout);
