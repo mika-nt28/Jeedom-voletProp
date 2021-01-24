@@ -530,7 +530,7 @@ class voletPropCmd extends cmd {
 			break;
 			case "position":
 				if(!cache::byKey('voletProp::Move::'.$this->getEqLogic()->getId())->getValue(false)){
-					cache::set('voletProp::PropMove::'.$this->getEqLogic()->getId(),$_options['slider']), 0);
+					cache::set('voletProp::PropMove::'.$this->getEqLogic()->getId(),$_options['slider'], 0);
 				}
 			break;
 		}
