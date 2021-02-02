@@ -9,6 +9,11 @@ class voletProp extends eqLogic {
 				$Synchro = cache::byKey('voletProp::Synchro::'.$Volet->getId());
 				$TimeMove = cache::byKey('voletProp::TimeMove::'.$Volet->getId());
 				$Move = cache::byKey('voletProp::Move::'.$Volet->getId());
+
+				if(cache::byKey('voletProp::ChangeState::'.$Volet->getId())->getValue(false))
+					$TempsTimeout = $Volet->getTime('TpsUp');
+				else
+					$TempsTimeout = $Volet->getTime('TpsDown');
 				
 				if(!is_object($Move) || !$Move->getValue(false)){
 					if(is_object($PropMove) && $PropMove->getValue(0) !== false){
@@ -31,11 +36,6 @@ class voletProp extends eqLogic {
 							cache::set('voletProp::Synchro::'.$Volet->getId(),false, 0);
 							cache::set('voletProp::PropMove::'.$Volet->getId(),false, 0);
 						}
-					}else{
-						if(cache::byKey('voletProp::ChangeState::'.$Volet->getId())->getValue(false))
-							$TempsTimeout = $Volet->getTime('TpsUp');
-						else
-							$TempsTimeout = $Volet->getTime('TpsDown');
 					}
 				}else{
 					$ChangeStateStart = cache::byKey('voletProp::ChangeStateStart::'.$Volet->getId())->getValue(microtime(true));
@@ -46,7 +46,7 @@ class voletProp extends eqLogic {
 						$Volet->getCmd(null,'stop')->execute(null);	
 					}
 				}
-				if($Timeout - $TempsTimeout > 1000000 && $Timeout - $TempsTimeout != 0)
+				if($Timeout - $TempsTimeout > 1000000 || $Timeout - $TempsTimeout <= 0)
 					usleep(1000000);
 				else
 					usleep($Timeout - $TempsTimeout);
