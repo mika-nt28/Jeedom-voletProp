@@ -274,15 +274,15 @@ class voletProp extends eqLogic {
 		if($Hauteur == 100){
 			log::add('voletProp','info',$this->getHumanName().'[Synchronisation] Montée complete');
 			$Up->execute(null);
-			usleep($this->getTime('TpsUp'));
-			$Stop->execute(null);		
+			//usleep($this->getTime('TpsUp'));
+			//$Stop->execute(null);		
 			return false;
 		}
 		if($Hauteur == 0){
 			log::add('voletProp','info',$this->getHumanName().'[Synchronisation] Descente complete');
 			$Down->execute(null);
-			usleep($this->getTime('TpsDown'));
-			$Stop->execute(null);	
+			//usleep($this->getTime('TpsDown'));
+			//$Stop->execute(null);	
 			return false;
 		}
 		if($this->getConfiguration('Synchronisation')){
