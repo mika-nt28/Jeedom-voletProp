@@ -7,7 +7,6 @@ class voletProp extends eqLogic {
 			while(true){
 				$PropMove = cache::byKey('voletProp::PropMove::'.$Volet->getId());
 				$Synchro = cache::byKey('voletProp::Synchro::'.$Volet->getId());
-				$TimeMove = cache::byKey('voletProp::TimeMove::'.$Volet->getId());
 				$Move = cache::byKey('voletProp::Move::'.$Volet->getId());
 				if(!is_object($Move) || !$Move->getValue(false)){
 					if(is_object($PropMove) && $PropMove->getValue(false) !== false){
@@ -19,36 +18,39 @@ class voletProp extends eqLogic {
 						if(!is_object($Synchro) || !$Synchro->getValue(false)){
 							log::add('voletProp','debug',$Volet->getHumanName()."[Démon] Synchronisation");
 							$HauteurVolet=$Volet->CheckSynchro($Hauteur,$HauteurVolet);
+							$TimeMove = cache::byKey('voletProp::TimeMove::'.$Volet->getId());
 							$TempsTimeout = $TimeMove->getValue(microtime(true));
 							if($HauteurVolet === false){
 								cache::set('voletProp::Synchro::'.$Volet->getId(),false, 0);
 								cache::set('voletProp::PropMove::'.$Volet->getId(),false, 0);
 							}
+							continue;
 						}else{
 							log::add('voletProp','debug',$Volet->getHumanName()."[Démon] Execution du mouvement proportionnel");
 							$Volet->execPropVolet($Hauteur,$HauteurVolet);
+							$TimeMove = cache::byKey('voletProp::TimeMove::'.$Volet->getId());
 							$TempsTimeout = $TimeMove->getValue(microtime(true));
-							cache::set('voletProp::Synchro::'.$Volet->getId(),false, 0);
-							cache::set('voletProp::PropMove::'.$Volet->getId(),false, 0);
+							continue;
 						}
 					}else{
-                      				if(cache::byKey('voletProp::ChangeState::'.$Volet->getId())->getValue(false))
-							$TempsTimeout = $Volet->getTime('TpsUp');
+						if(cache::byKey('voletProp::ChangeState::'.$Volet->getId())->getValue(false))
+							$TempsTimeout = $Volet->getTime('TpsUp') * 1.1;
 						else
-							$TempsTimeout = $Volet->getTime('TpsDown');
-                   			}
+							$TempsTimeout = $Volet->getTime('TpsDown') * 1.1;
+					}
 				}else{
 					$ChangeStateStart = cache::byKey('voletProp::ChangeStateStart::'.$Volet->getId())->getValue(microtime(true));
 					$Timeout = microtime(true)-$ChangeStateStart;
-					$Timeout*=1000000;
+					$Timeout *= 1000000;
                 
 					if($Timeout >= $TempsTimeout){
 						log::add('voletProp','info',$Volet->getHumanName()."[Démon] Execution du stop");
 						$Volet->getCmd(null,'stop')->execute(null);	
 					}
+					usleep(($TempsTimeout - $Timeout) / 2);
+					continue;
 				}
-				usleep($Timeout - $TempsTimeout);
-						
+				sleep(1);		
 			}
 		}
 	}
@@ -254,7 +256,7 @@ class voletProp extends eqLogic {
 		log::add('voletProp','debug',$this->getHumanName().' Le volet est à '.$Hauteur.'%');
 		$this->checkAndUpdateCmd('hauteur',$Hauteur);
 	}
-    public function CheckSynchro($Hauteur,$HauteurVolet) {
+	public function CheckSynchro($Hauteur,$HauteurVolet) {
 		cache::set('voletProp::Synchro::'.$this->getId(),true, 0);
 		if($HauteurVolet == 0)
 			return 0;
@@ -273,12 +275,14 @@ class voletProp extends eqLogic {
 			log::add('voletProp','info',$this->getHumanName().'[Synchronisation] Montée complete');
 			$Up->execute(null);
 			cache::set('voletProp::Move::'.$this->getId(),true, 0);
+			cache::set('voletProp::TimeMove::'.$this->getId(),$this->getTime('TpsUp'), 0);
 			return false;
 		}
 		if($Hauteur == 0){
 			log::add('voletProp','info',$this->getHumanName().'[Synchronisation] Descente complete');
 			$Down->execute(null);
 			cache::set('voletProp::Move::'.$this->getId(),true, 0);
+			cache::set('voletProp::TimeMove::'.$this->getId(),$this->getTime('TpsDown'), 0);
 			return false;
 		}
 		if($this->getConfiguration('Synchronisation')){
@@ -297,7 +301,7 @@ class voletProp extends eqLogic {
 		}
 		return $HauteurVolet;
 	}
-    	public function execPropVolet($Hauteur,$HauteurVolet) {
+	public function execPropVolet($Hauteur,$HauteurVolet) {
 		$Stop=$this->getCmd(null,'stop');
 		if(!is_object($Stop))
 			return false;
@@ -314,21 +318,20 @@ class voletProp extends eqLogic {
 			$Delta=$HauteurVolet-$Hauteur;
 			cache::set('voletProp::ChangeState::'.$this->getId(),false, 0);
 			$Down->execute(null);
-			cache::set('voletProp::TimeMove::'.$this->getId(),$this->TpsAction($Delta,$AutorisationDecollement), 0);
-			cache::set('voletProp::ChangeStateStart::'.$this->getId(),microtime(true), 0);
 			log::add('voletProp','debug',$this->getHumanName().' Le volet est à '.$HauteurVolet.'% et nous allons le descendre  de '.$Delta.'%');
 		}else{
 			$Delta=$Hauteur-$HauteurVolet;
 			cache::set('voletProp::ChangeState::'.$this->getId(),true, 0);
 			$Up->execute(null);
-			cache::set('voletProp::ChangeStateStart::'.$this->getId(),microtime(true), 0);
 			log::add('voletProp','debug',$this->getHumanName().' Le volet est à '.$HauteurVolet.'% et nous allons le monter de '.$Delta.'%');
 		}
+		cache::set('voletProp::ChangeStateStart::'.$this->getId(),microtime(true), 0);
+		cache::set('voletProp::TimeMove::'.$this->getId(),$this->TpsAction($Delta,$AutorisationDecollement), 0);
 	}
-    	private function getTime($Type) {
+	private function getTime($Type) {
 		return intval($this->getConfiguration($Type,0))*intval($this->getConfiguration($Type.'Base',1000000));
 	}
-    	public function TpsAction($Hauteur, $AutorisationDecollement) {
+	public function TpsAction($Hauteur, $AutorisationDecollement) {
 		if(cache::byKey('voletProp::ChangeState::'.$this->getId())->getValue(false))
 			$Temps = $this->getTime('TpsUp') - $this->getTime('Tdecol');
 		else
@@ -369,6 +372,9 @@ class voletProp extends eqLogic {
 		if (is_object($cache))
 			$cache->remove();
 		$cache = cache::byKey('voletProp::PropMove::'.$this->getId());
+		if (is_object($cache))
+			$cache->remove();
+		$cache = cache::byKey('voletProp::Synchro::'.$this->getId());
 		if (is_object($cache))
 			$cache->remove();
 	}
@@ -519,6 +525,8 @@ class voletPropCmd extends cmd {
 					}
 				}
 				cache::set('voletProp::Move::'.$this->getEqLogic()->getId(),false, 0);
+				cache::set('voletProp::Synchro::'.$this->getEqLogic()->getId(),false, 0);
+				cache::set('voletProp::PropMove::'.$this->getEqLogic()->getId(),false, 0);
 				if(($this->getEqLogic()->getConfiguration('UpStateCmd') == '' || $this->getEqLogic()->getConfiguration('DownStateCmd') == '')){
 					log::add('voletProp','debug',$this->getEqLogic()->getHumanName().' Mise à jour manuelle de la hauteur');
 					cache::set('voletProp::ChangeStateStop::'.$this->getEqLogic()->getId(),microtime(true), 0);
