@@ -21,6 +21,7 @@ class voletProp extends eqLogic {
 							$TimeMove = cache::byKey('voletProp::TimeMove::'.$Volet->getId());
 							$TempsTimeout = $TimeMove->getValue(microtime(true));
 							if($HauteurVolet === false){
+								$TempsTimeout *= 1.1;
 								cache::set('voletProp::Synchro::'.$Volet->getId(),false, 0);
 								cache::set('voletProp::PropMove::'.$Volet->getId(),false, 0);
 							}
