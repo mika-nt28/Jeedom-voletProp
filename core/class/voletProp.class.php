@@ -48,7 +48,10 @@ class voletProp extends eqLogic {
 						log::add('voletProp','info',$Volet->getHumanName()."[Démon] Execution du stop");
 						$Volet->getCmd(null,'stop')->execute(null);	
 					}
-					usleep(($TempsTimeout - $Timeout) / 2);
+					if(($TempsTimeout - $Timeout) <= 0)
+						sleep(1);
+					else
+						usleep(($TempsTimeout - $Timeout) / 2);
 					continue;
 				}
 				sleep(1);		
