@@ -490,6 +490,10 @@ class voletPropCmd extends cmd {
     public function execute($_options = null) {
 		switch($this->getLogicalId()){
 			case "up":
+				if(cache::byKey('voletProp::Move::'.$this->getEqLogic()->getId())->getValue(false)){
+					$this->getEqLogic()->getCmd('stop')->execute(null);
+					//return;
+                }
 				cache::set('voletProp::ChangeStateStart::'.$this->getEqLogic()->getId(),microtime(true), 0);
 				cache::set('voletProp::Move::'.$this->getEqLogic()->getId(),true, 0);
 				cache::set('voletProp::ChangeState::'.$this->getEqLogic()->getId(),true, 0);
@@ -500,6 +504,10 @@ class voletPropCmd extends cmd {
 				}
 			break;
 			case "down":
+				if(cache::byKey('voletProp::Move::'.$this->getEqLogic()->getId())->getValue(false)){
+					$this->getEqLogic()->getCmd('stop')->execute(null);
+					//return;
+                }
 				cache::set('voletProp::ChangeStateStart::'.$this->getEqLogic()->getId(),microtime(true), 0);
 				cache::set('voletProp::Move::'.$this->getEqLogic()->getId(),true, 0);
 				cache::set('voletProp::ChangeState::'.$this->getEqLogic()->getId(),false, 0);
