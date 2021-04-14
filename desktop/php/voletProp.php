@@ -209,7 +209,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label">{{Objet de decente}}
+									<label class="col-sm-3 control-label">{{Objet de descente}}
 										<sup>
 											<i class="fa fa-question-circle tooltips" title="{{Sélectionner la commande déterminant la descente du volet}}"></i>
 										</sup>
@@ -234,18 +234,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 							<legend>Objet d'état du volet</legend>
 							<fieldset>
 								<div class="form-group">
-									<label class="col-sm-3 control-label">{{*Autorisation :}}
-										<sup>
-											<i class="fa fa-question-circle tooltips" title="{{Cocher pour laisser l'état du volet se mettre à jour par le retour d'état}}"></i>
-										</sup>
-									</label>
-									<div class="col-sm-9">
-										<label>{{Les mouvements Jeedom}}</label>
-										<input type="checkbox" class="eqLogicAttr" data-label-text="{{Jeedom}}" data-l1key="configuration" data-l2key="useStateJeedom"/>
-									</div>
-								</div>	
-								<div class="form-group">
-									<label class="col-sm-3 control-label">{{Condition d'etat montée}}
+									<label class="col-sm-3 control-label">{{Condition d'état montée}}
 										<sup>
 											<i class="fa fa-question-circle tooltips" title="{{Saisir la condition qui valide une montée}}"></i>
 										</sup>
@@ -269,7 +258,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 									</div>
 								</div>	
 								<div class="form-group">
-									<label class="col-sm-3 control-label">{{Condition d'etat descente}}
+									<label class="col-sm-3 control-label">{{Condition d'état descente}}
 										<sup>
 											<i class="fa fa-question-circle tooltips" title="{{Saisir la condition qui valide une descente}}"></i>
 										</sup>
@@ -293,7 +282,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 									</div>
 								</div>	
 								<div class="form-group">
-									<label class="col-sm-3 control-label">{{Condition d'etat arret}}
+									<label class="col-sm-3 control-label">{{Condition d'état du stop}}
 										<sup>
 											<i class="fa fa-question-circle tooltips" title="{{Saisir la condition qui valide un arret du volet}}"></i>
 										</sup>
