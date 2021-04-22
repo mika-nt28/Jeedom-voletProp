@@ -39,8 +39,10 @@ class voletProp extends eqLogic {
 						else
 							$TempsTimeout = $Volet->getTime('TpsDown') * 1.1;
 					}
+					cache::set('voletProp::TempsTimeout::'.$Volet->getId(),$TempsTimeout, 0);
 				}else{
 					$ChangeStateStart = cache::byKey('voletProp::ChangeStateStart::'.$Volet->getId())->getValue(microtime(true));
+					$TempsTimeout = cache::byKey('voletProp::TempsTimeout::'.$Volet->getId())->getValue(0);
 					$Timeout = microtime(true)-$ChangeStateStart;
 					$Timeout *= 1000000;
                 
@@ -492,9 +494,12 @@ class voletPropCmd extends cmd {
 			case "up":
 				if(cache::byKey('voletProp::Move::'.$this->getEqLogic()->getId())->getValue(false)){
 					$this->getEqLogic()->getCmd('stop')->execute(null);
-					//return;
-                }
+				}
 				cache::set('voletProp::ChangeStateStart::'.$this->getEqLogic()->getId(),microtime(true), 0);
+				$TempsTimeout = $this->getEqLogic()->getTime('TpsUp') * 1.1;
+				cache::set('voletProp::TempsTimeout::'.$this->getEqLogic()->getId(),$TempsTimeout, 0);
+				cache::set('voletProp::PropMove::'.$this->getEqLogic()->getId(),false, 0);
+				cache::set('voletProp::Synchro::'.$this->getEqLogic()->getId(),true, 0);
 				cache::set('voletProp::Move::'.$this->getEqLogic()->getId(),true, 0);
 				cache::set('voletProp::ChangeState::'.$this->getEqLogic()->getId(),true, 0);
 				$cmd=cmd::byId(str_replace('#','',$this->getEqLogic()->getConfiguration('cmdUp')));
@@ -506,9 +511,12 @@ class voletPropCmd extends cmd {
 			case "down":
 				if(cache::byKey('voletProp::Move::'.$this->getEqLogic()->getId())->getValue(false)){
 					$this->getEqLogic()->getCmd('stop')->execute(null);
-					//return;
-                }
+				}
+				$TempsTimeout = $this->getEqLogic()->getTime('TpsDown') * 1.1;
+				cache::set('voletProp::TempsTimeout::'.$this->getEqLogic()->getId(),$TempsTimeout, 0);
 				cache::set('voletProp::ChangeStateStart::'.$this->getEqLogic()->getId(),microtime(true), 0);
+				cache::set('voletProp::PropMove::'.$this->getEqLogic()->getId(),false, 0);
+				cache::set('voletProp::Synchro::'.$this->getEqLogic()->getId(),true, 0);
 				cache::set('voletProp::Move::'.$this->getEqLogic()->getId(),true, 0);
 				cache::set('voletProp::ChangeState::'.$this->getEqLogic()->getId(),false, 0);
 				$cmd=cmd::byId(str_replace('#','',$this->getEqLogic()->getConfiguration('cmdDown')));
