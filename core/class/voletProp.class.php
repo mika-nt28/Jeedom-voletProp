@@ -334,7 +334,7 @@ class voletProp extends eqLogic {
 		cache::set('voletProp::ChangeStateStart::'.$this->getId(),microtime(true), 0);
 		cache::set('voletProp::TimeMove::'.$this->getId(),$this->TpsAction($Delta,$AutorisationDecollement), 0);
 	}
-	private function getTime($Type) {
+	public function getTime($Type) {
 		return intval($this->getConfiguration($Type,0))*intval($this->getConfiguration($Type.'Base',1000000));
 	}
 	public function TpsAction($Hauteur, $AutorisationDecollement) {
