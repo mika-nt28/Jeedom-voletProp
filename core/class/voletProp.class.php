@@ -25,12 +25,13 @@ class voletProp extends eqLogic {
 								cache::set('voletProp::Synchro::'.$Volet->getId(),false, 0);
 								cache::set('voletProp::PropMove::'.$Volet->getId(),false, 0);
 							}
+							cache::set('voletProp::TempsTimeout::'.$Volet->getId(),$TempsTimeout, 0);
 							continue;
 						}else{
 							log::add('voletProp','debug',$Volet->getHumanName()."[Démon] Execution du mouvement proportionnel");
 							$Volet->execPropVolet($Hauteur,$HauteurVolet);
 							$TimeMove = cache::byKey('voletProp::TimeMove::'.$Volet->getId());
-							$TempsTimeout = $TimeMove->getValue(microtime(true));
+							cache::set('voletProp::TempsTimeout::'.$Volet->getId(),$TimeMove->getValue(microtime(true)), 0);
 							continue;
 						}
 					}else{
@@ -38,14 +39,14 @@ class voletProp extends eqLogic {
 							$TempsTimeout = $Volet->getTime('TpsUp') * 1.1;
 						else
 							$TempsTimeout = $Volet->getTime('TpsDown') * 1.1;
+						cache::set('voletProp::TempsTimeout::'.$Volet->getId(),$TempsTimeout, 0);
 					}
-					cache::set('voletProp::TempsTimeout::'.$Volet->getId(),$TempsTimeout, 0);
 				}else{
 					$ChangeStateStart = cache::byKey('voletProp::ChangeStateStart::'.$Volet->getId())->getValue(microtime(true));
 					$TempsTimeout = cache::byKey('voletProp::TempsTimeout::'.$Volet->getId())->getValue(0);
 					$Timeout = microtime(true)-$ChangeStateStart;
 					$Timeout *= 1000000;
-                
+                			//log::add('voletProp','debug',$Volet->getHumanName()."[Démon] FIN ".$Timeout.' >= '.$TempsTimeout);
 					if($Timeout >= $TempsTimeout){
 						log::add('voletProp','info',$Volet->getHumanName()."[Démon] Execution du stop");
 						$Volet->getCmd(null,'stop')->execute(null);	
