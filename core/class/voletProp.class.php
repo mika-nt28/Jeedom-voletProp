@@ -545,12 +545,12 @@ class voletPropCmd extends cmd {
 						$cmd->execute(null);
 					}
 				}
-				cache::set('voletProp::Move::'.$this->getEqLogic()->getId(),false, 0);
 				cache::set('voletProp::Synchro::'.$this->getEqLogic()->getId(),false, 0);
 				cache::set('voletProp::PropMove::'.$this->getEqLogic()->getId(),false, 0);
 				if(($this->getEqLogic()->getConfiguration('UpStateCmd') == '' || $this->getEqLogic()->getConfiguration('DownStateCmd') == '')){
 					log::add('voletProp','debug',$this->getEqLogic()->getHumanName().' Mise à jour manuelle de la hauteur');
 					cache::set('voletProp::ChangeStateStop::'.$this->getEqLogic()->getId(),microtime(true), 0);
+					cache::set('voletProp::Move::'.$this->getEqLogic()->getId(),false, 0);
 					$this->getEqLogic()->UpdateHauteur();
 				}
 			break;
