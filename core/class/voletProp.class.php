@@ -14,6 +14,7 @@ class voletProp extends eqLogic {
 						$HauteurVolet=$Volet->getCmd(null,'hauteur')->execCmd();
 						if($HauteurVolet == $Hauteur){
 							cache::set('voletProp::PropMove::'.$Volet->getId(),false, 0);
+							continue;
 						}
 						if(!is_object($Synchro) || !$Synchro->getValue(false)){
 							log::add('voletProp','debug',$Volet->getHumanName()."[Démon] Synchronisation");
