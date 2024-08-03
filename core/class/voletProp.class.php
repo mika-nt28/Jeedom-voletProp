@@ -20,7 +20,7 @@ class voletProp extends eqLogic {
 							log::add('voletProp','debug',$Volet->getHumanName()."[Démon] Synchronisation");
 							$HauteurVolet=$Volet->CheckSynchro($Hauteur,$HauteurVolet);
 							$TimeMove = cache::byKey('voletProp::TimeMove::'.$Volet->getId());
-							$TempsTimeout = $TimeMove->getValue(microtime(true));
+							$TempsTimeout = intval($TimeMove->getValue(microtime(true)));
 							if($HauteurVolet === false){
 								$TempsTimeout *= 1.1;
 								cache::set('voletProp::Synchro::'.$Volet->getId(),false, 0);
@@ -43,8 +43,8 @@ class voletProp extends eqLogic {
 						cache::set('voletProp::TempsTimeout::'.$Volet->getId(),$TempsTimeout, 0);
 					}
 				}else{
-					$ChangeStateStart = cache::byKey('voletProp::ChangeStateStart::'.$Volet->getId())->getValue(microtime(true));
-					$TempsTimeout = cache::byKey('voletProp::TempsTimeout::'.$Volet->getId())->getValue(0);
+					$ChangeStateStart = intval(cache::byKey('voletProp::ChangeStateStart::'.$Volet->getId())->getValue(microtime(true)));
+					$TempsTimeout = intval(cache::byKey('voletProp::TempsTimeout::'.$Volet->getId())->getValue(0));
 					$Timeout = microtime(true)-$ChangeStateStart;
 					$Timeout *= 1000000;
                 			//log::add('voletProp','debug',$Volet->getHumanName()."[Démon] FIN ".$Timeout.' >= '.$TempsTimeout);
