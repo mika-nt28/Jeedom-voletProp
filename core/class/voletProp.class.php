@@ -495,7 +495,7 @@ class voletPropCmd extends cmd {
 		switch($this->getLogicalId()){
 			case "up":
 				if(cache::byKey('voletProp::Move::'.$this->getEqLogic()->getId())->getValue(false)){
-					$this->getEqLogic()->getCmd('stop')->execCmd(null);
+					$this->getEqLogic()->getCmd(null,'stop')->execCmd(null);
 				}
 				cache::set('voletProp::ChangeStateStart::'.$this->getEqLogic()->getId(),microtime(true), 0);
 				$TempsTimeout = $this->getEqLogic()->getTime('TpsUp') * 1.1;
@@ -512,7 +512,7 @@ class voletPropCmd extends cmd {
 			break;
 			case "down":
 				if(cache::byKey('voletProp::Move::'.$this->getEqLogic()->getId())->getValue(false)){
-					$this->getEqLogic()->getCmd('stop')->execCmd(null);
+					$this->getEqLogic()->getCmd(null,'stop')->execCmd(null);
 				}
 				$TempsTimeout = $this->getEqLogic()->getTime('TpsDown') * 1.1;
 				cache::set('voletProp::TempsTimeout::'.$this->getEqLogic()->getId(),$TempsTimeout, 0);
