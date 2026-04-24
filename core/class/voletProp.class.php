@@ -10,8 +10,10 @@ class voletProp extends eqLogic {
 				$Move = cache::byKey('voletProp::Move::'.$Volet->getId());
 				if(!is_object($Move) || !$Move->getValue(false)){
 					if(is_object($PropMove) && $PropMove->getValue(false) !== false){
-						$Hauteur = $PropMove->getValue(0);
-						$HauteurVolet=$Volet->getCmd(null,'hauteur')->execCmd();
+						$Hauteur = intval($PropMove->getValue(0));
+						$HauteurVolet=intval($Volet->getCmd(null,'hauteur')->execCmd());
+						$TimeMove = cache::byKey('voletProp::TimeMove::'.$Volet->getId());
+						$TempsTimeout = intval($TimeMove->getValue(microtime(true)));
 						if($HauteurVolet == $Hauteur){
 							cache::set('voletProp::PropMove::'.$Volet->getId(),false, 0);
 							continue;
@@ -19,8 +21,6 @@ class voletProp extends eqLogic {
 						if(!is_object($Synchro) || !$Synchro->getValue(false)){
 							log::add('voletProp','debug',$Volet->getHumanName()."[Démon] Synchronisation");
 							$HauteurVolet=$Volet->CheckSynchro($Hauteur,$HauteurVolet);
-							$TimeMove = cache::byKey('voletProp::TimeMove::'.$Volet->getId());
-							$TempsTimeout = intval($TimeMove->getValue(microtime(true)));
 							if($HauteurVolet === false){
 								$TempsTimeout *= 1.1;
 								cache::set('voletProp::Synchro::'.$Volet->getId(),false, 0);
@@ -30,9 +30,8 @@ class voletProp extends eqLogic {
 							continue;
 						}else{
 							log::add('voletProp','debug',$Volet->getHumanName()."[Démon] Execution du mouvement proportionnel");
+							cache::set('voletProp::TempsTimeout::'.$Volet->getId(),$TempsTimeout, 0);
 							$Volet->execPropVolet($Hauteur,$HauteurVolet);
-							$TimeMove = cache::byKey('voletProp::TimeMove::'.$Volet->getId());
-							cache::set('voletProp::TempsTimeout::'.$Volet->getId(),$TimeMove->getValue(microtime(true)), 0);
 							continue;
 						}
 					}else{
@@ -44,10 +43,10 @@ class voletProp extends eqLogic {
 					}
 				}else{
 					$ChangeStateStart = intval(cache::byKey('voletProp::ChangeStateStart::'.$Volet->getId())->getValue(microtime(true)));
-					$TempsTimeout = intval(cache::byKey('voletProp::TempsTimeout::'.$Volet->getId())->getValue(0));
 					$Timeout = microtime(true)-$ChangeStateStart;
+                	//log::add('voletProp','debug',$Volet->getHumanName()."[Démon] FIN ".$Timeout.' >= '.$TempsTimeout);
 					$Timeout *= 1000000;
-                			//log::add('voletProp','debug',$Volet->getHumanName()."[Démon] FIN ".$Timeout.' >= '.$TempsTimeout);
+                	log::add('voletProp','debug',$Volet->getHumanName()."[Démon] FIN ".$Timeout.' >= '.$TempsTimeout);
 					if($Timeout >= $TempsTimeout){
 						log::add('voletProp','info',$Volet->getHumanName()."[Démon] Execution du stop");
 						$Volet->getCmd(null,'stop')->execCmd(null);	
@@ -349,8 +348,8 @@ class voletProp extends eqLogic {
 			$TempsAction += $this->getTime('Tdecol');
 			log::add('voletProp','debug',$this->getHumanName().' Ajout du temps de décollement');
 		}
-		if($TempsAction <= $this->getConfiguration('delaisMini')*1000000) 
-			$TempsAction = $this->getConfiguration('delaisMini')*1000000;
+		if($TempsAction <= intval($this->getConfiguration('delaisMini'))*1000000) 
+			$TempsAction = intval($this->getConfiguration('delaisMini'))*1000000;
 		log::add('voletProp','debug',$this->getHumanName().' Temps d\'action '.$TempsAction.'µs');
 		return $TempsAction;
 	}
@@ -470,8 +469,7 @@ class voletProp extends eqLogic {
 		$this->AddCommande("Stop","stop","action", 'other',1,null,'<i class="fa fa-stop"></i>','FLAP_STOP');
 		$this->StartListener();
 		$this->CreateDemon();   
-	}	
-	
+	}
 	public function preRemove() {
 		$listener = listener::byClassAndFunction('voletProp', 'UpVolet', array('Volets_id' => $this->getId()));
 		if (is_object($listener))
